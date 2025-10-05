@@ -287,7 +287,7 @@ export default function Analysis() {
                           </div>
                           
                           {isExpanded && (item.tips || item.practiceExercises) && (
-                            <div className="px-4 pb-4 pt-2 bg-muted/30 border-t space-y-3">
+                            <div className="px-4 pb-4 pt-2 bg-gradient-to-br from-primary/5 to-accent/5 border-t space-y-3">
                               {item.tips && (
                                 <div>
                                   <div className="flex items-center gap-2 mb-2">
