@@ -32,12 +32,45 @@ const schema = defineSchema(
       role: v.optional(roleValidator), // role of the user. do not remove
     }).index("email", ["email"]), // index for the email. do not remove or modify
 
-    // add other tables here
+    // CV Analysis storage
+    cvAnalyses: defineTable({
+      userId: v.id("users"),
+      fileName: v.string(),
+      fileStorageId: v.id("_storage"),
+      extractedText: v.string(),
+      status: v.string(), // "pending" | "completed" | "failed"
+      
+      // AI Analysis Results
+      skills: v.optional(v.array(v.string())),
+      experienceLevel: v.optional(v.string()),
+      missingSkills: v.optional(v.array(v.string())),
+      learningRoadmap: v.optional(v.array(v.object({
+        week: v.number(),
+        skill: v.string(),
+        course: v.string(),
+        platform: v.string(),
+        hours: v.number(),
+        link: v.string(),
+      }))),
+      jobMatches: v.optional(v.array(v.object({
+        title: v.string(),
+        company: v.string(),
+        matchScore: v.number(),
+        salary: v.string(),
+        location: v.string(),
+      }))),
+    }).index("by_userId", ["userId"]),
 
-    // tableName: defineTable({
-    //   ...
-    //   // table fields
-    // }).index("by_field", ["field"])
+    // Subscriptions
+    subscriptions: defineTable({
+      userId: v.id("users"),
+      stripeSubscriptionId: v.string(),
+      stripePriceId: v.string(),
+      status: v.string(), // "active" | "canceled" | "past_due"
+      currentPeriodEnd: v.number(),
+    })
+      .index("by_userId", ["userId"])
+      .index("by_stripeSubscriptionId", ["stripeSubscriptionId"]),
   },
   {
     schemaValidation: false,
