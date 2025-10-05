@@ -20,6 +20,8 @@ export default function Dashboard() {
   const analyzeCV = useAction(api.aiAnalysis.analyzeCV);
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
 
+  // Temporarily disable authentication check for testing
+  /*
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -32,6 +34,7 @@ export default function Dashboard() {
     navigate("/auth");
     return null;
   }
+  */
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -43,7 +46,8 @@ export default function Dashboard() {
       return;
     }
 
-    // Check if free user has already uploaded
+    // Temporarily disable freemium limit check for testing
+    /*
     if (!isPro && analyses && analyses.length >= 1) {
       toast.error("Upgrade to Pro for unlimited CV scans", {
         action: {
@@ -53,6 +57,7 @@ export default function Dashboard() {
       });
       return;
     }
+    */
 
     setUploading(true);
     toast.info("Uploading your CV...");
@@ -75,7 +80,7 @@ export default function Dashboard() {
       const { storageId } = await result.json();
 
       // For demo purposes, extract basic text (in production, use proper PDF parsing)
-      const extractedText = `CV for ${user?.name || user?.email || 'User'} - ${file.name}`;
+      const extractedText = `CV for ${user?.name || user?.email || 'Test User'} - ${file.name}`;
 
       // Create analysis record
       const analysisId = await createAnalysis({
@@ -119,7 +124,7 @@ export default function Dashboard() {
               </Button>
             )}
             <Button variant="ghost" onClick={() => navigate("/auth")}>
-              {user?.email || "Account"}
+              {user?.email || "Test User"}
             </Button>
           </div>
         </div>
@@ -135,7 +140,7 @@ export default function Dashboard() {
           {/* Welcome Section */}
           <div className="mb-12">
             <h1 className="text-4xl font-bold tracking-tight mb-2">
-              Welcome back, {user?.name || "there"}! 👋
+              Welcome back, {user?.name || "Test User"}! 👋
             </h1>
             <p className="text-muted-foreground text-lg">
               Ready to unlock your next career opportunity?
@@ -186,7 +191,7 @@ export default function Dashboard() {
                   </Button>
                 </label>
                 <p className="text-sm text-muted-foreground mt-4">
-                  {isPro ? "Unlimited scans" : `${analyses?.length || 0}/1 free scan used`}
+                  {isPro ? "Unlimited scans (Pro Mode - Testing)" : `${analyses?.length || 0}/1 free scan used`}
                 </p>
                 <p className="text-sm text-muted-foreground mt-2">
                   Don't have a CV?{" "}
