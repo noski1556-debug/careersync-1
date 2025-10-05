@@ -170,7 +170,8 @@ export default function CVImprovement() {
             <Button 
               variant="outline" 
               onClick={() => {
-                if (confirm("Are you sure you want to cancel? Your progress will be lost.")) {
+                const confirmed = window.confirm("Are you sure you want to cancel? Your progress will be lost.");
+                if (confirmed) {
                   navigate("/dashboard");
                 }
               }}

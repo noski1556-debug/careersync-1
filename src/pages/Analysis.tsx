@@ -191,7 +191,7 @@ export default function Analysis() {
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
                     {analysis.skills?.map((skill, idx) => (
-                      <Badge key={idx} variant="secondary" className="text-sm">
+                      <Badge key={idx} variant="secondary" className="text-sm bg-primary/20 text-foreground border-primary/30">
                         {skill}
                       </Badge>
                     ))}
@@ -213,7 +213,7 @@ export default function Analysis() {
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
                     {analysis.missingSkills?.slice(0, showLimitedContent ? 2 : undefined).map((skill, idx) => (
-                      <Badge key={idx} variant="outline" className="text-sm">
+                      <Badge key={idx} variant="outline" className="text-sm bg-accent/20 text-foreground border-accent/40">
                         {skill}
                       </Badge>
                     ))}
