@@ -114,9 +114,10 @@ CRITICAL EVALUATION CRITERIA:
    ${args.userLocation ? `- PRIORITIZE jobs in or near ${args.userLocation} with location-specific salary data` : ''}
    - Provide accurate salary ranges based on experience level and location
    - Include both remote and local opportunities
-   - IMPORTANT: Include the company's careers page URL (companyWebsite field) for each job match so users can apply directly
+   - CRITICAL: For EVERY job match, you MUST include the company's careers page URL in the "companyWebsite" field (e.g., "https://careers.google.com", "https://www.microsoft.com/careers", "https://www.amazon.jobs"). This is REQUIRED for all job matches.
    - IMPORTANT: Include company logo URL in the "companyLogo" field (NOT "logo") using Clearbit API format: https://logo.clearbit.com/[company-domain].com (e.g., https://logo.clearbit.com/google.com)
    - Job titles should be realistic and commonly used in the industry (e.g., "Software Engineer", "Senior Data Analyst", "Product Manager", not invented titles)
+   - Example job match with working link: {"title": "Software Engineer", "company": "Google", "companyWebsite": "https://careers.google.com", "companyLogo": "https://logo.clearbit.com/google.com", "matchScore": 85, "salary": "$120,000 - $160,000", "location": "Remote"}
 
 TONE: Professional but direct. Don't sugarcoat weaknesses. Provide constructive criticism that drives improvement. Most CVs are average (60-70 rating) - be honest about where this one stands.`;
 
