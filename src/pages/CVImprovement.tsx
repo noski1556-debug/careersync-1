@@ -169,9 +169,9 @@ export default function CVImprovement() {
           <div className="mt-8 flex items-center justify-between">
             <Button 
               variant="outline" 
-              onClick={() => {
-                const confirmed = window.confirm("Are you sure you want to cancel? Your progress will be lost.");
-                if (confirmed) {
+              onClick={(e) => {
+                e.preventDefault();
+                if (window.confirm("Are you sure you want to cancel? Your progress will be lost.")) {
                   navigate("/dashboard");
                 }
               }}
