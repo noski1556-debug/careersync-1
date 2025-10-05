@@ -104,7 +104,7 @@ CRITICAL EVALUATION CRITERIA:
      * "tips": 2-3 key learning strategies specific to that skill (e.g., "Focus on building 3 real projects", "Practice daily for 30 minutes", "Join community forums for support")
      * "practiceExercises": Specific hands-on exercises to reinforce learning (e.g., "Build a todo app", "Solve 5 LeetCode problems daily", "Recreate popular website designs")
 
-4. JOB MATCHES (4-6 roles):
+4. JOB MATCHES (8-12 roles):
    - CRITICAL: Recommend ONLY real, existing companies that are actively hiring
    - Use well-known companies in the industry (e.g., Google, Microsoft, Amazon, Meta, Apple, Netflix, Salesforce, Adobe, IBM, Oracle, etc.)
    - For startups, only mention companies you're confident exist (e.g., Stripe, Airbnb, Notion, Figma, etc.)

@@ -342,8 +342,8 @@ export default function Analysis() {
                 <CardContent>
                   <div className="space-y-4">
                     {analysis.jobMatches?.slice(0, showLimitedContent ? 1 : undefined).map((job, idx) => (
-                      <div key={idx} className="p-4 border rounded-lg hover:shadow-md transition-shadow">
-                        <div className="flex items-start gap-4">
+                      <div key={idx} className="p-4 border rounded-lg hover:shadow-md transition-shadow relative">
+                        <div className="flex items-start gap-4 relative z-0">
                           {job.companyLogo && (
                             <div className="flex-shrink-0">
                               <img 
@@ -366,7 +366,8 @@ export default function Analysis() {
                                       href={job.companyWebsite} 
                                       target="_blank" 
                                       rel="noopener noreferrer"
-                                      className="text-primary hover:underline inline-flex items-center gap-1"
+                                      className="text-primary hover:underline inline-flex items-center gap-1 relative z-10 cursor-pointer"
+                                      onClick={(e) => e.stopPropagation()}
                                     >
                                       {job.company}
                                       <ExternalLink className="h-3 w-3" />

@@ -167,7 +167,14 @@ export default function CVImprovement() {
           </div>
 
           <div className="mt-8 flex items-center justify-between">
-            <Button variant="outline" onClick={() => navigate(`/analysis/${id}`)}>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                if (confirm("Are you sure you want to cancel? Your progress will be lost.")) {
+                  navigate("/dashboard");
+                }
+              }}
+            >
               Cancel
             </Button>
             <Button 
