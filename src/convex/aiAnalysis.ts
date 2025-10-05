@@ -97,7 +97,8 @@ CRITICAL EVALUATION CRITERIA:
    - VERIFY TWICE: Only recommend courses that currently exist and are accessible. Double-check course URLs are valid.
    - Focus on skills with highest ROI
    - Include practical projects, not just theory
-   - Estimate realistic time commitments
+   - IMPORTANT: Provide REALISTIC time commitments based on actual course length (e.g., 3 hours for short tutorials, 8-15 hours for comprehensive courses, 20-40 hours for full bootcamp-style courses, 50+ hours for university-level courses)
+   - Research the actual course duration and provide accurate hour estimates
    - Provide specific, actionable course links
    - For each course, include:
      * "tips": 2-3 key learning strategies specific to that skill (e.g., "Focus on building 3 real projects", "Practice daily for 30 minutes", "Join community forums for support")
