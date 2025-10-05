@@ -23,7 +23,7 @@ export const analyzeCV = action({
       ? `\n\nUser Location: ${args.userLocation}\nIMPORTANT: Prioritize job recommendations in or near ${args.userLocation}. Include remote opportunities as well. Tailor salary ranges to the local market in ${args.userLocation}.`
       : "\n\nUser Location: Not specified\nProvide a mix of remote and general location job opportunities.";
 
-    const prompt = `You are a career development AI assistant. Analyze this CV and provide a structured response in JSON format.
+    const prompt = `You are an elite career development AI with expertise in CV evaluation, talent assessment, and career strategy. Your role is to provide BRUTALLY HONEST, data-driven analysis that pushes candidates to excellence.
 
 CV Text:
 ${args.extractedText}
@@ -31,7 +31,7 @@ ${locationContext}
 
 Provide your analysis in this exact JSON structure:
 {
-  "cvRating": 75,
+  "cvRating": 45,
   "skills": ["skill1", "skill2", ...],
   "experienceLevel": "Junior/Mid-Level/Senior",
   "missingSkills": ["skill1", "skill2", ...],
@@ -40,7 +40,7 @@ Provide your analysis in this exact JSON structure:
       "week": 1,
       "skill": "Skill Name",
       "course": "Course Title",
-      "platform": "Udemy/Coursera/LinkedIn Learning",
+      "platform": "Platform Name",
       "hours": 5,
       "link": "https://example.com/course"
     }
@@ -56,14 +56,56 @@ Provide your analysis in this exact JSON structure:
   ]
 }
 
-Focus on:
-0. Rate the CV quality from 0-100 based on completeness, formatting, clarity, achievements quantification, and professional presentation
-1. Extract 5-10 key technical and soft skills
-2. Identify 3-5 trending skills they're missing for career growth
-3. Create a 6-week learning roadmap with real courses - IMPORTANT: Prioritize FREE courses from platforms like YouTube, freeCodeCamp, Coursera (audit mode), edX (audit mode), and other free resources. Only suggest paid courses if absolutely necessary for the skill.
-4. Suggest 3-5 job roles they could qualify for${args.userLocation ? ` - PRIORITIZE jobs in or near ${args.userLocation}, include salary ranges appropriate for that location, and include remote opportunities` : ''}
+CRITICAL EVALUATION CRITERIA:
 
-Be specific, actionable, and motivating.`;
+0. CV RATING (0-100) - BE HARSH AND REALISTIC:
+   - 90-100: Exceptional - Fortune 500 executive level, flawless presentation, quantified achievements, industry leadership
+   - 80-89: Excellent - Senior professional, strong metrics, clear impact, minor improvements possible
+   - 70-79: Good - Solid mid-level, decent structure, some quantification, needs more impact
+   - 60-69: Average - Entry to mid-level, basic structure, lacks quantification, generic descriptions
+   - 50-59: Below Average - Poor structure, no metrics, vague descriptions, formatting issues
+   - 40-49: Weak - Major gaps, unprofessional presentation, no clear value proposition
+   - 0-39: Unacceptable - Incomplete, unprofessional, would be rejected immediately
+
+   Deduct points for:
+   - Generic buzzwords without proof (-5 points each)
+   - Lack of quantified achievements (-10 points)
+   - Poor formatting or structure (-10 points)
+   - Spelling/grammar errors (-5 points each)
+   - Missing key sections (-10 points each)
+   - Vague job descriptions (-5 points each)
+   - No clear career progression (-10 points)
+   - Outdated skills or technologies (-5 points)
+
+1. SKILLS EXTRACTION (8-12 skills):
+   - Identify ONLY skills explicitly mentioned or clearly demonstrated
+   - Separate technical skills from soft skills
+   - Note proficiency level based on context (beginner/intermediate/advanced)
+   - Flag outdated or low-demand skills
+
+2. MISSING CRITICAL SKILLS (5-8 skills):
+   - Identify high-impact skills missing for their target role
+   - Focus on trending, in-demand technologies and methodologies
+   - Include both technical and strategic/leadership skills
+   - Prioritize skills that would increase salary by 20%+
+
+3. LEARNING ROADMAP (6 weeks):
+   - IMPORTANT: Prioritize FREE courses: YouTube tutorials, freeCodeCamp, Coursera (audit mode), edX (audit mode), MIT OpenCourseWare, free Udemy courses
+   - Only suggest paid courses if they're industry-recognized certifications (AWS, Google, etc.)
+   - Focus on skills with highest ROI
+   - Include practical projects, not just theory
+   - Estimate realistic time commitments
+   - Provide specific, actionable course links
+
+4. JOB MATCHES (4-6 roles):
+   - Be REALISTIC about qualification level
+   - Match score should reflect actual competitiveness (most CVs are 60-75% matches)
+   - Include stretch roles (80%+ match) and safe roles (90%+ match)
+   ${args.userLocation ? `- PRIORITIZE jobs in or near ${args.userLocation} with location-specific salary data` : ''}
+   - Provide accurate salary ranges based on experience level and location
+   - Include both remote and local opportunities
+
+TONE: Professional but direct. Don't sugarcoat weaknesses. Provide constructive criticism that drives improvement. Most CVs are average (60-70 rating) - be honest about where this one stands.`;
 
     try {
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {

@@ -112,13 +112,15 @@ export default function Analysis() {
                     <div className="h-16 w-px bg-border" />
                     <div>
                       <h3 className="font-semibold text-lg mb-1">
-                        {analysis.cvRating >= 80 ? "Excellent CV!" : 
-                         analysis.cvRating >= 60 ? "Good CV" : 
-                         analysis.cvRating >= 40 ? "Needs Improvement" : 
-                         "Significant Improvements Needed"}
+                        {analysis.cvRating >= 90 ? "🏆 Exceptional - Top 5%" : 
+                         analysis.cvRating >= 80 ? "⭐ Excellent - Strong Candidate" : 
+                         analysis.cvRating >= 70 ? "✓ Good - Competitive" : 
+                         analysis.cvRating >= 60 ? "⚠️ Average - Needs Work" : 
+                         analysis.cvRating >= 50 ? "❌ Below Average - Major Issues" : 
+                         "🚫 Weak - Immediate Revision Required"}
                       </h3>
                       <p className="text-sm text-muted-foreground">
-                        Based on completeness, clarity, and professional presentation
+                        Evaluated on: quantified achievements, structure, clarity, impact, and market competitiveness
                       </p>
                     </div>
                   </div>

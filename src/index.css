@@ -44,20 +44,20 @@
 
 /* CHANGE VALUES FOR THEME - CareerSync Rich & Detailed Theme */
 :root {
-  --radius: 0.75rem;
-  --background: oklch(0.97 0.015 250);
-  --foreground: oklch(0.12 0.03 250);
-  --card: oklch(0.995 0.005 250);
-  --card-foreground: oklch(0.12 0.03 250);
-  --popover: oklch(0.995 0.005 250);
-  --popover-foreground: oklch(0.12 0.03 250);
-  --primary: oklch(0.55 0.30 265);
+  --radius: 0.5rem;
+  --background: oklch(0.98 0.01 250);
+  --foreground: oklch(0.09 0.02 250);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.09 0.02 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.09 0.02 250);
+  --primary: oklch(0.45 0.26 265);
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.72 0.18 185);
-  --secondary-foreground: oklch(0.12 0.03 250);
-  --muted: oklch(0.93 0.03 250);
-  --muted-foreground: oklch(0.48 0.03 250);
-  --accent: oklch(0.68 0.24 315);
+  --secondary: oklch(0.28 0.12 265);
+  --secondary-foreground: oklch(0.99 0 0);
+  --muted: oklch(0.95 0.01 250);
+  --muted-foreground: oklch(0.45 0.02 250);
+  --accent: oklch(0.55 0.20 285);
   --accent-foreground: oklch(0.99 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.85 0.03 250);

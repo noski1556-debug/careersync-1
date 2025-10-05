@@ -24,10 +24,10 @@ export default function Landing() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer transition-all duration-300 hover:scale-110 hover:rotate-2" onClick={() => navigate("/")}>
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-lg blur-sm opacity-50"></div>
-              <img src="/logo.svg" alt="CareerSync" className="h-8 w-8 relative z-10 drop-shadow-lg" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary via-accent to-secondary rounded-xl blur-md opacity-60 animate-pulse"></div>
+              <img src="/logo.svg" alt="Career Compass" className="h-10 w-10 relative z-10 drop-shadow-2xl" />
             </div>
-            <span className="font-bold text-xl bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-sm">CareerSync</span>
+            <span className="font-bold text-2xl bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-md tracking-tight">Career Compass</span>
           </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" onClick={() => navigate("/pricing")}>

@@ -121,8 +121,14 @@ export default function CVImprovement() {
               </h1>
             </div>
             <p className="text-muted-foreground text-lg">
-              Answer these personalized questions to help us generate specific recommendations for your CV.
-              Your current CV score is <strong>{analysis.cvRating}/100</strong>.
+              Your CV needs improvement. Answer these targeted questions to receive actionable recommendations.
+              <br />
+              <span className="text-lg font-semibold mt-2 inline-block">
+                Current CV Score: <span className={`${(analysis.cvRating ?? 0) >= 70 ? 'text-green-600' : (analysis.cvRating ?? 0) >= 50 ? 'text-yellow-600' : 'text-red-600'}`}>
+                  {analysis.cvRating}/100
+                </span>
+                {(analysis.cvRating ?? 0) < 70 && <span className="text-destructive ml-2">- Needs Significant Improvement</span>}
+              </span>
             </p>
           </div>
 
