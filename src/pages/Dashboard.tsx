@@ -252,7 +252,7 @@ export default function Dashboard() {
                         <CardContent>
                           <div className="flex flex-wrap gap-2">
                             {analysis.skills.slice(0, 4).map((skill, idx) => (
-                              <span key={idx} className="text-xs bg-secondary px-2 py-1 rounded">
+                              <span key={idx} className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded">
                                 {skill}
                               </span>
                             ))}
