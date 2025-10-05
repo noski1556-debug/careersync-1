@@ -52,7 +52,7 @@ Provide your analysis in this exact JSON structure:
 Focus on:
 1. Extract 5-10 key technical and soft skills
 2. Identify 3-5 trending skills they're missing for career growth
-3. Create a 6-week learning roadmap with real courses
+3. Create a 6-week learning roadmap with real courses - IMPORTANT: Prioritize FREE courses from platforms like YouTube, freeCodeCamp, Coursera (audit mode), edX (audit mode), and other free resources. Only suggest paid courses if absolutely necessary for the skill.
 4. Suggest 3-5 job roles they could qualify for
 
 Be specific, actionable, and motivating.`;
