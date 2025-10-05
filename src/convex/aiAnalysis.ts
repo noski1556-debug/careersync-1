@@ -31,6 +31,7 @@ ${locationContext}
 
 Provide your analysis in this exact JSON structure:
 {
+  "cvRating": 75,
   "skills": ["skill1", "skill2", ...],
   "experienceLevel": "Junior/Mid-Level/Senior",
   "missingSkills": ["skill1", "skill2", ...],
@@ -56,6 +57,7 @@ Provide your analysis in this exact JSON structure:
 }
 
 Focus on:
+0. Rate the CV quality from 0-100 based on completeness, formatting, clarity, achievements quantification, and professional presentation
 1. Extract 5-10 key technical and soft skills
 2. Identify 3-5 trending skills they're missing for career growth
 3. Create a 6-week learning roadmap with real courses - IMPORTANT: Prioritize FREE courses from platforms like YouTube, freeCodeCamp, Coursera (audit mode), edX (audit mode), and other free resources. Only suggest paid courses if absolutely necessary for the skill.
@@ -99,6 +101,7 @@ Be specific, actionable, and motivating.`;
       // Update the analysis with results
       await ctx.runMutation(internal.careersync.updateAnalysisResults, {
         analysisId: args.analysisId,
+        cvRating: analysis.cvRating,
         skills: analysis.skills,
         experienceLevel: analysis.experienceLevel,
         missingSkills: analysis.missingSkills,

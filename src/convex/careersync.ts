@@ -31,6 +31,7 @@ export const createCVAnalysis = mutation({
 export const updateAnalysisResults = internalMutation({
   args: {
     analysisId: v.id("cvAnalyses"),
+    cvRating: v.number(),
     skills: v.array(v.string()),
     experienceLevel: v.string(),
     missingSkills: v.array(v.string()),
@@ -52,6 +53,7 @@ export const updateAnalysisResults = internalMutation({
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.analysisId, {
+      cvRating: args.cvRating,
       skills: args.skills,
       experienceLevel: args.experienceLevel,
       missingSkills: args.missingSkills,

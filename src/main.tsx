@@ -14,6 +14,7 @@ import Dashboard from "./pages/Dashboard.tsx";
 import Analysis from "./pages/Analysis.tsx";
 import Pricing from "./pages/Pricing.tsx";
 import CVBuilder from "./pages/CVBuilder.tsx";
+import CVImprovement from "./pages/CVImprovement";
 import "./types/global.d.ts";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
@@ -52,8 +53,9 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<AuthPage redirectAfterAuth="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/cv-builder" element={<CVBuilder />} />
             <Route path="/analysis/:id" element={<Analysis />} />
+            <Route path="/cv-improvement/:id" element={<CVImprovement />} />
+            <Route path="/cv-builder" element={<CVBuilder />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

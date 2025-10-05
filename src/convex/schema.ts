@@ -42,6 +42,7 @@ const schema = defineSchema(
       userLocation: v.optional(v.string()), // User's location for personalized recommendations
       
       // AI Analysis Results
+      cvRating: v.optional(v.number()), // CV quality rating 0-100
       skills: v.optional(v.array(v.string())),
       experienceLevel: v.optional(v.string()),
       missingSkills: v.optional(v.array(v.string())),

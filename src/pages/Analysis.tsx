@@ -97,6 +97,48 @@ export default function Analysis() {
             </p>
           </div>
 
+          {/* CV Rating Section */}
+          {analysis.status === "completed" && analysis.cvRating !== undefined && (
+            <Card className="mb-8 border-2 border-primary/20">
+              <CardContent className="py-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="text-center">
+                      <div className="text-5xl font-bold text-primary mb-1">
+                        {analysis.cvRating}
+                      </div>
+                      <div className="text-sm text-muted-foreground">CV Score</div>
+                    </div>
+                    <div className="h-16 w-px bg-border" />
+                    <div>
+                      <h3 className="font-semibold text-lg mb-1">
+                        {analysis.cvRating >= 80 ? "Excellent CV!" : 
+                         analysis.cvRating >= 60 ? "Good CV" : 
+                         analysis.cvRating >= 40 ? "Needs Improvement" : 
+                         "Significant Improvements Needed"}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Based on completeness, clarity, and professional presentation
+                      </p>
+                    </div>
+                  </div>
+                  {isPro && analysis.cvRating < 90 && (
+                    <Button onClick={() => navigate(`/cv-improvement/${id}`)} variant="outline" className="gap-2">
+                      <Crown className="h-4 w-4" />
+                      Improve Your CV
+                    </Button>
+                  )}
+                  {!isPro && analysis.cvRating < 90 && (
+                    <Button onClick={() => navigate("/pricing")} variant="outline" className="gap-2">
+                      <Lock className="h-4 w-4" />
+                      Unlock CV Improvement
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {analysis.status === "pending" && (
             <Card className="mb-8">
               <CardContent className="py-12 text-center">
