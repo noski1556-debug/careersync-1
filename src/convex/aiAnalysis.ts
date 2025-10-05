@@ -104,6 +104,7 @@ CRITICAL EVALUATION CRITERIA:
    ${args.userLocation ? `- PRIORITIZE jobs in or near ${args.userLocation} with location-specific salary data` : ''}
    - Provide accurate salary ranges based on experience level and location
    - Include both remote and local opportunities
+   - IMPORTANT: Include the company's careers page URL (companyWebsite field) for each job match so users can apply directly
 
 TONE: Professional but direct. Don't sugarcoat weaknesses. Provide constructive criticism that drives improvement. Most CVs are average (60-70 rating) - be honest about where this one stands.`;
 

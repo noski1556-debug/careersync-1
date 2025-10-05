@@ -46,6 +46,7 @@ export const updateAnalysisResults = internalMutation({
     jobMatches: v.array(v.object({
       title: v.string(),
       company: v.string(),
+      companyWebsite: v.optional(v.string()),
       matchScore: v.number(),
       salary: v.string(),
       location: v.string(),

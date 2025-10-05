@@ -282,7 +282,21 @@ export default function Analysis() {
                         <div className="flex items-start justify-between mb-2">
                           <div>
                             <h4 className="font-semibold">{job.title}</h4>
-                            <p className="text-sm text-muted-foreground">{job.company}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {job.companyWebsite ? (
+                                <a 
+                                  href={job.companyWebsite} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-primary hover:underline inline-flex items-center gap-1"
+                                >
+                                  {job.company}
+                                  <ExternalLink className="h-3 w-3" />
+                                </a>
+                              ) : (
+                                job.company
+                              )}
+                            </p>
                           </div>
                           <Badge variant="secondary">{job.matchScore}% match</Badge>
                         </div>
