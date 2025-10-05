@@ -47,19 +47,29 @@ export default function Landing() {
       </header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-20 md:py-32">
+      <section className="container mx-auto px-4 py-20 md:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5 -z-10" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl -z-10" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl -z-10" />
+        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto text-center"
+          className="max-w-4xl mx-auto text-center relative"
         >
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-            <Sparkles className="h-4 w-4" />
+          <motion.div 
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20 backdrop-blur-sm text-primary px-6 py-3 rounded-full text-sm font-semibold mb-8 border-2 border-primary/30 shadow-lg"
+            animate={{ 
+              boxShadow: ["0 0 20px rgba(var(--primary), 0.3)", "0 0 40px rgba(var(--primary), 0.5)", "0 0 20px rgba(var(--primary), 0.3)"]
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <Sparkles className="h-5 w-5" />
             AI-Powered Career Intelligence
-          </div>
+          </motion.div>
           
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent drop-shadow-sm">
             Unlock Your Career Potential with AI
           </h1>
           
@@ -86,7 +96,9 @@ export default function Landing() {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="container mx-auto px-4 py-20 bg-muted/30">
+      <section id="how-it-works" className="container mx-auto px-4 py-20 bg-gradient-to-b from-muted/30 via-muted/50 to-muted/30 relative overflow-hidden">
+        <div className="absolute top-0 left-1/4 w-64 h-64 bg-secondary/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl" />
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -128,9 +140,9 @@ export default function Landing() {
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Card className="h-full">
+                <Card className="h-full backdrop-blur-sm bg-card/80">
                   <CardContent className="pt-6">
-                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-primary mb-4 shadow-lg border-2 border-primary/30">
                       {step.icon}
                     </div>
                     <h3 className="text-xl font-bold mb-2">{step.title}</h3>
@@ -242,7 +254,8 @@ export default function Landing() {
       </section>
 
       {/* CTA Section */}
-      <section className="container mx-auto px-4 py-20">
+      <section className="container mx-auto px-4 py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 -z-10" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -250,9 +263,17 @@ export default function Landing() {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto text-center"
         >
-          <Card className="border-2 border-primary">
+          <Card className="border-2 border-primary shadow-2xl bg-gradient-to-br from-card via-card to-primary/5">
             <CardContent className="pt-12 pb-12">
-              <Zap className="h-16 w-16 mx-auto mb-6 text-primary" />
+              <motion.div
+                animate={{ 
+                  rotate: [0, 5, -5, 0],
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <Zap className="h-16 w-16 mx-auto mb-6 text-primary drop-shadow-lg" />
+              </motion.div>
               <h2 className="text-4xl font-bold tracking-tight mb-4">
                 Ready to Transform Your Career?
               </h2>
