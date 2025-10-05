@@ -68,10 +68,14 @@ export default function Dashboard() {
         body: file,
       });
       
+      if (!result.ok) {
+        throw new Error(`Upload failed: ${result.statusText}`);
+      }
+      
       const { storageId } = await result.json();
 
       // For demo purposes, extract basic text (in production, use proper PDF parsing)
-      const extractedText = `CV for ${user?.name || 'User'} - ${file.name}`;
+      const extractedText = `CV for ${user?.name || user?.email || 'User'} - ${file.name}`;
 
       // Create analysis record
       const analysisId = await createAnalysis({
@@ -92,7 +96,7 @@ export default function Dashboard() {
       navigate(`/analysis/${analysisId}`);
     } catch (error) {
       console.error("Upload error:", error);
-      toast.error("Failed to upload CV. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Failed to upload CV. Please try again.");
     } finally {
       setUploading(false);
     }
@@ -183,6 +187,15 @@ export default function Dashboard() {
                 </label>
                 <p className="text-sm text-muted-foreground mt-4">
                   {isPro ? "Unlimited scans" : `${analyses?.length || 0}/1 free scan used`}
+                </p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Don't have a CV?{" "}
+                  <button
+                    onClick={() => navigate("/cv-builder")}
+                    className="text-primary underline hover:text-primary/80 transition-colors"
+                  >
+                    Build one with AI
+                  </button>
                 </p>
               </div>
             </CardContent>
