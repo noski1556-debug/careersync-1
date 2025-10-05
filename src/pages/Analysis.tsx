@@ -64,8 +64,8 @@ export default function Analysis() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div className="flex items-center gap-2">
-              <img src="/logo.svg" alt="CareerSync" className="h-8 w-8" />
-              <span className="font-bold text-xl">CareerSync</span>
+              <img src="/logo.svg" alt="Career Compass" className="h-8 w-8" />
+              <span className="font-bold text-xl">Career Compass</span>
             </div>
           </div>
           {!isPro && (
@@ -98,8 +98,18 @@ export default function Analysis() {
             <Card className="mb-8">
               <CardContent className="py-12 text-center">
                 <Loader2 className="h-12 w-12 mx-auto mb-4 animate-spin text-primary" />
-                <p className="text-lg font-medium">Analyzing your CV...</p>
+                <p className="text-lg font-semibold mb-2">Analyzing your CV...</p>
                 <p className="text-muted-foreground">This usually takes 30-60 seconds</p>
+              </CardContent>
+            </Card>
+          )}
+
+          {analysis.status === "failed" && (
+            <Card className="mb-8 border-destructive">
+              <CardContent className="py-12 text-center">
+                <p className="text-lg font-semibold mb-2 text-destructive">Analysis Failed</p>
+                <p className="text-muted-foreground mb-4">We encountered an error while analyzing your CV.</p>
+                <Button onClick={() => navigate("/dashboard")}>Back to Dashboard</Button>
               </CardContent>
             </Card>
           )}
