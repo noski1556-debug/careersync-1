@@ -14,9 +14,10 @@ export default function Analysis() {
   const { isLoading: authLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   
-  const analysis = useQuery(api.careersync.getAnalysis, { 
-    analysisId: id as Id<"cvAnalyses"> 
-  });
+  const analysis = useQuery(
+    api.careersync.getAnalysis, 
+    id && id !== ":id" ? { analysisId: id as Id<"cvAnalyses"> } : "skip"
+  );
   const isPro = useQuery(api.careersync.checkProStatus);
 
   if (authLoading) {
