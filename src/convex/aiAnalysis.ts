@@ -111,7 +111,7 @@ CRITICAL EVALUATION CRITERIA:
    - Provide accurate salary ranges based on experience level and location
    - Include both remote and local opportunities
    - IMPORTANT: Include the company's careers page URL (companyWebsite field) for each job match so users can apply directly
-   - Include company logo URL using Clearbit API format: https://logo.clearbit.com/[company-domain].com (e.g., https://logo.clearbit.com/google.com)
+   - IMPORTANT: Include company logo URL in the "companyLogo" field (NOT "logo") using Clearbit API format: https://logo.clearbit.com/[company-domain].com (e.g., https://logo.clearbit.com/google.com)
 
 TONE: Professional but direct. Don't sugarcoat weaknesses. Provide constructive criticism that drives improvement. Most CVs are average (60-70 rating) - be honest about where this one stands.`;
 
