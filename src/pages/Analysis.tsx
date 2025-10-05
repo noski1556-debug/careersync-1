@@ -278,32 +278,48 @@ export default function Analysis() {
                 <CardContent>
                   <div className="space-y-4">
                     {analysis.jobMatches?.slice(0, showLimitedContent ? 1 : undefined).map((job, idx) => (
-                      <div key={idx} className="p-4 border rounded-lg">
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <h4 className="font-semibold">{job.title}</h4>
-                            <p className="text-sm text-muted-foreground">
-                              {job.companyWebsite ? (
-                                <a 
-                                  href={job.companyWebsite} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="text-primary hover:underline inline-flex items-center gap-1"
-                                >
-                                  {job.company}
-                                  <ExternalLink className="h-3 w-3" />
-                                </a>
-                              ) : (
-                                job.company
-                              )}
-                            </p>
+                      <div key={idx} className="p-4 border rounded-lg hover:shadow-md transition-shadow">
+                        <div className="flex items-start gap-4">
+                          {job.companyLogo && (
+                            <div className="flex-shrink-0">
+                              <img 
+                                src={job.companyLogo} 
+                                alt={`${job.company} logo`}
+                                className="w-12 h-12 rounded-lg object-contain bg-white border p-1"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                }}
+                              />
+                            </div>
+                          )}
+                          <div className="flex-1">
+                            <div className="flex items-start justify-between mb-2">
+                              <div>
+                                <h4 className="font-semibold text-lg">{job.title}</h4>
+                                <p className="text-sm text-muted-foreground">
+                                  {job.companyWebsite ? (
+                                    <a 
+                                      href={job.companyWebsite} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer"
+                                      className="text-primary hover:underline inline-flex items-center gap-1"
+                                    >
+                                      {job.company}
+                                      <ExternalLink className="h-3 w-3" />
+                                    </a>
+                                  ) : (
+                                    job.company
+                                  )}
+                                </p>
+                              </div>
+                              <Badge variant="secondary" className="ml-2">{job.matchScore}% match</Badge>
+                            </div>
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                              <span>{job.salary}</span>
+                              <span>•</span>
+                              <span>{job.location}</span>
+                            </div>
                           </div>
-                          <Badge variant="secondary">{job.matchScore}% match</Badge>
-                        </div>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <span>{job.salary}</span>
-                          <span>•</span>
-                          <span>{job.location}</span>
                         </div>
                       </div>
                     ))}

@@ -58,6 +58,7 @@ const schema = defineSchema(
         title: v.string(),
         company: v.string(),
         companyWebsite: v.optional(v.string()),
+        companyLogo: v.optional(v.string()),
         matchScore: v.number(),
         salary: v.string(),
         location: v.string(),
