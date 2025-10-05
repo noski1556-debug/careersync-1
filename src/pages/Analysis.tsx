@@ -5,14 +5,28 @@ import { useAuth } from "@/hooks/use-auth";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Briefcase, Crown, ExternalLink, GraduationCap, Loader2, Lock, TrendingUp } from "lucide-react";
+import { ArrowLeft, Briefcase, ChevronDown, ChevronUp, Crown, ExternalLink, GraduationCap, Lightbulb, Loader2, Lock, TrendingUp } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
 import { Id } from "@/convex/_generated/dataModel";
+import { useState } from "react";
 
 export default function Analysis() {
   const { id } = useParams<{ id: string }>();
   const { isLoading: authLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [expandedCourses, setExpandedCourses] = useState<Set<number>>(new Set());
+
+  const toggleCourseExpansion = (index: number) => {
+    setExpandedCourses(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
   
   const analysis = useQuery(
     api.careersync.getAnalysis, 
@@ -226,27 +240,77 @@ export default function Analysis() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {analysis.learningRoadmap?.slice(0, showLimitedContent ? 3 : undefined).map((item, idx) => (
-                      <div key={idx} className="flex items-start gap-4 p-4 border rounded-lg">
-                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">
-                          W{item.week}
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="font-semibold mb-1">{item.skill}</h4>
-                          <p className="text-sm text-muted-foreground mb-2">{item.course}</p>
-                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                            <span>{item.platform}</span>
-                            <span>•</span>
-                            <span>{item.hours} hours</span>
+                    {analysis.learningRoadmap?.slice(0, showLimitedContent ? 3 : undefined).map((item, idx) => {
+                      const isExpanded = expandedCourses.has(idx);
+                      return (
+                        <div key={idx} className="border rounded-lg overflow-hidden">
+                          <div className="flex items-start gap-4 p-4">
+                            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">
+                              W{item.week}
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="font-semibold mb-1">{item.skill}</h4>
+                              <p className="text-sm text-muted-foreground mb-2">{item.course}</p>
+                              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                <span>{item.platform}</span>
+                                <span>•</span>
+                                <span>{item.hours} hours</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Button size="sm" variant="outline" asChild>
+                                <a href={item.link} target="_blank" rel="noopener noreferrer">
+                                  <ExternalLink className="h-4 w-4" />
+                                </a>
+                              </Button>
+                              {(item.tips || item.practiceExercises) && (
+                                <Button 
+                                  size="sm" 
+                                  variant="ghost"
+                                  onClick={() => toggleCourseExpansion(idx)}
+                                  className="text-xs"
+                                >
+                                  {isExpanded ? (
+                                    <>
+                                      <ChevronUp className="h-3 w-3 mr-1" />
+                                      Less
+                                    </>
+                                  ) : (
+                                    <>
+                                      <ChevronDown className="h-3 w-3 mr-1" />
+                                      More Info
+                                    </>
+                                  )}
+                                </Button>
+                              )}
+                            </div>
                           </div>
+                          
+                          {isExpanded && (item.tips || item.practiceExercises) && (
+                            <div className="px-4 pb-4 pt-2 bg-muted/30 border-t space-y-3">
+                              {item.tips && (
+                                <div>
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <Lightbulb className="h-4 w-4 text-primary" />
+                                    <h5 className="font-semibold text-sm">Learning Tips</h5>
+                                  </div>
+                                  <p className="text-sm text-muted-foreground pl-6">{item.tips}</p>
+                                </div>
+                              )}
+                              {item.practiceExercises && (
+                                <div>
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <GraduationCap className="h-4 w-4 text-primary" />
+                                    <h5 className="font-semibold text-sm">Practice Exercises</h5>
+                                  </div>
+                                  <p className="text-sm text-muted-foreground pl-6">{item.practiceExercises}</p>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
-                        <Button size="sm" variant="outline" asChild>
-                          <a href={item.link} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="h-4 w-4" />
-                          </a>
-                        </Button>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                   
                   {showLimitedContent && analysis.learningRoadmap && analysis.learningRoadmap.length > 3 && (

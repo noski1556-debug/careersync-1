@@ -53,6 +53,8 @@ const schema = defineSchema(
         platform: v.string(),
         hours: v.number(),
         link: v.string(),
+        tips: v.optional(v.string()),
+        practiceExercises: v.optional(v.string()),
       }))),
       jobMatches: v.optional(v.array(v.object({
         title: v.string(),

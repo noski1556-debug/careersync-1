@@ -42,7 +42,9 @@ Provide your analysis in this exact JSON structure:
       "course": "Course Title",
       "platform": "Platform Name",
       "hours": 5,
-      "link": "https://example.com/course"
+      "link": "https://example.com/course",
+      "tips": "Key learning tips and best practices for mastering this skill",
+      "practiceExercises": "Specific hands-on exercises to reinforce learning and build muscle memory"
     }
   ],
   "jobMatches": [
@@ -92,10 +94,14 @@ CRITICAL EVALUATION CRITERIA:
 3. LEARNING ROADMAP (6 weeks):
    - IMPORTANT: Prioritize FREE courses: YouTube tutorials, freeCodeCamp, Coursera (audit mode), edX (audit mode), MIT OpenCourseWare, free Udemy courses
    - Only suggest paid courses if they're industry-recognized certifications (AWS, Google, etc.)
+   - VERIFY TWICE: Only recommend courses that currently exist and are accessible. Double-check course URLs are valid.
    - Focus on skills with highest ROI
    - Include practical projects, not just theory
    - Estimate realistic time commitments
    - Provide specific, actionable course links
+   - For each course, include:
+     * "tips": 2-3 key learning strategies specific to that skill (e.g., "Focus on building 3 real projects", "Practice daily for 30 minutes", "Join community forums for support")
+     * "practiceExercises": Specific hands-on exercises to reinforce learning (e.g., "Build a todo app", "Solve 5 LeetCode problems daily", "Recreate popular website designs")
 
 4. JOB MATCHES (4-6 roles):
    - Be REALISTIC about qualification level
