@@ -104,6 +104,9 @@ CRITICAL EVALUATION CRITERIA:
      * "practiceExercises": Specific hands-on exercises to reinforce learning (e.g., "Build a todo app", "Solve 5 LeetCode problems daily", "Recreate popular website designs")
 
 4. JOB MATCHES (4-6 roles):
+   - CRITICAL: Recommend ONLY real, existing companies that are actively hiring
+   - Use well-known companies in the industry (e.g., Google, Microsoft, Amazon, Meta, Apple, Netflix, Salesforce, Adobe, IBM, Oracle, etc.)
+   - For startups, only mention companies you're confident exist (e.g., Stripe, Airbnb, Notion, Figma, etc.)
    - Be REALISTIC about qualification level
    - Match score should reflect actual competitiveness (most CVs are 60-75% matches)
    - Include stretch roles (80%+ match) and safe roles (90%+ match)
@@ -112,6 +115,7 @@ CRITICAL EVALUATION CRITERIA:
    - Include both remote and local opportunities
    - IMPORTANT: Include the company's careers page URL (companyWebsite field) for each job match so users can apply directly
    - IMPORTANT: Include company logo URL in the "companyLogo" field (NOT "logo") using Clearbit API format: https://logo.clearbit.com/[company-domain].com (e.g., https://logo.clearbit.com/google.com)
+   - Job titles should be realistic and commonly used in the industry (e.g., "Software Engineer", "Senior Data Analyst", "Product Manager", not invented titles)
 
 TONE: Professional but direct. Don't sugarcoat weaknesses. Provide constructive criticism that drives improvement. Most CVs are average (60-70 rating) - be honest about where this one stands.`;
 
