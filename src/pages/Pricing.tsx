@@ -216,10 +216,6 @@ export default function Pricing() {
                   q: "How accurate is the AI analysis?",
                   a: "Our AI is trained on millions of job postings and CVs. It provides 90%+ accurate skill assessments and career recommendations.",
                 },
-                {
-                  q: "Do you offer refunds?",
-                  a: "Yes! If you're not satisfied within the first 7 days, we'll refund you in full, no questions asked.",
-                },
               ].map((faq, idx) => (
                 <Card key={idx}>
                   <CardHeader>

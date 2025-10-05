@@ -22,7 +22,8 @@ export default function Landing() {
       {/* Header */}
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer transition-all duration-200 hover:scale-105" onClick={() => navigate("/")}>
+          <div className="flex items-center gap-2 cursor-pointer transition-all duration-300 hover:scale-110 hover:rotate-2" onClick={() => navigate("/")}>
+=======
             <img src="/logo.svg" alt="CareerSync" className="h-8 w-8" />
             <span className="font-bold text-xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">CareerSync</span>
           </div>

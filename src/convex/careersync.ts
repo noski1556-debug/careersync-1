@@ -49,9 +49,6 @@ export const updateAnalysisResults = internalMutation({
     })),
   },
   handler: async (ctx, args) => {
-    const user = await getCurrentUser(ctx);
-    if (!user) throw new Error("Not authenticated");
-
     await ctx.db.patch(args.analysisId, {
       skills: args.skills,
       experienceLevel: args.experienceLevel,
