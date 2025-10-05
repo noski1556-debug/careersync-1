@@ -8,6 +8,7 @@ export const createCVAnalysis = mutation({
     fileName: v.string(),
     fileStorageId: v.id("_storage"),
     extractedText: v.string(),
+    userLocation: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const user = await getCurrentUser(ctx);
@@ -18,6 +19,7 @@ export const createCVAnalysis = mutation({
       fileName: args.fileName,
       fileStorageId: args.fileStorageId,
       extractedText: args.extractedText,
+      userLocation: args.userLocation,
       status: "pending",
     });
 

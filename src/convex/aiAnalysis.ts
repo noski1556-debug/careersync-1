@@ -8,6 +8,7 @@ export const analyzeCV = action({
   args: {
     analysisId: v.id("cvAnalyses"),
     extractedText: v.string(),
+    userLocation: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     // Call OpenRouter API for AI analysis
@@ -18,10 +19,15 @@ export const analyzeCV = action({
       throw new Error("OpenRouter API key not configured. Please add it in the Integrations tab.");
     }
 
+    const locationContext = args.userLocation 
+      ? `\n\nUser Location: ${args.userLocation}\nIMPORTANT: Prioritize job recommendations in or near ${args.userLocation}. Include remote opportunities as well. Tailor salary ranges to the local market in ${args.userLocation}.`
+      : "\n\nUser Location: Not specified\nProvide a mix of remote and general location job opportunities.";
+
     const prompt = `You are a career development AI assistant. Analyze this CV and provide a structured response in JSON format.
 
 CV Text:
 ${args.extractedText}
+${locationContext}
 
 Provide your analysis in this exact JSON structure:
 {
@@ -53,7 +59,7 @@ Focus on:
 1. Extract 5-10 key technical and soft skills
 2. Identify 3-5 trending skills they're missing for career growth
 3. Create a 6-week learning roadmap with real courses - IMPORTANT: Prioritize FREE courses from platforms like YouTube, freeCodeCamp, Coursera (audit mode), edX (audit mode), and other free resources. Only suggest paid courses if absolutely necessary for the skill.
-4. Suggest 3-5 job roles they could qualify for
+4. Suggest 3-5 job roles they could qualify for${args.userLocation ? ` - PRIORITIZE jobs in or near ${args.userLocation}, include salary ranges appropriate for that location, and include remote opportunities` : ''}
 
 Be specific, actionable, and motivating.`;
 

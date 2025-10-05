@@ -82,11 +82,15 @@ export default function Dashboard() {
       // For demo purposes, extract basic text (in production, use proper PDF parsing)
       const extractedText = `CV for ${user?.name || user?.email || 'Test User'} - ${file.name}`;
 
+      // Ask for user location
+      const userLocation = prompt("Where are you located? (City, Country)\nThis helps us provide personalized job recommendations near you:");
+
       // Create analysis record
       const analysisId = await createAnalysis({
         fileName: file.name,
         fileStorageId: storageId,
         extractedText,
+        userLocation: userLocation || undefined,
       });
 
       toast.success("CV uploaded! Analyzing...");
@@ -95,6 +99,7 @@ export default function Dashboard() {
       await analyzeCV({
         analysisId,
         extractedText,
+        userLocation: userLocation || undefined,
       });
 
       toast.success("Analysis complete!");

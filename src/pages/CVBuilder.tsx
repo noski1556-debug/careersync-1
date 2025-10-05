@@ -425,6 +425,7 @@ Contact: ${cvData.reference2Contact}
         fileName: `${cvData.fullName.replace(/\s+/g, "_")}_CV.txt`,
         fileStorageId: storageId,
         extractedText: cvText,
+        userLocation: cvData.location || undefined,
       });
 
       toast.success("CV created! Analyzing...");
@@ -432,6 +433,7 @@ Contact: ${cvData.reference2Contact}
       await analyzeCV({
         analysisId,
         extractedText: cvText,
+        userLocation: cvData.location || undefined,
       });
 
       toast.success("Analysis complete!");

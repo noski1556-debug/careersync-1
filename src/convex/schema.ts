@@ -39,6 +39,7 @@ const schema = defineSchema(
       fileStorageId: v.id("_storage"),
       extractedText: v.string(),
       status: v.string(), // "pending" | "completed" | "failed"
+      userLocation: v.optional(v.string()), // User's location for personalized recommendations
       
       // AI Analysis Results
       skills: v.optional(v.array(v.string())),
