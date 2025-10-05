@@ -1,16 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/use-auth";
+import { api } from "@/convex/_generated/api";
+import { useAction } from "convex/react";
 import { motion } from "framer-motion";
 import { Check, Crown, Loader2, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import { useState } from "react";
 
 export default function Pricing() {
   const { isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [processingCheckout, setProcessingCheckout] = useState(false);
+  const createCheckout = useAction(api.autumn.createCheckoutSession);
 
-  const handleSelectPlan = (plan: "free" | "pro") => {
+  const handleSelectPlan = async (plan: "free" | "pro") => {
     if (!isAuthenticated) {
       navigate("/auth");
       return;
@@ -21,9 +26,23 @@ export default function Pricing() {
       return;
     }
 
-    // For Pro plan, show coming soon message
-    toast.info("Stripe integration coming soon! For now, enjoy the free plan.");
-    navigate("/dashboard");
+    // For Pro plan, create Stripe checkout
+    setProcessingCheckout(true);
+    try {
+      const result = await createCheckout({
+        priceId: "price_pro_monthly", // Replace with your actual Stripe price ID
+        successUrl: `${window.location.origin}/dashboard?checkout=success`,
+        cancelUrl: `${window.location.origin}/pricing?checkout=canceled`,
+      });
+      
+      if (result.checkoutUrl) {
+        window.location.href = result.checkoutUrl;
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      toast.error("Failed to start checkout. Please ensure Autumn is configured with your API key.");
+      setProcessingCheckout(false);
+    }
   };
 
   return (
@@ -159,8 +178,16 @@ export default function Pricing() {
                   <Button 
                     className="w-full" 
                     onClick={() => handleSelectPlan("pro")}
+                    disabled={processingCheckout}
                   >
-                    Start 7-Day Free Trial
+                    {processingCheckout ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                        Processing...
+                      </>
+                    ) : (
+                      "Start 7-Day Free Trial"
+                    )}
                   </Button>
                   <p className="text-xs text-center text-muted-foreground mt-3">
                     Cancel anytime • No commitment

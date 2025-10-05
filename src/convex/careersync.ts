@@ -113,8 +113,8 @@ export const checkProStatus = query({
   },
 });
 
-// Create subscription
-export const createSubscription = mutation({
+// Create subscription (internal for webhook handling)
+export const createSubscription = internalMutation({
   args: {
     stripeSubscriptionId: v.string(),
     stripePriceId: v.string(),
@@ -151,8 +151,8 @@ export const createSubscription = mutation({
   },
 });
 
-// Update subscription status
-export const updateSubscriptionStatus = mutation({
+// Update subscription status (internal for webhook handling)
+export const updateSubscriptionStatus = internalMutation({
   args: {
     stripeSubscriptionId: v.string(),
     status: v.string(),

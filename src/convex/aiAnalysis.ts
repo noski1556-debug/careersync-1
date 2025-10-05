@@ -14,7 +14,17 @@ export const analyzeCV = action({
     const apiKey = process.env.OPENROUTER_API_KEY;
     
     if (!apiKey) {
-      throw new Error("OpenRouter API key not configured");
+      console.error("OpenRouter API key not configured");
+      // Update with error status
+      await ctx.runMutation(internal.careersync.updateAnalysisResults, {
+        analysisId: args.analysisId,
+        skills: ["Error: API key not configured"],
+        experienceLevel: "Unknown",
+        missingSkills: [],
+        learningRoadmap: [],
+        jobMatches: [],
+      });
+      throw new Error("OpenRouter API key not configured. Please add it in the Integrations tab.");
     }
 
     const prompt = `You are a career development AI assistant. Analyze this CV and provide a structured response in JSON format.
@@ -102,7 +112,18 @@ Be specific, actionable, and motivating.`;
       return { success: true };
     } catch (error) {
       console.error("AI Analysis error:", error);
-      throw new Error("Failed to analyze CV");
+      
+      // Update analysis with error status
+      await ctx.runMutation(internal.careersync.updateAnalysisResults, {
+        analysisId: args.analysisId,
+        skills: ["Analysis failed - please try again"],
+        experienceLevel: "Unknown",
+        missingSkills: [],
+        learningRoadmap: [],
+        jobMatches: [],
+      });
+      
+      throw new Error(`Failed to analyze CV: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   },
 });
