@@ -106,15 +106,19 @@ export const checkProStatus = query({
     const user = await getCurrentUser(ctx);
     if (!user) return false;
 
-    const subscription = await ctx.db
-      .query("subscriptions")
-      .withIndex("by_userId", (q) => q.eq("userId", user._id))
-      .first();
+    // TESTING: Always return true for Pro status during development
+    return true;
 
-    if (!subscription) return false;
-
-    // Check if subscription is active and not expired
-    return subscription.status === "active" && subscription.currentPeriodEnd > Date.now();
+    // Production code (commented out for testing):
+    // const subscription = await ctx.db
+    //   .query("subscriptions")
+    //   .withIndex("by_userId", (q) => q.eq("userId", user._id))
+    //   .first();
+    //
+    // if (!subscription) return false;
+    //
+    // // Check if subscription is active and not expired
+    // return subscription.status === "active" && subscription.currentPeriodEnd > Date.now();
   },
 });
 
