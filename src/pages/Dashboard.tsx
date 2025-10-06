@@ -43,15 +43,16 @@ export default function Dashboard() {
       return;
     }
 
-    if (!isPro && analyses && analyses.length >= 1) {
-      toast.error("Upgrade to Pro for unlimited CV scans", {
-        action: {
-          label: "Upgrade",
-          onClick: () => navigate("/pricing"),
-        },
-      });
-      return;
-    }
+    // TESTING: Freemium limit disabled for testing
+    // if (!isPro && analyses && analyses.length >= 1) {
+    //   toast.error("Upgrade to Pro for unlimited CV scans", {
+    //     action: {
+    //       label: "Upgrade",
+    //       onClick: () => navigate("/pricing"),
+    //     },
+    //   });
+    //   return;
+    // }
 
     setUploading(true);
     toast.info("Uploading your CV...");
