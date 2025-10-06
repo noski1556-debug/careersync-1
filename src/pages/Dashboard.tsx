@@ -8,6 +8,7 @@ import { ArrowRight, FileText, Loader2, Upload, Sparkles, Crown } from "lucide-r
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useState } from "react";
+import { createHash } from "crypto";
 
 export default function Dashboard() {
   const { isLoading, isAuthenticated, user } = useAuth();
@@ -19,6 +20,7 @@ export default function Dashboard() {
   const createAnalysis = useMutation(api.careersync.createCVAnalysis);
   const analyzeCV = useAction(api.aiAnalysis.analyzeCV);
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
+  const checkRateLimit = useMutation(api.careersync.checkRateLimit);
 
   if (isLoading) {
     return (
@@ -55,9 +57,22 @@ export default function Dashboard() {
     // }
 
     setUploading(true);
-    toast.info("Uploading your CV...");
+    toast.info("Checking rate limit...");
 
     try {
+      // Simple IP detection (in production, use proper IP extraction from headers)
+      const ipAddress = "user-ip-placeholder"; // In production, get from request headers
+      
+      const rateLimitCheck = await checkRateLimit({ ipAddress });
+      
+      if (!rateLimitCheck.allowed) {
+        toast.error(`Please wait ${rateLimitCheck.secondsRemaining} seconds before uploading another CV`);
+        setUploading(false);
+        return;
+      }
+
+      toast.info("Uploading your CV...");
+
       // Get upload URL
       const uploadUrl = await generateUploadUrl();
       
@@ -76,29 +91,42 @@ export default function Dashboard() {
 
       // For demo purposes, extract basic text (in production, use proper PDF parsing)
       const extractedText = `CV for ${user?.name || user?.email || 'Test User'} - ${file.name}`;
+      
+      // Generate content hash for caching
+      const contentHash = createHash('sha256').update(extractedText).digest('hex');
 
       // Ask for user location
       const userLocation = prompt("Where are you located? (City, Country)\nThis helps us provide personalized job recommendations near you:");
 
       // Create analysis record
-      const analysisId = await createAnalysis({
+      const result2 = await createAnalysis({
         fileName: file.name,
         fileStorageId: storageId,
         extractedText,
         userLocation: userLocation || undefined,
+        contentHash,
       });
+
+      if (result2.cached) {
+        toast.success("Found cached analysis! Loading results instantly...");
+        navigate(`/analysis/${result2.analysisId}`);
+        return;
+      }
 
       toast.success("CV uploaded! Analyzing...");
 
-      // Trigger AI analysis
-      await analyzeCV({
-        analysisId,
+      // Trigger AI analysis (don't await - let it run in background)
+      analyzeCV({
+        analysisId: result2.analysisId,
         extractedText,
         userLocation: userLocation || undefined,
+      }).catch((error) => {
+        console.error("Analysis error:", error);
+        toast.error("Analysis failed. Please try again.");
       });
 
-      toast.success("Analysis complete!");
-      navigate(`/analysis/${analysisId}`);
+      // Navigate immediately to show progress
+      navigate(`/analysis/${result2.analysisId}`);
     } catch (error) {
       console.error("Upload error:", error);
       toast.error(error instanceof Error ? error.message : "Failed to upload CV. Please try again.");
@@ -236,10 +264,10 @@ export default function Dashboard() {
                         <CardDescription>
                           {analysis.status === "completed" ? (
                             <span className="text-green-600">✓ Analysis complete</span>
-                          ) : analysis.status === "pending" ? (
-                            <span className="text-yellow-600">⏳ Analyzing...</span>
-                          ) : (
+                          ) : analysis.status === "failed" ? (
                             <span className="text-red-600">✗ Failed</span>
+                          ) : (
+                            <span className="text-yellow-600">⏳ {analysis.progressMessage || "Analyzing..."}</span>
                           )}
                         </CardDescription>
                       </CardHeader>

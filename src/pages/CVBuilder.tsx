@@ -421,23 +421,37 @@ Contact: ${cvData.reference2Contact}
       
       const { storageId } = await result.json();
 
-      const analysisId = await createAnalysis({
+      // Generate content hash for caching
+      const encoder = new TextEncoder();
+      const data = encoder.encode(cvText);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const contentHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+      const result2 = await createAnalysis({
         fileName: `${cvData.fullName.replace(/\s+/g, "_")}_CV.txt`,
         fileStorageId: storageId,
         extractedText: cvText,
         userLocation: cvData.location || undefined,
+        contentHash,
       });
+
+      if (result2.cached) {
+        toast.success("Found cached analysis! Loading results instantly...");
+        navigate(`/analysis/${result2.analysisId}`);
+        return;
+      }
 
       toast.success("CV created! Analyzing...");
 
       await analyzeCV({
-        analysisId,
+        analysisId: result2.analysisId,
         extractedText: cvText,
         userLocation: cvData.location || undefined,
       });
 
       toast.success("Analysis complete!");
-      navigate(`/analysis/${analysisId}`);
+      navigate(`/analysis/${result2.analysisId}`);
     } catch (error) {
       console.error("CV generation error:", error);
       toast.error("Failed to generate CV. Please try again.");

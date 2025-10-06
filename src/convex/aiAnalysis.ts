@@ -11,6 +11,13 @@ export const analyzeCV = action({
     userLocation: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    // Update progress: Extracting skills
+    await ctx.runMutation(internal.careersync.updateProgressMessage, {
+      analysisId: args.analysisId,
+      status: "extracting_skills",
+      progressMessage: "Extracting your skills and experience...",
+    });
+
     // Call OpenRouter API for AI analysis
     const apiKey = process.env.OPENROUTER_API_KEY;
     
@@ -122,6 +129,13 @@ CRITICAL EVALUATION CRITERIA:
 TONE: Professional but direct. Don't sugarcoat weaknesses. Provide constructive criticism that drives improvement. Most CVs are average (60-70 rating) - be honest about where this one stands.`;
 
     try {
+      // Update progress: Analyzing experience
+      await ctx.runMutation(internal.careersync.updateProgressMessage, {
+        analysisId: args.analysisId,
+        status: "analyzing_experience",
+        progressMessage: "Analyzing your experience level and career trajectory...",
+      });
+
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -142,6 +156,13 @@ TONE: Professional but direct. Don't sugarcoat weaknesses. Provide constructive 
       if (!response.ok) {
         throw new Error(`OpenRouter API error: ${response.statusText}`);
       }
+
+      // Update progress: Generating roadmap
+      await ctx.runMutation(internal.careersync.updateProgressMessage, {
+        analysisId: args.analysisId,
+        status: "generating_roadmap",
+        progressMessage: "Creating your personalized learning roadmap...",
+      });
 
       const data = await response.json();
       const content = data.choices[0].message.content;
@@ -168,6 +189,14 @@ TONE: Professional but direct. Don't sugarcoat weaknesses. Provide constructive 
       return { success: true };
     } catch (error) {
       console.error("AI Analysis error:", error);
+      
+      // Update status to failed
+      await ctx.runMutation(internal.careersync.updateProgressMessage, {
+        analysisId: args.analysisId,
+        status: "failed",
+        progressMessage: "Analysis failed. Please try again.",
+      });
+      
       throw new Error(`Failed to analyze CV: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   },

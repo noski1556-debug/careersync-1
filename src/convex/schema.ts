@@ -38,7 +38,9 @@ const schema = defineSchema(
       fileName: v.string(),
       fileStorageId: v.id("_storage"),
       extractedText: v.string(),
-      status: v.string(), // "pending" | "completed" | "failed"
+      contentHash: v.optional(v.string()), // SHA-256 hash for caching
+      status: v.string(), // "pending" | "extracting_skills" | "analyzing_experience" | "generating_roadmap" | "completed" | "failed"
+      progressMessage: v.optional(v.string()), // Current progress message for UI
       userLocation: v.optional(v.string()), // User's location for personalized recommendations
       
       // AI Analysis Results
@@ -65,7 +67,16 @@ const schema = defineSchema(
         salary: v.string(),
         location: v.string(),
       }))),
-    }).index("by_userId", ["userId"]),
+    })
+      .index("by_userId", ["userId"])
+      .index("by_contentHash", ["contentHash"]),
+
+    // Rate Limiting
+    rateLimits: defineTable({
+      ipAddress: v.string(),
+      lastScanTime: v.number(),
+      scanCount: v.number(),
+    }).index("by_ipAddress", ["ipAddress"]),
 
     // Subscriptions
     subscriptions: defineTable({

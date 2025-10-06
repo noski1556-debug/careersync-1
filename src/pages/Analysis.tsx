@@ -95,6 +95,26 @@ export default function Analysis() {
 
   const showLimitedContent = !isPro;
 
+  // Determine progress percentage based on status
+  const getProgressInfo = () => {
+    switch (analysis.status) {
+      case "pending":
+        return { percent: 10, message: analysis.progressMessage || "Starting analysis..." };
+      case "extracting_skills":
+        return { percent: 30, message: analysis.progressMessage || "Extracting skills..." };
+      case "analyzing_experience":
+        return { percent: 60, message: analysis.progressMessage || "Analyzing experience..." };
+      case "generating_roadmap":
+        return { percent: 85, message: analysis.progressMessage || "Generating roadmap..." };
+      case "completed":
+        return { percent: 100, message: "Analysis complete!" };
+      default:
+        return { percent: 0, message: "Processing..." };
+    }
+  };
+
+  const progressInfo = getProgressInfo();
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -187,12 +207,59 @@ export default function Analysis() {
             </Card>
           )}
 
-          {analysis.status === "pending" && (
+          {analysis.status !== "completed" && analysis.status !== "failed" && (
             <Card className="mb-8">
-              <CardContent className="py-12 text-center">
-                <Loader2 className="h-12 w-12 mx-auto mb-4 animate-spin text-primary" />
-                <p className="text-lg font-semibold mb-2">Analyzing your CV...</p>
-                <p className="text-muted-foreground">This usually takes 30-60 seconds</p>
+              <CardContent className="py-12">
+                <div className="space-y-6">
+                  <div className="text-center">
+                    <Loader2 className="h-12 w-12 mx-auto mb-4 animate-spin text-primary" />
+                    <p className="text-lg font-semibold mb-2">{progressInfo.message}</p>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      This usually takes 30-60 seconds
+                    </p>
+                  </div>
+                  
+                  {/* Progress Bar */}
+                  <div className="max-w-md mx-auto">
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <motion.div
+                        className="h-full bg-primary"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${progressInfo.percent}%` }}
+                        transition={{ duration: 0.5 }}
+                      />
+                    </div>
+                    <p className="text-center text-xs text-muted-foreground mt-2">
+                      {progressInfo.percent}% complete
+                    </p>
+                  </div>
+
+                  {/* Progress Steps */}
+                  <div className="max-w-2xl mx-auto grid grid-cols-4 gap-4 mt-8">
+                    {[
+                      { label: "Extracting Skills", status: "extracting_skills" },
+                      { label: "Analyzing Experience", status: "analyzing_experience" },
+                      { label: "Generating Roadmap", status: "generating_roadmap" },
+                      { label: "Finalizing", status: "completed" },
+                    ].map((step, idx) => {
+                      const isActive = analysis.status === step.status;
+                      const isComplete = ["extracting_skills", "analyzing_experience", "generating_roadmap", "completed"].indexOf(analysis.status) > idx;
+                      
+                      return (
+                        <div key={idx} className="text-center">
+                          <div className={`w-8 h-8 rounded-full mx-auto mb-2 flex items-center justify-center text-sm font-semibold ${
+                            isComplete ? "bg-primary text-primary-foreground" :
+                            isActive ? "bg-primary/20 text-primary animate-pulse" :
+                            "bg-muted text-muted-foreground"
+                          }`}>
+                            {isComplete ? "✓" : idx + 1}
+                          </div>
+                          <p className="text-xs text-muted-foreground">{step.label}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </CardContent>
             </Card>
           )}

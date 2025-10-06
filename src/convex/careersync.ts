@@ -9,21 +9,72 @@ export const createCVAnalysis = mutation({
     fileStorageId: v.id("_storage"),
     extractedText: v.string(),
     userLocation: v.optional(v.string()),
+    contentHash: v.string(),
   },
   handler: async (ctx, args) => {
     const user = await getCurrentUser(ctx);
     if (!user) throw new Error("Not authenticated");
+
+    // Check for cached analysis (within last 7 days)
+    const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+    const cachedAnalysis = await ctx.db
+      .query("cvAnalyses")
+      .withIndex("by_contentHash", (q) => q.eq("contentHash", args.contentHash))
+      .filter((q) => 
+        q.and(
+          q.eq(q.field("status"), "completed"),
+          q.gt(q.field("_creationTime"), sevenDaysAgo)
+        )
+      )
+      .first();
+
+    if (cachedAnalysis) {
+      // Return cached analysis by creating a new record with same results
+      const analysisId = await ctx.db.insert("cvAnalyses", {
+        userId: user._id,
+        fileName: args.fileName,
+        fileStorageId: args.fileStorageId,
+        extractedText: args.extractedText,
+        contentHash: args.contentHash,
+        userLocation: args.userLocation,
+        status: "completed",
+        cvRating: cachedAnalysis.cvRating,
+        skills: cachedAnalysis.skills,
+        experienceLevel: cachedAnalysis.experienceLevel,
+        missingSkills: cachedAnalysis.missingSkills,
+        learningRoadmap: cachedAnalysis.learningRoadmap,
+        jobMatches: cachedAnalysis.jobMatches,
+      });
+      return { analysisId, cached: true };
+    }
 
     const analysisId = await ctx.db.insert("cvAnalyses", {
       userId: user._id,
       fileName: args.fileName,
       fileStorageId: args.fileStorageId,
       extractedText: args.extractedText,
+      contentHash: args.contentHash,
       userLocation: args.userLocation,
       status: "pending",
+      progressMessage: "Starting analysis...",
     });
 
-    return analysisId;
+    return { analysisId, cached: false };
+  },
+});
+
+// Update progress message (internal only)
+export const updateProgressMessage = internalMutation({
+  args: {
+    analysisId: v.id("cvAnalyses"),
+    status: v.string(),
+    progressMessage: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.analysisId, {
+      status: args.status,
+      progressMessage: args.progressMessage,
+    });
   },
 });
 
@@ -64,7 +115,45 @@ export const updateAnalysisResults = internalMutation({
       learningRoadmap: args.learningRoadmap,
       jobMatches: args.jobMatches,
       status: "completed",
+      progressMessage: "Analysis complete!",
     });
+  },
+});
+
+// Check rate limit
+export const checkRateLimit = mutation({
+  args: {
+    ipAddress: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const now = Date.now();
+    const oneMinuteAgo = now - 60 * 1000;
+
+    const rateLimit = await ctx.db
+      .query("rateLimits")
+      .withIndex("by_ipAddress", (q) => q.eq("ipAddress", args.ipAddress))
+      .first();
+
+    if (rateLimit && rateLimit.lastScanTime > oneMinuteAgo) {
+      const secondsRemaining = Math.ceil((rateLimit.lastScanTime + 60 * 1000 - now) / 1000);
+      return { allowed: false, secondsRemaining };
+    }
+
+    // Update or create rate limit record
+    if (rateLimit) {
+      await ctx.db.patch(rateLimit._id, {
+        lastScanTime: now,
+        scanCount: rateLimit.scanCount + 1,
+      });
+    } else {
+      await ctx.db.insert("rateLimits", {
+        ipAddress: args.ipAddress,
+        lastScanTime: now,
+        scanCount: 1,
+      });
+    }
+
+    return { allowed: true, secondsRemaining: 0 };
   },
 });
 
@@ -109,7 +198,7 @@ export const checkProStatus = query({
     // TESTING: Always return true for Pro status during development
     return true;
 
-    // Production code (commented out for testing):
+    // Production code (commented out for testing)
     // const subscription = await ctx.db
     //   .query("subscriptions")
     //   .withIndex("by_userId", (q) => q.eq("userId", user._id))
