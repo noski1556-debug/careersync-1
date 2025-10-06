@@ -72,16 +72,20 @@ export default function Landing() {
           </motion.div>
           
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent drop-shadow-sm">
-            Unlock Your Career Potential with AI
+            Upload your CV → get a personalized 3-week career roadmap in 60s.
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            CareerSync analyzes your CV and builds your personalized roadmap to better skills, better jobs, and better pay.
+            Free scan. Upgrade to Pro for salary forecasts & unlimited roadmaps.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" onClick={handleGetStarted} className="gap-2 text-lg px-8">
-              Get My Free Roadmap
+            <Button 
+              size="lg" 
+              onClick={handleGetStarted} 
+              className="gap-2 text-lg px-8 bg-[#00CFC1] hover:bg-[#00B8AA] text-white"
+            >
+              Get my free roadmap
               <ArrowRight className="h-5 w-5" />
             </Button>
             <Button size="lg" variant="outline" onClick={() => {
@@ -89,6 +93,25 @@ export default function Landing() {
             }} className="text-lg px-8">
               See How It Works
             </Button>
+          </div>
+
+          {/* Sample Roadmap Snippet */}
+          <div className="mt-8 max-w-md mx-auto bg-card/80 backdrop-blur-sm border rounded-lg p-4 text-left">
+            <p className="text-xs text-muted-foreground mb-3 text-center font-semibold">What you'll get:</p>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-start gap-2">
+                <CheckCircle className="h-4 w-4 text-[#00CFC1] flex-shrink-0 mt-0.5" />
+                <span><strong>Week 1:</strong> Master Python fundamentals (5 hours, free course)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="h-4 w-4 text-[#00CFC1] flex-shrink-0 mt-0.5" />
+                <span><strong>Week 2:</strong> Learn SQL & databases (8 hours, free course)</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="h-4 w-4 text-[#00CFC1] flex-shrink-0 mt-0.5" />
+                <span><strong>Week 3:</strong> Build your first data project (10 hours)</span>
+              </li>
+            </ul>
           </div>
 
           <p className="text-sm text-muted-foreground mt-6">
