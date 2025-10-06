@@ -61,8 +61,6 @@ export default function Analysis() {
   );
   const isPro = useQuery(api.careersync.checkProStatus);
 
-  // Temporarily disable authentication check for testing
-  /*
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -75,7 +73,6 @@ export default function Analysis() {
     navigate("/auth");
     return null;
   }
-  */
 
   if (analysis === undefined) {
     return (

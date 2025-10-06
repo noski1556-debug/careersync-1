@@ -20,8 +20,6 @@ export default function Dashboard() {
   const analyzeCV = useAction(api.aiAnalysis.analyzeCV);
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
 
-  // Temporarily disable authentication check for testing
-  /*
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -34,7 +32,6 @@ export default function Dashboard() {
     navigate("/auth");
     return null;
   }
-  */
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -46,8 +43,6 @@ export default function Dashboard() {
       return;
     }
 
-    // Temporarily disable freemium limit check for testing
-    /*
     if (!isPro && analyses && analyses.length >= 1) {
       toast.error("Upgrade to Pro for unlimited CV scans", {
         action: {
@@ -57,7 +52,6 @@ export default function Dashboard() {
       });
       return;
     }
-    */
 
     setUploading(true);
     toast.info("Uploading your CV...");

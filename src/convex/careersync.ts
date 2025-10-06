@@ -103,10 +103,6 @@ export const getAnalysis = query({
 export const checkProStatus = query({
   args: {},
   handler: async (ctx) => {
-    // Temporarily return true for testing Pro features without authentication
-    return true;
-    
-    /* Original code - commented out for testing
     const user = await getCurrentUser(ctx);
     if (!user) return false;
 
@@ -119,7 +115,6 @@ export const checkProStatus = query({
 
     // Check if subscription is active and not expired
     return subscription.status === "active" && subscription.currentPeriodEnd > Date.now();
-    */
   },
 });
 
