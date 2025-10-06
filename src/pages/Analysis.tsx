@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Briefcase, ChevronDown, ChevronUp, Crown, ExternalLink, GraduationCap, Lightbulb, Loader2, Lock, TrendingUp } from "lucide-react";
+import { ArrowLeft, Briefcase, ChevronDown, ChevronUp, Crown, Download, ExternalLink, GraduationCap, Lightbulb, Loader2, Lock, TrendingUp } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
 import { Id } from "@/convex/_generated/dataModel";
 import { useState } from "react";
@@ -26,6 +26,33 @@ export default function Analysis() {
       }
       return newSet;
     });
+  };
+
+  const handleDownloadData = () => {
+    if (!analysis || analysis.status !== "completed") return;
+
+    const dataToDownload = {
+      fileName: analysis.fileName,
+      cvRating: analysis.cvRating,
+      experienceLevel: analysis.experienceLevel,
+      skills: analysis.skills,
+      missingSkills: analysis.missingSkills,
+      learningRoadmap: analysis.learningRoadmap,
+      jobMatches: analysis.jobMatches,
+      exportDate: new Date().toISOString(),
+    };
+
+    const blob = new Blob([JSON.stringify(dataToDownload, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `career-analysis-${analysis.fileName.replace(/\.[^/.]+$/, "")}-${Date.now()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
   
   const analysis = useQuery(
@@ -85,12 +112,20 @@ export default function Analysis() {
               <span className="font-bold text-xl">Career Compass</span>
             </div>
           </div>
-          {!isPro && (
-            <Button onClick={() => navigate("/pricing")} className="gap-2">
-              <Crown className="h-4 w-4" />
-              Upgrade to Pro
-            </Button>
-          )}
+          <div className="flex items-center gap-2">
+            {analysis?.status === "completed" && (
+              <Button onClick={handleDownloadData} variant="outline" className="gap-2">
+                <Download className="h-4 w-4" />
+                Download Data
+              </Button>
+            )}
+            {!isPro && (
+              <Button onClick={() => navigate("/pricing")} className="gap-2">
+                <Crown className="h-4 w-4" />
+                Upgrade to Pro
+              </Button>
+            )}
+          </div>
         </div>
       </header>
 
