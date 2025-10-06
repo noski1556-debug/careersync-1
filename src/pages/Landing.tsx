@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
-import { ArrowRight, Briefcase, CheckCircle, GraduationCap, Loader2, Sparkles, TrendingUp, Zap } from "lucide-react";
+import { ArrowRight, Briefcase, CheckCircle, Crown, GraduationCap, Loader2, Sparkles, TrendingUp, Zap } from "lucide-react";
 import { useNavigate } from "react-router";
 
 export default function Landing() {
@@ -117,6 +117,21 @@ export default function Landing() {
           <p className="text-sm text-muted-foreground mt-6">
             ✓ Free forever plan • ✓ No credit card required • ✓ 2 minutes to insights
           </p>
+
+          {/* Trust Badges */}
+          <div className="mt-8 flex items-center justify-center gap-4 text-sm text-muted-foreground">
+            <span className="flex items-center gap-1">
+              🔒 GDPR
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1">
+              🔐 Data encrypted
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1">
+              🚫 No sharing
+            </span>
+          </div>
         </motion.div>
       </section>
 
@@ -133,11 +148,39 @@ export default function Landing() {
         >
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              Your Career Growth in 3 Simple Steps
+              Your Career Growth in 5 Simple Steps
             </h2>
             <p className="text-xl text-muted-foreground">
               From CV upload to personalized roadmap in under 2 minutes
             </p>
+          </div>
+
+          {/* 5-Step Visual Workflow */}
+          <div className="mb-16 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-2">
+            {[
+              { step: "1", title: "Upload CV", icon: "📄", free: true },
+              { step: "2", title: "AI analyzes skills", icon: "🤖", free: true },
+              { step: "3", title: "3-week roadmap", icon: "🗺️", free: true, badge: "FREE" },
+              { step: "4", title: "Job matches", icon: "💼", free: true },
+              { step: "5", title: "Salary forecast", icon: "💰", free: false, badge: "PRO" },
+            ].map((item, idx) => (
+              <div key={idx} className="flex items-center">
+                <div className={`flex flex-col items-center ${!item.free ? 'opacity-60' : ''}`}>
+                  <div className={`w-16 h-16 rounded-full ${item.free ? 'bg-primary/20 border-2 border-primary' : 'bg-muted border-2 border-muted-foreground/30'} flex items-center justify-center text-2xl mb-2 relative`}>
+                    {item.icon}
+                    {item.badge && (
+                      <span className={`absolute -top-2 -right-2 text-[10px] font-bold px-2 py-0.5 rounded-full ${item.free ? 'bg-green-500 text-white' : 'bg-primary text-primary-foreground'}`}>
+                        {item.badge}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-xs font-semibold text-center max-w-[80px]">{item.title}</span>
+                </div>
+                {idx < 4 && (
+                  <ArrowRight className="h-6 w-6 text-muted-foreground mx-2 hidden md:block" />
+                )}
+              </div>
+            ))}
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -176,6 +219,81 @@ export default function Landing() {
                 </Card>
               </motion.div>
             ))}
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Free vs Pro Comparison */}
+      <section className="container mx-auto px-4 py-20 bg-muted/20">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+              Free vs Pro
+            </h2>
+            <p className="text-xl text-muted-foreground">
+              Start free, upgrade when you're ready
+            </p>
+          </div>
+
+          <Card className="overflow-hidden">
+            <CardContent className="p-0">
+              <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x">
+                {/* Header */}
+                <div className="p-6 bg-muted/50 font-semibold">Feature</div>
+                <div className="p-6 bg-muted/50 font-semibold text-center">Free</div>
+                <div className="p-6 bg-primary/10 font-semibold text-center">Pro</div>
+
+                {/* CV Scans */}
+                <div className="p-4">CV Scans</div>
+                <div className="p-4 text-center text-muted-foreground">1 scan</div>
+                <div className="p-4 text-center font-semibold">Unlimited</div>
+
+                {/* Learning Roadmap */}
+                <div className="p-4">Learning Roadmap</div>
+                <div className="p-4 text-center text-muted-foreground">3 weeks</div>
+                <div className="p-4 text-center font-semibold">6 weeks</div>
+
+                {/* Job Matches */}
+                <div className="p-4">Job Matches</div>
+                <div className="p-4 text-center text-muted-foreground">1 match</div>
+                <div className="p-4 text-center font-semibold">8-12 matches</div>
+
+                {/* Salary Forecast */}
+                <div className="p-4">Salary Forecast</div>
+                <div className="p-4 text-center text-muted-foreground">—</div>
+                <div className="p-4 text-center font-semibold">✓</div>
+
+                {/* CV Improvement */}
+                <div className="p-4">CV Improvement</div>
+                <div className="p-4 text-center text-muted-foreground">—</div>
+                <div className="p-4 text-center font-semibold">✓</div>
+
+                {/* Price */}
+                <div className="p-4 font-semibold">Price</div>
+                <div className="p-4 text-center font-semibold text-green-600">Free forever</div>
+                <div className="p-4 text-center">
+                  <div className="font-semibold">€9/month</div>
+                  <div className="text-xs text-muted-foreground">7-day free trial</div>
+                  <div className="text-xs text-muted-foreground">Cancel anytime</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="text-center mt-8">
+            <Button size="lg" onClick={() => navigate("/pricing")} className="gap-2">
+              <Crown className="h-5 w-5" />
+              Try Pro Free for 7 Days
+            </Button>
+            <p className="text-sm text-muted-foreground mt-2">
+              €9/month after trial — cancel anytime
+            </p>
           </div>
         </motion.div>
       </section>
@@ -236,24 +354,28 @@ export default function Landing() {
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
               Trusted by Career Builders
             </h2>
+            <p className="text-muted-foreground">Real results from real users</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                quote: "CareerSync showed me exactly what I was missing to land my dream job. Within 3 months, I got promoted!",
+                quote: "Got an interview in 3 weeks after following the roadmap. The AI knew exactly what I needed to learn.",
                 author: "Sarah Chen",
                 role: "Software Engineer",
+                initials: "SC",
               },
               {
                 quote: "The learning roadmap was spot-on. I followed it and doubled my salary in 6 months.",
                 author: "Marcus Johnson",
                 role: "Data Analyst",
+                initials: "MJ",
               },
               {
-                quote: "Finally, a tool that understands my career goals. The AI insights are incredibly accurate.",
+                quote: "Beta user here — Career Compass helped me identify my skill gaps and land my dream role at a tech startup.",
                 author: "Elena Rodriguez",
                 role: "Product Manager",
+                initials: "ER",
               },
             ].map((testimonial, idx) => (
               <motion.div
@@ -266,9 +388,14 @@ export default function Landing() {
                 <Card>
                   <CardContent className="pt-6">
                     <p className="text-muted-foreground mb-4">"{testimonial.quote}"</p>
-                    <div>
-                      <p className="font-semibold">{testimonial.author}</p>
-                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center font-semibold text-primary">
+                        {testimonial.initials}
+                      </div>
+                      <div>
+                        <p className="font-semibold">{testimonial.author}</p>
+                        <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
