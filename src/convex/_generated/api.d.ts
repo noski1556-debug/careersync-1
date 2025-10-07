@@ -20,6 +20,7 @@ import type * as autumn from "../autumn.js";
 import type * as careersync from "../careersync.js";
 import type * as files from "../files.js";
 import type * as http from "../http.js";
+import type * as referrals from "../referrals.js";
 import type * as users from "../users.js";
 
 /**
@@ -38,6 +39,7 @@ declare const fullApi: ApiFromModules<{
   careersync: typeof careersync;
   files: typeof files;
   http: typeof http;
+  referrals: typeof referrals;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

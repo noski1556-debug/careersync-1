@@ -30,7 +30,55 @@ const schema = defineSchema(
       isAnonymous: v.optional(v.boolean()), // is the user anonymous. do not remove
 
       role: v.optional(roleValidator), // role of the user. do not remove
+      
+      // Referral system
+      referralCredits: v.optional(v.number()), // Number of valid referrals (resets at 3)
     }).index("email", ["email"]), // index for the email. do not remove or modify
+
+    // Referral Codes
+    referralCodes: defineTable({
+      userId: v.id("users"),
+      code: v.string(), // Format: CAREER-XXXX
+    })
+      .index("by_userId", ["userId"])
+      .index("by_code", ["code"]),
+
+    // Referral Tracking
+    referrals: defineTable({
+      referrerId: v.id("users"), // User who shared the code
+      referredUserId: v.id("users"), // User who signed up with code
+      referralCode: v.string(),
+      status: v.string(), // "pending" | "valid" | "invalid"
+      cvScanCompleted: v.boolean(),
+      totalSessionTime: v.number(), // in seconds
+      validatedAt: v.optional(v.number()),
+      ipAddress: v.string(),
+      deviceFingerprint: v.optional(v.string()),
+    })
+      .index("by_referrerId", ["referrerId"])
+      .index("by_referredUserId", ["referredUserId"])
+      .index("by_referralCode", ["referralCode"])
+      .index("by_status", ["status"]),
+
+    // Referral Rewards
+    referralRewards: defineTable({
+      userId: v.id("users"),
+      rewardType: v.string(), // "discount" | "free_pro"
+      discountPercentage: v.optional(v.number()), // e.g., 20 for 20% off
+      durationMonths: v.optional(v.number()), // e.g., 12 for discount, 3 for free Pro
+      appliedAt: v.number(),
+      expiresAt: v.number(),
+      isActive: v.boolean(),
+    }).index("by_userId", ["userId"]),
+
+    // Session Tracking
+    userSessions: defineTable({
+      userId: v.id("users"),
+      sessionStart: v.number(),
+      lastPing: v.number(),
+      totalDuration: v.number(), // in seconds
+      isActive: v.boolean(),
+    }).index("by_userId", ["userId"]),
 
     // CV Analysis storage
     cvAnalyses: defineTable({
@@ -85,6 +133,8 @@ const schema = defineSchema(
       stripePriceId: v.string(),
       status: v.string(), // "active" | "canceled" | "past_due"
       currentPeriodEnd: v.number(),
+      discountPercentage: v.optional(v.number()), // Applied discount from referral
+      discountExpiresAt: v.optional(v.number()), // When discount expires
     })
       .index("by_userId", ["userId"])
       .index("by_stripeSubscriptionId", ["stripeSubscriptionId"]),

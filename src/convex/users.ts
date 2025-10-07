@@ -1,5 +1,7 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { query, QueryCtx } from "./_generated/server";
+import { query, QueryCtx, internalMutation } from "./_generated/server";
+import { internal } from "./_generated/api";
+import { v } from "convex/values";
 
 /**
  * Get the current signed in user. Returns null if the user is not signed in.
@@ -31,3 +33,14 @@ export const getCurrentUser = async (ctx: QueryCtx) => {
   }
   return await ctx.db.get(userId);
 };
+
+// Initialize new user with referral code
+export const initializeNewUser = internalMutation({
+  args: { userId: v.id("users") },
+  handler: async (ctx, args) => {
+    // Create referral code for new user
+    await ctx.scheduler.runAfter(0, internal.referrals.createReferralCode, {
+      userId: args.userId,
+    });
+  },
+});

@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { internalMutation, mutation, query } from "./_generated/server";
 import { getCurrentUser } from "./users";
+import { internal } from "./_generated/api";
 
 // Store CV upload and analysis
 export const createCVAnalysis = mutation({
@@ -45,6 +46,12 @@ export const createCVAnalysis = mutation({
         learningRoadmap: cachedAnalysis.learningRoadmap,
         jobMatches: cachedAnalysis.jobMatches,
       });
+      
+      // Mark CV scan completed for referral tracking
+      await ctx.scheduler.runAfter(0, internal.referrals.markCVScanCompleted, {
+        userId: user._id,
+      });
+      
       return { analysisId, cached: true };
     }
 
@@ -107,6 +114,9 @@ export const updateAnalysisResults = internalMutation({
     })),
   },
   handler: async (ctx, args) => {
+    const analysis = await ctx.db.get(args.analysisId);
+    if (!analysis) throw new Error("Analysis not found");
+    
     await ctx.db.patch(args.analysisId, {
       cvRating: args.cvRating,
       skills: args.skills,
@@ -116,6 +126,11 @@ export const updateAnalysisResults = internalMutation({
       jobMatches: args.jobMatches,
       status: "completed",
       progressMessage: "Analysis complete!",
+    });
+    
+    // Mark CV scan completed for referral tracking
+    await ctx.scheduler.runAfter(0, internal.referrals.markCVScanCompleted, {
+      userId: analysis.userId,
     });
   },
 });
