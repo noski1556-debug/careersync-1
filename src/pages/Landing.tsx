@@ -1,13 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/hooks/use-auth";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Briefcase, CheckCircle, Crown, GraduationCap, Loader2, Sparkles, TrendingUp, Zap } from "lucide-react";
 import { useNavigate } from "react-router";
+import { useRef } from "react";
 
 export default function Landing() {
   const { isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
 
   const handleGetStarted = () => {
     if (isAuthenticated) {
@@ -20,118 +29,310 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b">
+      <motion.header 
+        className="border-b backdrop-blur-sm bg-background/80 sticky top-0 z-50"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+      >
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer transition-all duration-300 hover:scale-110 hover:rotate-2" onClick={() => navigate("/")}>
+          <motion.div 
+            className="flex items-center gap-2 cursor-pointer" 
+            onClick={() => navigate("/")}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary via-accent to-secondary rounded-xl blur-md opacity-60 animate-pulse"></div>
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-br from-primary via-accent to-secondary rounded-xl blur-md opacity-60"
+                animate={{ 
+                  opacity: [0.4, 0.6, 0.4],
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+              />
               <img src="/logo.svg" alt="Career Compass" className="h-10 w-10 relative z-10 drop-shadow-2xl" />
             </div>
             <span className="font-bold text-2xl bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-md tracking-tight">Career Compass</span>
-          </div>
+          </motion.div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" onClick={() => navigate("/pricing")}>
-              Pricing
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button variant="ghost" onClick={() => navigate("/pricing")}>
+                Pricing
+              </Button>
+            </motion.div>
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : isAuthenticated ? (
-              <Button onClick={() => navigate("/dashboard")}>
-                Dashboard
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button onClick={() => navigate("/dashboard")}>
+                  Dashboard
+                </Button>
+              </motion.div>
             ) : (
-              <Button onClick={() => navigate("/auth")}>
-                Sign In
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button onClick={() => navigate("/auth")}>
+                  Sign In
+                </Button>
+              </motion.div>
             )}
           </div>
         </div>
-      </header>
+      </motion.header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-20 md:py-32 relative overflow-hidden">
+      <section ref={heroRef} className="container mx-auto px-4 py-20 md:py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5 -z-10" />
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl -z-10" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl -z-10" />
+        <motion.div 
+          className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl -z-10"
+          animate={{ 
+            x: [0, 50, 0],
+            y: [0, 30, 0],
+            scale: [1, 1.2, 1]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl -z-10"
+          animate={{ 
+            x: [0, -30, 0],
+            y: [0, 50, 0],
+            scale: [1, 1.1, 1]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
         
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          style={{ opacity, scale }}
           className="max-w-4xl mx-auto text-center relative"
         >
           <motion.div 
             className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20 backdrop-blur-sm text-primary px-6 py-3 rounded-full text-sm font-semibold mb-8 border-2 border-primary/30 shadow-lg"
-            animate={{ 
-              boxShadow: ["0 0 20px rgba(var(--primary), 0.3)", "0 0 40px rgba(var(--primary), 0.5)", "0 0 20px rgba(var(--primary), 0.3)"]
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(var(--primary), 0.4)" }}
           >
             <Sparkles className="h-5 w-5" />
-            AI-Powered Career Intelligence
+            Your AI Career Coach
           </motion.div>
           
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent drop-shadow-sm">
-            Upload your CV → get a personalized 3-week career roadmap in 60s.
-          </h1>
+          <motion.h1 
+            className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent drop-shadow-sm"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+          >
+            Stop guessing your next move — your AI coach already mapped it.
+          </motion.h1>
           
-          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Free scan. Upgrade to Pro for salary forecasts & unlimited roadmaps.
-          </p>
+          <motion.p 
+            className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            60 seconds. One upload. Your personalized 3-week roadmap to the career you actually want.
+          </motion.p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              onClick={handleGetStarted} 
-              className="gap-2 text-lg px-8 bg-[#00CFC1] hover:bg-[#00B8AA] text-white"
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.05, boxShadow: "0 10px 40px rgba(0, 207, 193, 0.3)" }}
+              whileTap={{ scale: 0.95 }}
             >
-              Get my free roadmap
-              <ArrowRight className="h-5 w-5" />
-            </Button>
-            <Button size="lg" variant="outline" onClick={() => {
-              document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" });
-            }} className="text-lg px-8">
-              See How It Works
-            </Button>
-          </div>
+              <Button 
+                size="lg" 
+                onClick={handleGetStarted} 
+                className="gap-2 text-lg px-8 bg-[#00CFC1] hover:bg-[#00B8AA] text-white shadow-lg"
+              >
+                Get my free roadmap
+                <ArrowRight className="h-5 w-5" />
+              </Button>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Button size="lg" variant="outline" onClick={() => {
+                document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" });
+              }} className="text-lg px-8">
+                See How It Works
+              </Button>
+            </motion.div>
+          </motion.div>
 
           {/* Sample Roadmap Snippet */}
-          <div className="mt-8 max-w-md mx-auto bg-card/80 backdrop-blur-sm border rounded-lg p-4 text-left">
+          <motion.div 
+            className="mt-8 max-w-md mx-auto bg-card/80 backdrop-blur-sm border rounded-lg p-4 text-left"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            whileHover={{ scale: 1.02, boxShadow: "0 10px 30px rgba(0,0,0,0.1)" }}
+          >
             <p className="text-xs text-muted-foreground mb-3 text-center font-semibold">What you'll get:</p>
             <ul className="space-y-2 text-sm">
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 text-[#00CFC1] flex-shrink-0 mt-0.5" />
-                <span><strong>Week 1:</strong> Master Python fundamentals (5 hours, free course)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 text-[#00CFC1] flex-shrink-0 mt-0.5" />
-                <span><strong>Week 2:</strong> Learn SQL & databases (8 hours, free course)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="h-4 w-4 text-[#00CFC1] flex-shrink-0 mt-0.5" />
-                <span><strong>Week 3:</strong> Build your first data project (10 hours)</span>
-              </li>
+              {[
+                { week: 1, text: "Master Python fundamentals (5 hours, free course)" },
+                { week: 2, text: "Learn SQL & databases (8 hours, free course)" },
+                { week: 3, text: "Build your first data project (10 hours)" }
+              ].map((item, idx) => (
+                <motion.li 
+                  key={idx}
+                  className="flex items-start gap-2"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.9 + idx * 0.1 }}
+                  whileHover={{ x: 5 }}
+                >
+                  <CheckCircle className="h-4 w-4 text-[#00CFC1] flex-shrink-0 mt-0.5" />
+                  <span><strong>Week {item.week}:</strong> {item.text}</span>
+                </motion.li>
+              ))}
             </ul>
-          </div>
+          </motion.div>
 
-          <p className="text-sm text-muted-foreground mt-6">
+          <motion.p 
+            className="text-sm text-muted-foreground mt-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+          >
             ✓ Free forever plan • ✓ No credit card required • ✓ 2 minutes to insights
-          </p>
+          </motion.p>
 
           {/* Trust Badges */}
-          <div className="mt-8 flex items-center justify-center gap-4 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1">
-              🔒 GDPR
-            </span>
+          <motion.div 
+            className="mt-8 flex items-center justify-center gap-4 text-sm text-muted-foreground"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.3 }}
+          >
+            <span className="flex items-center gap-1">🔒 GDPR</span>
             <span>•</span>
-            <span className="flex items-center gap-1">
-              🔐 Data encrypted
-            </span>
+            <span className="flex items-center gap-1">🔐 Data encrypted</span>
             <span>•</span>
-            <span className="flex items-center gap-1">
-              🚫 No sharing
-            </span>
-          </div>
+            <span className="flex items-center gap-1">🚫 No sharing</span>
+          </motion.div>
+        </motion.div>
+
+        {/* Visual Dashboard Preview */}
+        <motion.div
+          className="max-w-5xl mx-auto mt-20"
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.4, duration: 1 }}
+        >
+          <motion.div
+            className="relative rounded-xl overflow-hidden border-2 border-primary/20 shadow-2xl"
+            whileHover={{ scale: 1.02, boxShadow: "0 20px 60px rgba(0,0,0,0.2)" }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 pointer-events-none" />
+            <div className="bg-card p-6">
+              {/* Mock Dashboard Header */}
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent" />
+                  <div>
+                    <div className="h-4 w-32 bg-muted rounded animate-pulse" />
+                    <div className="h-3 w-24 bg-muted/50 rounded mt-1 animate-pulse" />
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <div className="h-8 w-20 bg-primary/20 rounded animate-pulse" />
+                  <div className="h-8 w-24 bg-accent/20 rounded animate-pulse" />
+                </div>
+              </div>
+
+              {/* Mock CV Score Card */}
+              <motion.div 
+                className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg p-6 mb-4 border border-primary/20"
+                whileHover={{ scale: 1.01 }}
+              >
+                <div className="flex items-center gap-6">
+                  <div className="text-center">
+                    <motion.div 
+                      className="text-6xl font-bold text-primary"
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      87
+                    </motion.div>
+                    <div className="text-xs text-muted-foreground mt-1">CV Score</div>
+                  </div>
+                  <div className="h-16 w-px bg-border" />
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg mb-1">⭐ Excellent - Strong Candidate</h3>
+                    <p className="text-sm text-muted-foreground">Top 15% of candidates in your field</p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Mock Skills Grid */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <motion.div 
+                  className="bg-muted/30 rounded-lg p-4"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4 text-primary" />
+                    Your Top Skills
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {["Python", "React", "SQL", "AWS"].map((skill, idx) => (
+                      <motion.div
+                        key={idx}
+                        className="px-3 py-1 bg-primary/20 text-primary rounded-full text-xs font-medium"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 1.6 + idx * 0.1 }}
+                        whileHover={{ scale: 1.1, backgroundColor: "rgba(var(--primary), 0.3)" }}
+                      >
+                        {skill}
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+
+                <motion.div 
+                  className="bg-muted/30 rounded-lg p-4"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    <GraduationCap className="h-4 w-4 text-accent" />
+                    Next to Learn
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {["Docker", "TypeScript", "GraphQL"].map((skill, idx) => (
+                      <motion.div
+                        key={idx}
+                        className="px-3 py-1 bg-accent/20 text-accent rounded-full text-xs font-medium"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 1.8 + idx * 0.1 }}
+                        whileHover={{ scale: 1.1, backgroundColor: "rgba(var(--accent), 0.3)" }}
+                      >
+                        {skill}
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+          <motion.p 
+            className="text-center text-sm text-muted-foreground mt-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2 }}
+          >
+            ↑ This is what you'll see in 60 seconds
+          </motion.p>
         </motion.div>
       </section>
 
@@ -147,12 +348,23 @@ export default function Landing() {
           className="max-w-6xl mx-auto"
         >
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-              Your Career Growth in 5 Simple Steps
-            </h2>
-            <p className="text-xl text-muted-foreground">
-              From CV upload to personalized roadmap in under 2 minutes
-            </p>
+            <motion.h2 
+              className="text-4xl md:text-5xl font-bold tracking-tight mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              From stuck to unstoppable in 5 steps
+            </motion.h2>
+            <motion.p 
+              className="text-xl text-muted-foreground"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              No fluff. No guesswork. Just your next move, mapped out.
+            </motion.p>
           </div>
 
           {/* 5-Step Visual Workflow */}
@@ -165,7 +377,14 @@ export default function Landing() {
               { step: "5", title: "Salary forecast", icon: "💰", free: false, badge: "PRO" },
             ].map((item, idx) => (
               <div key={idx} className="flex items-center">
-                <div className={`flex flex-col items-center ${!item.free ? 'opacity-60' : ''}`}>
+                <motion.div 
+                  className={`flex flex-col items-center ${!item.free ? 'opacity-60' : ''}`}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: item.free ? 1 : 0.6, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  whileHover={{ scale: 1.1, y: -5 }}
+                >
                   <div className={`w-16 h-16 rounded-full ${item.free ? 'bg-primary/20 border-2 border-primary' : 'bg-muted border-2 border-muted-foreground/30'} flex items-center justify-center text-2xl mb-2 relative`}>
                     {item.icon}
                     {item.badge && (
@@ -175,7 +394,7 @@ export default function Landing() {
                     )}
                   </div>
                   <span className="text-xs font-semibold text-center max-w-[80px]">{item.title}</span>
-                </div>
+                </motion.div>
                 {idx < 4 && (
                   <ArrowRight className="h-6 w-6 text-muted-foreground mx-2 hidden md:block" />
                 )}
@@ -187,18 +406,18 @@ export default function Landing() {
             {[
               {
                 icon: <TrendingUp className="h-8 w-8" />,
-                title: "Upload Your CV",
-                description: "Drop your CV or connect LinkedIn. Our AI instantly extracts your skills and experience.",
+                title: "Drop your CV, we'll do the rest",
+                description: "PDF or DOCX. Our AI reads between the lines — extracting skills you forgot you had.",
               },
               {
                 icon: <GraduationCap className="h-8 w-8" />,
-                title: "AI Analysis",
-                description: "Get insights on your strengths, missing skills, and a personalized 6-week learning roadmap.",
+                title: "AI maps your gaps (brutally honest)",
+                description: "No sugar-coating. See exactly what's holding you back and the fastest path forward.",
               },
               {
                 icon: <Briefcase className="h-8 w-8" />,
-                title: "Unlock Opportunities",
-                description: "Discover job matches, salary forecasts, and courses to level up your career.",
+                title: "Get jobs you can actually land",
+                description: "Real companies. Real roles. Matched to your skills + location. No fantasy listings.",
               },
             ].map((step, idx) => (
               <motion.div
@@ -207,12 +426,17 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 viewport={{ once: true }}
+                whileHover={{ y: -10, boxShadow: "0 20px 40px rgba(0,0,0,0.1)" }}
               >
-                <Card className="h-full backdrop-blur-sm bg-card/80">
+                <Card className="h-full backdrop-blur-sm bg-card/80 border-2 hover:border-primary/50 transition-all">
                   <CardContent className="pt-6">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-primary mb-4 shadow-lg border-2 border-primary/30">
+                    <motion.div 
+                      className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-primary mb-4 shadow-lg border-2 border-primary/30"
+                      whileHover={{ rotate: 360, scale: 1.1 }}
+                      transition={{ duration: 0.6 }}
+                    >
                       {step.icon}
-                    </div>
+                    </motion.div>
                     <h3 className="text-xl font-bold mb-2">{step.title}</h3>
                     <p className="text-muted-foreground">{step.description}</p>
                   </CardContent>
@@ -244,37 +468,30 @@ export default function Landing() {
           <Card className="overflow-hidden">
             <CardContent className="p-0">
               <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x">
-                {/* Header */}
                 <div className="p-6 bg-muted/50 font-semibold">Feature</div>
                 <div className="p-6 bg-muted/50 font-semibold text-center">Free</div>
                 <div className="p-6 bg-primary/10 font-semibold text-center">Pro</div>
 
-                {/* CV Scans */}
                 <div className="p-4">CV Scans</div>
                 <div className="p-4 text-center text-muted-foreground">1 scan</div>
                 <div className="p-4 text-center font-semibold">Unlimited</div>
 
-                {/* Learning Roadmap */}
                 <div className="p-4">Learning Roadmap</div>
                 <div className="p-4 text-center text-muted-foreground">3 weeks</div>
                 <div className="p-4 text-center font-semibold">6 weeks</div>
 
-                {/* Job Matches */}
                 <div className="p-4">Job Matches</div>
                 <div className="p-4 text-center text-muted-foreground">1 match</div>
                 <div className="p-4 text-center font-semibold">8-12 matches</div>
 
-                {/* Salary Forecast */}
                 <div className="p-4">Salary Forecast</div>
                 <div className="p-4 text-center text-muted-foreground">—</div>
                 <div className="p-4 text-center font-semibold">✓</div>
 
-                {/* CV Improvement */}
                 <div className="p-4">CV Improvement</div>
                 <div className="p-4 text-center text-muted-foreground">—</div>
                 <div className="p-4 text-center font-semibold">✓</div>
 
-                {/* Price */}
                 <div className="p-4 font-semibold">Price</div>
                 <div className="p-4 text-center font-semibold text-green-600">Free forever</div>
                 <div className="p-4 text-center">
@@ -430,7 +647,7 @@ export default function Landing() {
                 Ready to Transform Your Career?
               </h2>
               <p className="text-xl text-muted-foreground mb-8">
-                Join thousands of professionals who've unlocked their potential with CareerSync
+                Join thousands of professionals who've unlocked their potential with Career Compass
               </p>
               <Button size="lg" onClick={handleGetStarted} className="gap-2 text-lg px-8">
                 Get Started Free
@@ -447,7 +664,7 @@ export default function Landing() {
       {/* Footer */}
       <footer className="border-t py-12">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>© 2025 CareerSync. Built with ❤️ to help you grow.</p>
+          <p>© 2025 Career Compass. Built with ❤️ to help you grow.</p>
         </div>
       </footer>
     </div>
