@@ -15,6 +15,7 @@ import Analysis from "./pages/Analysis.tsx";
 import Pricing from "./pages/Pricing.tsx";
 import CVBuilder from "./pages/CVBuilder.tsx";
 import CVImprovement from "./pages/CVImprovement";
+import CareerIntelligence from "./pages/CareerIntelligence";
 import "./types/global.d.ts";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
@@ -57,6 +58,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/cv-improvement/:id" element={<CVImprovement />} />
             <Route path="/cv-builder" element={<CVBuilder />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/career-intelligence" element={<CareerIntelligence />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

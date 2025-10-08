@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { api } from "@/convex/_generated/api";
 import { useAction, useMutation, useQuery } from "convex/react";
 import { motion } from "framer-motion";
-import { ArrowRight, FileText, Loader2, Upload, Sparkles, Crown, Copy, Gift } from "lucide-react";
+import { ArrowRight, FileText, Loader2, Upload, Sparkles, Crown, Copy, Gift, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -295,6 +295,14 @@ export default function Dashboard() {
                     Build one with AI
                   </button>
                 </p>
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("/career-intelligence")}
+                  className="mt-4 gap-2"
+                >
+                  <TrendingUp className="h-4 w-4" />
+                  View Career Intelligence
+                </Button>
               </div>
             </CardContent>
           </Card>
