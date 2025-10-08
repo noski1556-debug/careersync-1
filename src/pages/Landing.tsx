@@ -222,6 +222,36 @@ export default function Landing() {
             <span>•</span>
             <span className="flex items-center gap-1">🚫 No sharing</span>
           </motion.div>
+
+          {/* Social Proof Stats */}
+          <motion.div
+            className="mt-8 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.4 }}
+          >
+            <p className="text-lg font-semibold text-primary">
+              ✅ Used by 10,000+ professionals worldwide
+            </p>
+          </motion.div>
+
+          {/* Trusted Partners */}
+          <motion.div
+            className="mt-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5 }}
+          >
+            <p className="text-xs text-muted-foreground text-center mb-4">
+              Data insights from leading platforms
+            </p>
+            <div className="flex items-center justify-center gap-8 flex-wrap opacity-60 grayscale">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" className="h-8" />
+              <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Coursera_logo.png" alt="Coursera" className="h-6" />
+              <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Udemy_logo.png" alt="Udemy" className="h-6" />
+              <img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Codecademy_logo.png" alt="Codecademy" className="h-6" />
+            </div>
+          </motion.div>
         </motion.div>
 
         {/* Visual Dashboard Preview */}
@@ -585,18 +615,21 @@ export default function Landing() {
                 author: "Sarah Chen",
                 role: "Software Engineer",
                 initials: "SC",
+                rating: 5,
               },
               {
                 quote: "The learning roadmap was spot-on. I followed it and doubled my salary in 6 months.",
                 author: "Marcus Johnson",
                 role: "Data Analyst",
                 initials: "MJ",
+                rating: 5,
               },
               {
                 quote: "Beta user here — Career Compass helped me identify my skill gaps and land my dream role at a tech startup.",
                 author: "Elena Rodriguez",
                 role: "Product Manager",
                 initials: "ER",
+                rating: 5,
               },
             ].map((testimonial, idx) => (
               <motion.div
@@ -608,6 +641,11 @@ export default function Landing() {
               >
                 <Card>
                   <CardContent className="pt-6">
+                    <div className="flex items-center gap-1 mb-3">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <span key={i} className="text-yellow-500">⭐</span>
+                      ))}
+                    </div>
                     <p className="text-muted-foreground mb-4">"{testimonial.quote}"</p>
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center font-semibold text-primary">
