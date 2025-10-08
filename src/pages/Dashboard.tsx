@@ -8,7 +8,6 @@ import { ArrowRight, FileText, Loader2, Upload, Sparkles, Crown, Copy, Gift } fr
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useState } from "react";
-import { createHash } from "crypto";
 
 export default function Dashboard() {
   const { isLoading, isAuthenticated, user } = useAuth();
@@ -100,8 +99,12 @@ export default function Dashboard() {
       // For demo purposes, extract basic text (in production, use proper PDF parsing)
       const extractedText = `CV for ${user?.name || user?.email || 'Test User'} - ${file.name}`;
       
-      // Generate content hash for caching
-      const contentHash = createHash('sha256').update(extractedText).digest('hex');
+      // Generate content hash for caching using Web Crypto API
+      const encoder = new TextEncoder();
+      const data = encoder.encode(extractedText);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const contentHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
       // Ask for user location
       const userLocation = prompt("Where are you located? (City, Country)\nThis helps us provide personalized job recommendations near you:");
