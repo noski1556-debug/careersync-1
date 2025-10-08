@@ -9,6 +9,7 @@ import { ArrowLeft, Briefcase, ChevronDown, ChevronUp, Crown, Download, External
 import { useNavigate, useParams } from "react-router";
 import { Id } from "@/convex/_generated/dataModel";
 import { useState } from "react";
+import { AccountDropdown } from "@/components/AccountDropdown";
 
 export default function Analysis() {
   const { id } = useParams<{ id: string }>();
@@ -142,6 +143,7 @@ export default function Analysis() {
                 Upgrade to Pro
               </Button>
             )}
+            <AccountDropdown />
           </div>
         </div>
       </header>

@@ -8,6 +8,7 @@ import { Check, Crown, Loader2, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useState } from "react";
+import { AccountDropdown } from "@/components/AccountDropdown";
 
 export default function Pricing() {
   const { isLoading, isAuthenticated } = useAuth();
@@ -58,9 +59,12 @@ export default function Pricing() {
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : isAuthenticated ? (
-              <Button variant="ghost" onClick={() => navigate("/dashboard")}>
-                Dashboard
-              </Button>
+              <>
+                <Button variant="ghost" onClick={() => navigate("/dashboard")}>
+                  Dashboard
+                </Button>
+                <AccountDropdown />
+              </>
             ) : (
               <Button onClick={() => navigate("/auth")}>
                 Sign In

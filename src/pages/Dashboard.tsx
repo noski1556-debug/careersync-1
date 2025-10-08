@@ -8,6 +8,7 @@ import { ArrowRight, FileText, Loader2, Upload, Sparkles, Crown, Copy, Gift } fr
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useState } from "react";
+import { AccountDropdown } from "@/components/AccountDropdown";
 
 export default function Dashboard() {
   const { isLoading, isAuthenticated, user } = useAuth();
@@ -162,9 +163,7 @@ export default function Dashboard() {
                 Upgrade to Pro
               </Button>
             )}
-            <Button variant="ghost" onClick={() => navigate("/auth")}>
-              {user?.email || "Test User"}
-            </Button>
+            <AccountDropdown />
           </div>
         </div>
       </header>

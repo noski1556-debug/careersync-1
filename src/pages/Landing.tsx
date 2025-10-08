@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Briefcase, CheckCircle, Crown, GraduationCap, Loader2, Sparkles, TrendingUp, Zap } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useRef } from "react";
+import { AccountDropdown } from "@/components/AccountDropdown";
 
 export default function Landing() {
   const { isLoading, isAuthenticated } = useAuth();
@@ -64,11 +65,14 @@ export default function Landing() {
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : isAuthenticated ? (
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button onClick={() => navigate("/dashboard")}>
-                  Dashboard
-                </Button>
-              </motion.div>
+              <>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button onClick={() => navigate("/dashboard")}>
+                    Dashboard
+                  </Button>
+                </motion.div>
+                <AccountDropdown />
+              </>
             ) : (
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button onClick={() => navigate("/auth")}>
