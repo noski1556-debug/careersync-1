@@ -6,6 +6,7 @@ import { ArrowRight, Briefcase, CheckCircle, Crown, GraduationCap, Loader2, Spar
 import { useNavigate } from "react-router";
 import { useRef } from "react";
 import { AccountDropdown } from "@/components/AccountDropdown";
+import { AIMentorChat } from "@/components/AIMentorChat";
 
 export default function Landing() {
   const { isLoading, isAuthenticated } = useAuth();
@@ -709,6 +710,9 @@ export default function Landing() {
           <p>© 2025 Career Compass. Built with ❤️ to help you grow.</p>
         </div>
       </footer>
+
+      {/* AI Mentor Chat - Floating Component */}
+      <AIMentorChat />
     </div>
   );
 }
