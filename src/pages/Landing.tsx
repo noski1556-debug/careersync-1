@@ -19,6 +19,9 @@ export default function Landing() {
   
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+  
+  // CTA button glow on scroll
+  const ctaGlow = useTransform(scrollYProgress, [0, 0.3, 0.6], [0, 1, 0]);
 
   const handleGetStarted = () => {
     if (isAuthenticated) {
@@ -147,16 +150,35 @@ export default function Landing() {
             transition={{ delay: 0.6 }}
           >
             <motion.div
-              whileHover={{ scale: 1.05, boxShadow: "0 10px 40px rgba(0, 207, 193, 0.3)" }}
+              style={{
+                boxShadow: useTransform(
+                  ctaGlow,
+                  [0, 1],
+                  ["0 10px 40px rgba(0, 207, 193, 0.3)", "0 10px 60px rgba(0, 207, 193, 0.6)"]
+                )
+              }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <Button 
                 size="lg" 
                 onClick={handleGetStarted} 
-                className="gap-2 text-lg px-8 bg-[#00CFC1] hover:bg-[#00B8AA] text-white shadow-lg"
+                className="gap-2 text-lg px-8 bg-[#00CFC1] hover:bg-[#00B8AA] text-white shadow-lg relative overflow-hidden"
               >
-                Get my free roadmap
-                <ArrowRight className="h-5 w-5" />
+                <motion.div
+                  className="absolute inset-0 bg-white/20"
+                  animate={{
+                    scale: [1, 1.5, 1],
+                    opacity: [0.5, 0, 0.5]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+                <span className="relative z-10">Get my free roadmap</span>
+                <ArrowRight className="h-5 w-5 relative z-10" />
               </Button>
             </motion.div>
             <motion.div
@@ -219,7 +241,7 @@ export default function Landing() {
           >
             <span className="flex items-center gap-1">🔒 GDPR</span>
             <span>•</span>
-            <span className="flex items-center gap-1">🔐 Data encrypted</span>
+            <span className="flex items-center gap-1">🔐 AES-256 encrypted</span>
             <span>•</span>
             <span className="flex items-center gap-1">🚫 No sharing</span>
           </motion.div>
@@ -255,12 +277,12 @@ export default function Landing() {
           </motion.div>
         </motion.div>
 
-        {/* Visual Dashboard Preview */}
+        {/* Visual Dashboard Preview - Enhanced with fade-in animation */}
         <motion.div
           className="max-w-5xl mx-auto mt-20"
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.4, duration: 1 }}
+          transition={{ delay: 1.6, duration: 1.2, ease: "easeOut" }}
         >
           <motion.div
             className="relative rounded-xl overflow-hidden border-2 border-primary/20 shadow-2xl"
@@ -325,7 +347,7 @@ export default function Landing() {
                         className="px-3 py-1 bg-primary/20 text-primary rounded-full text-xs font-medium"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 1.6 + idx * 0.1 }}
+                        transition={{ delay: 1.8 + idx * 0.1 }}
                         whileHover={{ scale: 1.1, backgroundColor: "rgba(var(--primary), 0.3)" }}
                       >
                         {skill}
@@ -349,7 +371,7 @@ export default function Landing() {
                         className="px-3 py-1 bg-accent/20 text-accent rounded-full text-xs font-medium"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 1.8 + idx * 0.1 }}
+                        transition={{ delay: 2.0 + idx * 0.1 }}
                         whileHover={{ scale: 1.1, backgroundColor: "rgba(var(--accent), 0.3)" }}
                       >
                         {skill}
@@ -364,7 +386,7 @@ export default function Landing() {
             className="text-center text-sm text-muted-foreground mt-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 2 }}
+            transition={{ delay: 2.2 }}
           >
             ↑ This is what you'll see in 60 seconds
           </motion.p>
@@ -705,9 +727,50 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t py-12">
-        <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>© 2025 Career Compass. Built with ❤️ to help you grow.</p>
+      <footer className="border-t py-12 bg-muted/20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <img src="/logo.svg" alt="Career Compass" className="h-8 w-8" />
+                <span className="font-bold text-lg">Career Compass</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Your AI-powered career development assistant. Transform your career in 60 seconds.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Company</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>📍 HQ: Dublin, Ireland</li>
+                <li>🔐 Data secured with AES-256 encryption</li>
+                <li>🛡️ GDPR compliant</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-4">Quick Links</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <button onClick={() => navigate("/pricing")} className="text-muted-foreground hover:text-primary transition-colors">
+                    Pricing
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => navigate("/dashboard")} className="text-muted-foreground hover:text-primary transition-colors">
+                    Dashboard
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => navigate("/career-intelligence")} className="text-muted-foreground hover:text-primary transition-colors">
+                    Career Intelligence
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="text-center text-sm text-muted-foreground border-t pt-8">
+            <p>© 2025 Career Compass. Built with ❤️ to help you grow.</p>
+          </div>
         </div>
       </footer>
 
