@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { api } from "@/convex/_generated/api";
 import { useAction, useMutation, useQuery } from "convex/react";
 import { motion } from "framer-motion";
-import { ArrowRight, FileText, Loader2, Upload, Sparkles, Crown } from "lucide-react";
+import { ArrowRight, FileText, Loader2, Upload, Sparkles, Crown, Copy, Gift } from "lucide-react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -17,6 +17,7 @@ export default function Dashboard() {
   
   const analyses = useQuery(api.careersync.getUserAnalyses);
   const isPro = useQuery(api.careersync.checkProStatus);
+  const referralStats = useQuery(api.referrals.getUserReferralStats);
   const createAnalysis = useMutation(api.careersync.createCVAnalysis);
   const analyzeCV = useAction(api.aiAnalysis.analyzeCV);
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
@@ -34,6 +35,13 @@ export default function Dashboard() {
     navigate("/auth");
     return null;
   }
+
+  const handleCopyReferralCode = () => {
+    if (referralStats?.referralCode) {
+      navigator.clipboard.writeText(referralStats.referralCode);
+      toast.success("Referral code copied to clipboard!");
+    }
+  };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -174,6 +182,61 @@ export default function Dashboard() {
               Ready to unlock your next career opportunity?
             </p>
           </div>
+
+          {/* Referral Card */}
+          {referralStats?.referralCode && (
+            <Card className="mb-8 border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Gift className="h-5 w-5 text-primary" />
+                  Refer Friends & Earn Rewards
+                </CardTitle>
+                <CardDescription>
+                  Share your code and get 20% off Pro for 12 months. Refer 3 friends to unlock 3 months free Pro!
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <code className="text-2xl font-bold bg-background px-4 py-2 rounded border">
+                        {referralStats.referralCode}
+                      </code>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={handleCopyReferralCode}
+                      >
+                        <Copy className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Progress: {referralStats.credits}/3 referrals • {referralStats.totalValidReferrals} total successful referrals
+                    </p>
+                    {referralStats.activeRewards && referralStats.activeRewards.length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {referralStats.activeRewards.map((reward, idx) => (
+                          <span key={idx} className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded">
+                            {reward.rewardType === "discount" 
+                              ? `${reward.discountPercentage}% off for ${reward.durationMonths} months` 
+                              : `${reward.durationMonths} months free Pro`}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="w-full md:w-auto">
+                    <div className="h-2 w-full md:w-48 bg-muted rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-primary transition-all duration-500"
+                        style={{ width: `${(referralStats.credits / 3) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Upload Section */}
           <Card className="mb-8 border-2 border-dashed">
