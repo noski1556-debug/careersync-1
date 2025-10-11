@@ -1,5 +1,5 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { query, QueryCtx, internalMutation } from "./_generated/server";
+import { query, QueryCtx, internalMutation, mutation } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { v } from "convex/values";
 
@@ -42,5 +42,22 @@ export const initializeNewUser = internalMutation({
     await ctx.scheduler.runAfter(0, internal.referrals.createReferralCode, {
       userId: args.userId,
     });
+  },
+});
+
+// Update user's name
+export const updateUserName = mutation({
+  args: { name: v.string() },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) {
+      throw new Error("Not authenticated");
+    }
+
+    await ctx.db.patch(userId, {
+      name: args.name,
+    });
+
+    return { success: true };
   },
 });
