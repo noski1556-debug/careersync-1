@@ -158,7 +158,7 @@ export default function CVImprovement() {
                       onChange={(e) => setResponses({ ...responses, [q.id]: e.target.value })}
                       placeholder={q.placeholder}
                       rows={4}
-                      className="resize-none"
+                      className="resize-y"
                     />
                   </CardContent>
                 </Card>
