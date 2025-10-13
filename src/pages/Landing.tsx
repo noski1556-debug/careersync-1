@@ -56,7 +56,7 @@ export default function Landing() {
                 }}
                 transition={{ duration: 3, repeat: Infinity }}
               />
-              <img src="/logo.svg" alt="Career Compass" className="h-10 w-10 relative z-10 drop-shadow-2xl" />
+              <img src="https://harmless-tapir-303.convex.cloud/api/storage/c35cc253-b2a1-46c1-ac8f-01020eeaeb68" alt="Career Compass" className="h-10 w-10 relative z-10 drop-shadow-2xl" />
             </div>
             <span className="font-bold text-2xl bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-md tracking-tight">Career Compass</span>
           </motion.div>
