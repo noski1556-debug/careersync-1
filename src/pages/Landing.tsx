@@ -42,23 +42,30 @@ export default function Landing() {
       >
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <motion.div 
-            className="flex items-center gap-2 cursor-pointer" 
+            className="flex items-center gap-3 cursor-pointer" 
             onClick={() => navigate("/")}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <div className="relative">
               <motion.div 
-                className="absolute inset-0 bg-gradient-to-br from-primary via-accent to-secondary rounded-xl blur-md opacity-60"
+                className="absolute inset-0 blur-xl opacity-60"
                 animate={{ 
                   opacity: [0.4, 0.6, 0.4],
-                  scale: [1, 1.1, 1]
+                  scale: [1, 1.1, 1],
                 }}
-                transition={{ duration: 3, repeat: Infinity }}
+                transition={{ 
+                  duration: 3, 
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               />
-              <img src="/logo.svg" alt="Career Compass" className="h-10 w-10 relative z-10 drop-shadow-2xl" />
+              <img 
+                src="https://harmless-tapir-303.convex.cloud/api/storage/57773ec8-d3be-4674-bfed-acc0f2344bc0" 
+                alt="Career Compass" 
+                className="h-10 w-auto relative drop-shadow-2xl"
+              />
             </div>
-            <span className="font-bold text-2xl bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-md tracking-tight">Career Compass</span>
           </motion.div>
           <div className="flex items-center gap-4">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
