@@ -52,7 +52,7 @@ export default function Pricing() {
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-            <img src="https://harmless-tapir-303.convex.cloud/api/storage/57773ec8-d3be-4674-bfed-acc0f2344bc0" alt="CareerSync" className="h-8 w-auto" />
+            <img src="/logo.svg" alt="CareerSync" className="h-8 w-8" />
             <span className="font-bold text-xl">CareerSync</span>
           </div>
           <div className="flex items-center gap-4">
