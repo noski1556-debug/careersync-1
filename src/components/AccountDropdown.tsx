@@ -9,16 +9,25 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/use-auth";
 import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { User, Copy, Gift, Crown, LogOut, Home } from "lucide-react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import { useEffect } from "react";
 
 export function AccountDropdown() {
   const { isAuthenticated, user, signOut } = useAuth();
   const navigate = useNavigate();
   const referralStats = useQuery(api.referrals.getUserReferralStats);
   const isPro = useQuery(api.careersync.checkProStatus);
+  const ensureReferralCode = useMutation(api.referrals.ensureReferralCode);
+
+  // Ensure referral code exists for the user
+  useEffect(() => {
+    if (isAuthenticated && referralStats !== undefined && !referralStats?.referralCode) {
+      ensureReferralCode().catch(console.error);
+    }
+  }, [isAuthenticated, referralStats, ensureReferralCode]);
 
   if (!isAuthenticated) {
     return null;
@@ -83,7 +92,7 @@ export function AccountDropdown() {
         
         <DropdownMenuSeparator />
         
-        {referralStats?.referralCode && (
+        {referralStats?.referralCode ? (
           <>
             <div className="px-2 py-2">
               <div className="flex items-center justify-between mb-1">
@@ -119,6 +128,15 @@ export function AccountDropdown() {
                   ))}
                 </div>
               )}
+            </div>
+            <DropdownMenuSeparator />
+          </>
+        ) : (
+          <>
+            <div className="px-2 py-2">
+              <p className="text-xs text-muted-foreground">
+                Loading referral code...
+              </p>
             </div>
             <DropdownMenuSeparator />
           </>

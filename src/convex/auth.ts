@@ -3,8 +3,19 @@
 import { convexAuth } from "@convex-dev/auth/server";
 import { Anonymous } from "@convex-dev/auth/providers/Anonymous";
 import { emailOtp } from "./auth/emailOtp";
-
+import { internal } from "./_generated/api";
 
 export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
   providers: [emailOtp, Anonymous],
+  callbacks: {
+    async afterUserCreatedOrUpdated(ctx, args) {
+      // Initialize new users with referral code
+      if (args.existingUserId === undefined) {
+        // This is a new user
+        await ctx.scheduler.runAfter(0, internal.users.initializeNewUser, {
+          userId: args.userId,
+        });
+      }
+    },
+  },
 });

@@ -44,12 +44,39 @@ export const createReferralCode = internalMutation({
       code,
     });
 
-    // Initialize referral credits
-    await ctx.db.patch(args.userId, {
-      referralCredits: 0,
-    });
+    // Initialize referral credits if not already set
+    const user = await ctx.db.get(args.userId);
+    if (user && user.referralCredits === undefined) {
+      await ctx.db.patch(args.userId, {
+        referralCredits: 0,
+      });
+    }
 
     return code;
+  },
+});
+
+// Ensure current user has a referral code (creates one if missing)
+export const ensureReferralCode = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const user = await getCurrentUser(ctx);
+    if (!user) throw new Error("Not authenticated");
+
+    // Check if user already has a code
+    const existing = await ctx.db
+      .query("referralCodes")
+      .withIndex("by_userId", (q) => q.eq("userId", user._id))
+      .first();
+    
+    if (existing) return existing.code;
+
+    // Create one via internal mutation
+    const code = await ctx.scheduler.runAfter(0, internal.referrals.createReferralCode, {
+      userId: user._id,
+    });
+
+    return null; // Will be available on next query
   },
 });
 
