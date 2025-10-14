@@ -47,18 +47,7 @@ export default function Landing() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <div className="relative">
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-br from-primary via-accent to-secondary rounded-xl blur-md opacity-60"
-                animate={{ 
-                  opacity: [0.4, 0.6, 0.4],
-                  scale: [1, 1.1, 1]
-                }}
-                transition={{ duration: 3, repeat: Infinity }}
-              />
-              <img src="https://harmless-tapir-303.convex.cloud/api/storage/c35cc253-b2a1-46c1-ac8f-01020eeaeb68" alt="Career Compass" className="h-10 w-10 relative z-10 drop-shadow-2xl" />
-            </div>
-            <span className="font-bold text-2xl bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-md tracking-tight">Career Compass</span>
+            <img src="https://harmless-tapir-303.convex.cloud/api/storage/c35cc253-b2a1-46c1-ac8f-01020eeaeb68" alt="Career Compass" className="h-10 w-auto" />
           </motion.div>
           <div className="flex items-center gap-4">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -732,8 +721,7 @@ export default function Landing() {
           <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <img src="/logo.svg" alt="Career Compass" className="h-8 w-8" />
-                <span className="font-bold text-lg">Career Compass</span>
+                <img src="https://harmless-tapir-303.convex.cloud/api/storage/c35cc253-b2a1-46c1-ac8f-01020eeaeb68" alt="Career Compass" className="h-8 w-auto" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Your AI-powered career development assistant. Transform your career in 60 seconds.
