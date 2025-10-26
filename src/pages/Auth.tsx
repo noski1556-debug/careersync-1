@@ -157,11 +157,11 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
             {step === "name" && (
               <>
                 <CardHeader className="text-center">
-                  <div className="flex justify-center">
+                  <div className="flex justify-center pointer-events-auto">
                     <img
                       src="https://harmless-tapir-303.convex.cloud/api/storage/89ddb60d-5ce3-4819-b55c-5df04ca68217"
                       alt="CareerSync"
-                      className="h-16 w-auto rounded-lg mb-4 mt-4 cursor-pointer"
+                      className="h-16 w-auto rounded-lg mb-4 mt-4 cursor-pointer pointer-events-auto"
                       onClick={() => navigate("/")}
                     />
                   </div>
