@@ -1,8 +1,9 @@
 import { Email } from "@convex-dev/auth/providers/Email";
 import axios from "axios";
 import { alphabet, generateRandomString } from "oslo/crypto";
+import { DataModel } from "../_generated/dataModel";
 
-export const emailOtp = Email({
+export const emailOtp = Email<DataModel>({
   id: "email-otp",
   maxAge: 60 * 15, // 15 minutes
   // This function can be asynchronous

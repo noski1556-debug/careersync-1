@@ -16,6 +16,13 @@ export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
           userId: args.userId,
         });
       }
+      
+      // Store the name from the authentication form if provided
+      if (args.profile?.name) {
+        await ctx.db.patch(args.userId, {
+          name: args.profile.name as string,
+        });
+      }
     },
   },
 });
