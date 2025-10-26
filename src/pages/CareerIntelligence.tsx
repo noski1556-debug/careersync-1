@@ -55,8 +55,7 @@ export default function CareerIntelligence() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div className="flex items-center gap-2">
-              <img src="https://harmless-tapir-303.convex.cloud/api/storage/c35cc253-b2a1-46c1-ac8f-01020eeaeb68" alt="Career Compass" className="h-8 w-8" />
-              <span className="font-bold text-xl">Career Compass</span>
+              <img src="https://harmless-tapir-303.convex.cloud/api/storage/89ddb60d-5ce3-4819-b55c-5df04ca68217" alt="CareerSync" className="h-16 w-auto" />
             </div>
           </div>
           <AccountDropdown />

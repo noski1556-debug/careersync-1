@@ -47,7 +47,7 @@ export default function Landing() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <img src="https://harmless-tapir-303.convex.cloud/api/storage/c35cc253-b2a1-46c1-ac8f-01020eeaeb68" alt="Career Compass" className="h-10 w-auto" />
+            <img src="https://harmless-tapir-303.convex.cloud/api/storage/89ddb60d-5ce3-4819-b55c-5df04ca68217" alt="CareerSync" className="h-16 w-auto" />
           </motion.div>
           <div className="flex items-center gap-4">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -721,7 +721,7 @@ export default function Landing() {
           <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <img src="https://harmless-tapir-303.convex.cloud/api/storage/c35cc253-b2a1-46c1-ac8f-01020eeaeb68" alt="Career Compass" className="h-8 w-auto" />
+                <img src="https://harmless-tapir-303.convex.cloud/api/storage/89ddb60d-5ce3-4819-b55c-5df04ca68217" alt="CareerSync" className="h-8 w-auto" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Your AI-powered career development assistant. Transform your career in 60 seconds.
