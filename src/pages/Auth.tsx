@@ -153,7 +153,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     <div className="min-h-screen flex flex-col">
       <div className="flex-1 flex items-center justify-center">
         <div className="flex items-center justify-center h-full flex-col">
-          <Card className="min-w-[350px] pb-0 border shadow-md">
+          <Card className="min-w-[400px] w-full max-w-md pb-0 border shadow-md">
             {step === "name" && (
               <>
                 <CardHeader className="text-center">
