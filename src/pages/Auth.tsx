@@ -220,7 +220,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                 </CardHeader>
                 <form onSubmit={handleReferralSubmit}>
                   <CardContent>
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                       <Label htmlFor="referralCode">Referral Code</Label>
                       <Input
                         id="referralCode"
@@ -237,14 +237,14 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       <p className="mt-2 text-sm text-red-500">{error}</p>
                     )}
                   </CardContent>
-                  <CardFooter className="flex-col gap-3 pb-6">
+                  <CardFooter className="flex-col gap-4 pb-6">
                     <Button type="submit" className="w-full" disabled={isLoading}>
                       Continue
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                     <Button
                       type="button"
-                      variant="ghost"
+                      variant="outline"
                       onClick={handleSkipReferral}
                       disabled={isLoading}
                       className="w-full"
