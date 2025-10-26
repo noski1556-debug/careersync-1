@@ -237,7 +237,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       <p className="mt-2 text-sm text-red-500">{error}</p>
                     )}
                   </CardContent>
-                  <CardFooter className="flex-col gap-2">
+                  <CardFooter className="flex-col gap-3 pb-6">
                     <Button type="submit" className="w-full" disabled={isLoading}>
                       Continue
                       <ArrowRight className="ml-2 h-4 w-4" />
@@ -384,7 +384,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       </Button>
                     </p>
                   </CardContent>
-                  <CardFooter className="flex-col gap-2">
+                  <CardFooter className="flex-col gap-3 pb-6">
                     <Button
                       type="submit"
                       className="w-full"
