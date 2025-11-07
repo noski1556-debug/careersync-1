@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/use-auth";
-import { api } from "@/convex/_generated/api";
 import { useAction, useMutation, useQuery } from "convex/react";
+import type { FunctionReference } from "convex/server";
+
+// Import api with type assertion to break circular type inference
+const api = require("@/convex/_generated/api").api as any;
+
 import { motion } from "framer-motion";
 import { ArrowRight, FileText, Loader2, Upload, Sparkles, Crown, Copy, Gift, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router";
@@ -15,13 +19,13 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [uploading, setUploading] = useState(false);
   
-  const analyses = useQuery(api.careersync.getUserAnalyses);
-  const isPro = useQuery(api.careersync.checkProStatus);
-  const referralStats = useQuery(api.referrals.getUserReferralStats);
-  const createAnalysis = useMutation(api.careersync.createCVAnalysis);
-  const analyzeCV = useAction(api.aiAnalysis.analyzeCV);
-  const generateUploadUrl = useMutation(api.files.generateUploadUrl);
-  const checkRateLimit = useMutation(api.careersync.checkRateLimit);
+  const analyses = useQuery(api.careersync.getUserAnalyses as FunctionReference<"query">);
+  const isPro = useQuery(api.careersync.checkProStatus as FunctionReference<"query">);
+  const referralStats = useQuery(api.referrals.getUserReferralStats as FunctionReference<"query">);
+  const createAnalysis = useMutation(api.careersync.createCVAnalysis as FunctionReference<"mutation">);
+  const analyzeCV = useAction(api.aiAnalysis.analyzeCV as FunctionReference<"action">);
+  const generateUploadUrl = useMutation(api.files.generateUploadUrl as FunctionReference<"mutation">);
+  const checkRateLimit = useMutation(api.careersync.checkRateLimit as FunctionReference<"mutation">);
 
   if (isLoading) {
     return (
@@ -217,7 +221,7 @@ export default function Dashboard() {
                     </p>
                     {referralStats.activeRewards && referralStats.activeRewards.length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-2">
-                        {referralStats.activeRewards.map((reward, idx) => (
+                        {referralStats.activeRewards.map((reward: any, idx: number) => (
                           <span key={idx} className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded">
                             {reward.rewardType === "discount" 
                               ? `${reward.discountPercentage}% off for ${reward.durationMonths} months` 
@@ -321,7 +325,7 @@ export default function Dashboard() {
               </Card>
             ) : (
               <div className="grid gap-4 md:grid-cols-2">
-                {analyses.map((analysis) => (
+                {analyses.map((analysis: any) => (
                   <motion.div
                     key={analysis._id}
                     initial={{ opacity: 0, scale: 0.95 }}
@@ -347,7 +351,7 @@ export default function Dashboard() {
                       {analysis.status === "completed" && analysis.skills && (
                         <CardContent>
                           <div className="flex flex-wrap gap-2">
-                            {analysis.skills.slice(0, 4).map((skill, idx) => (
+                            {analysis.skills.slice(0, 4).map((skill: string, idx: number) => (
                               <span key={idx} className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded">
                                 {skill}
                               </span>

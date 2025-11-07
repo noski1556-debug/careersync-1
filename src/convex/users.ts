@@ -11,7 +11,11 @@ import { v } from "convex/values";
 export const currentUser = query({
   args: {},
   handler: async (ctx) => {
-    const user = await getCurrentUser(ctx);
+    const userId = await getAuthUserId(ctx);
+    if (userId === null) {
+      return null;
+    }
+    const user = await ctx.db.get(userId);
     return user;
   },
 });

@@ -19,8 +19,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
-import { api } from "@/convex/_generated/api";
 import { useQuery, useMutation } from "convex/react";
+import type { FunctionReference } from "convex/server";
+
+// Import api with type assertion to break circular type inference
+const api = require("@/convex/_generated/api").api as any;
+
 import { User, Copy, Gift, Crown, LogOut, Home, Edit } from "lucide-react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -29,8 +33,9 @@ import { useEffect, useState } from "react";
 export function AccountDropdown() {
   const { isAuthenticated, user, signOut } = useAuth();
   const navigate = useNavigate();
-  const referralStats = useQuery(api.referrals.getUserReferralStats);
-  const isPro = useQuery(api.careersync.checkProStatus);
+  const referralStats = useQuery(api.referrals.getUserReferralStats as FunctionReference<"query">);
+  const isPro = useQuery(api.careersync.checkProStatus as FunctionReference<"query">);
+
   const ensureReferralCode = useMutation(api.referrals.ensureReferralCode);
   const updateUserName = useMutation(api.users.updateUserName);
   
@@ -185,7 +190,7 @@ export function AccountDropdown() {
                 </p>
                 {referralStats.activeRewards && referralStats.activeRewards.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-1">
-                    {referralStats.activeRewards.map((reward, idx) => (
+                    {referralStats.activeRewards.map((reward: any, idx: number) => (
                       <span key={idx} className="text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded">
                         {reward.rewardType === "discount" 
                           ? `${reward.discountPercentage}% off` 

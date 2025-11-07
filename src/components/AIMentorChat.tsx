@@ -6,7 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAction } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import type { FunctionReference } from "convex/server";
+
+// Import api with type assertion to break circular type inference
+const api = require("@/convex/_generated/api").api as any;
+
 import { toast } from "sonner";
 
 interface Message {
@@ -15,13 +19,17 @@ interface Message {
   timestamp: number;
 }
 
-export function AIMentorChat() {
+interface AIMentorChatProps {
+  analysisId?: string;
+}
+
+export function AIMentorChat({ analysisId }: AIMentorChatProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const chatWithMentor = useAction(api.aiMentor.chatWithMentor);
+  const chatWithMentor = useAction(api.aiMentor.chatWithMentor as FunctionReference<"action">);
 
   const starterQuestions = [
     "How can I improve my CV?",

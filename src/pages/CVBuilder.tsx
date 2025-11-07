@@ -4,8 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/use-auth";
-import { api } from "@/convex/_generated/api";
+// Import api with type assertion to break circular type inference
+const api = require("@/convex/_generated/api").api as any;
 import { useMutation, useAction } from "convex/react";
+import type { FunctionReference } from "convex/server";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, Loader2, Sparkles } from "lucide-react";
 import { useState } from "react";
@@ -259,9 +261,9 @@ export default function CVBuilder() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
   
-  const createAnalysis = useMutation(api.careersync.createCVAnalysis);
-  const analyzeCV = useAction(api.aiAnalysis.analyzeCV);
-  const generateUploadUrl = useMutation(api.files.generateUploadUrl);
+  const createAnalysis = useMutation(api.careersync.createCVAnalysis as FunctionReference<"mutation">);
+  const analyzeCV = useAction(api.aiAnalysis.analyzeCV as FunctionReference<"action">);
+  const generateUploadUrl = useMutation(api.files.generateUploadUrl as FunctionReference<"mutation">);
   
   const [cvData, setCvData] = useState<CVData>({
     fullName: "", email: "", phone: "", location: "", linkedIn: "", portfolio: "",

@@ -2,8 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/use-auth";
-import { api } from "@/convex/_generated/api";
+// Import api with type assertion to break circular type inference
+const api = require("@/convex/_generated/api").api as any;
 import { useQuery } from "convex/react";
+import type { FunctionReference } from "convex/server";
 import { motion } from "framer-motion";
 import { ArrowLeft, Briefcase, ChevronDown, ChevronUp, Crown, Download, ExternalLink, GraduationCap, Lightbulb, Loader2, Lock, TrendingUp } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
@@ -57,10 +59,10 @@ export default function Analysis() {
   };
   
   const analysis = useQuery(
-    api.careersync.getAnalysis, 
+    api.careersync.getAnalysis as FunctionReference<"query">, 
     id && id !== ":id" ? { analysisId: id as Id<"cvAnalyses"> } : "skip"
   );
-  const isPro = useQuery(api.careersync.checkProStatus);
+  const isPro = useQuery(api.careersync.checkProStatus as FunctionReference<"query">);
 
   if (authLoading) {
     return (
@@ -290,7 +292,7 @@ export default function Analysis() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
-                    {analysis.skills?.map((skill, idx) => (
+                    {analysis.skills?.map((skill: string, idx: number) => (
                       <Badge key={idx} variant="secondary" className="text-sm bg-primary/20 text-foreground border-primary/30">
                         {skill}
                       </Badge>
@@ -312,7 +314,7 @@ export default function Analysis() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
-                    {analysis.missingSkills?.slice(0, showLimitedContent ? 2 : undefined).map((skill, idx) => (
+                    {analysis.missingSkills?.slice(0, showLimitedContent ? 2 : undefined).map((skill: string, idx: number) => (
                       <Badge key={idx} variant="outline" className="text-sm bg-accent/20 text-foreground border-accent/40">
                         {skill}
                       </Badge>
@@ -340,7 +342,7 @@ export default function Analysis() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {analysis.learningRoadmap?.slice(0, showLimitedContent ? 3 : undefined).map((item, idx) => {
+                    {analysis.learningRoadmap?.slice(0, showLimitedContent ? 3 : undefined).map((item: any, idx: number) => {
                       const isExpanded = expandedCourses.has(idx);
                       return (
                         <div key={idx} className="border rounded-lg overflow-hidden">
@@ -428,6 +430,31 @@ export default function Analysis() {
                 </CardContent>
               </Card>
 
+              {/* Feedback Prompt */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 w-8 bg-muted/50" />
+                <div className="absolute inset-y-0 right-0 w-8 bg-muted/50" />
+                <Card className="relative bg-white dark:bg-card">
+                  <CardContent className="py-6 text-center">
+                    <h3 className="text-lg font-semibold mb-2">Help Us Improve Your Experience</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Your feedback helps us create better roadmaps for everyone
+                    </p>
+                    <Button asChild variant="default">
+                      <a 
+                        href="https://forms.gle/bTT9gZgXXTRoDCzZ6" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="gap-2"
+                      >
+                        Share Your Feedback
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+
               {/* Job Matches */}
               <Card className="relative">
                 <CardHeader>
@@ -441,7 +468,7 @@ export default function Analysis() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {analysis.jobMatches?.slice(0, showLimitedContent ? 1 : undefined).map((job, idx) => (
+                    {analysis.jobMatches?.slice(0, showLimitedContent ? 1 : undefined).map((job: any, idx: number) => (
                       <div key={idx} className="p-4 border rounded-lg hover:shadow-md transition-shadow relative">
                         <div className="flex items-start gap-4 relative z-0">
                           {job.companyLogo && (

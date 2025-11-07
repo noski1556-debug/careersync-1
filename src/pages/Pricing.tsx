@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/use-auth";
-import { api } from "@/convex/_generated/api";
+// Import api with type assertion to break circular type inference
+const api = require("@/convex/_generated/api").api as any;
 import { useAction } from "convex/react";
+import type { FunctionReference } from "convex/server";
 import { motion } from "framer-motion";
 import { Check, Crown, Loader2, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router";
@@ -14,7 +16,7 @@ export default function Pricing() {
   const { isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [processingCheckout, setProcessingCheckout] = useState(false);
-  const createCheckout = useAction(api.autumn.createCheckoutSession);
+  const createCheckout = useAction(api.autumn.createCheckoutSession as FunctionReference<"action">);
 
   const handleSelectPlan = async (plan: "free" | "pro") => {
     if (!isAuthenticated) {

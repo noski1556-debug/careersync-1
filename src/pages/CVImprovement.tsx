@@ -2,8 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/use-auth";
-import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
+import type { FunctionReference } from "convex/server";
+// Import api with type assertion to break circular type inference
+const api = require("@/convex/_generated/api").api as any;
 import { motion } from "framer-motion";
 import { ArrowLeft, CheckCircle, Loader2, Sparkles } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
@@ -19,7 +21,7 @@ export default function CVImprovement() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const analysis = useQuery(
-    api.careersync.getAnalysis, 
+    api.careersync.getAnalysis as FunctionReference<"query">, 
     id && id !== ":id" ? { analysisId: id as Id<"cvAnalyses"> } : "skip"
   );
   const isPro = useQuery(api.careersync.checkProStatus);
@@ -57,7 +59,7 @@ export default function CVImprovement() {
       placeholder: "Describe your leadership experience and the outcomes",
       required: (analysis.cvRating ?? 100) < 75,
     },
-    ...(analysis.missingSkills || []).slice(0, 3).map((skill, idx) => ({
+    ...(analysis.missingSkills || []).slice(0, 3).map((skill: string, idx: number) => ({
       id: `skill_${idx}`,
       question: `Do you have any experience with ${skill}? If yes, please describe.`,
       placeholder: `Describe any projects, courses, or work experience involving ${skill}`,
