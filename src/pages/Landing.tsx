@@ -541,21 +541,21 @@ export default function Landing() {
                 <div className="p-4 font-semibold">Price</div>
                 <div className="p-4 text-center font-semibold text-green-600">Free forever</div>
                 <div className="p-4 text-center">
-                  <div className="font-semibold">€9/month</div>
-                  <div className="text-xs text-muted-foreground">7-day free trial</div>
-                  <div className="text-xs text-muted-foreground">Cancel anytime</div>
+                  <div className="font-semibold text-green-600 text-lg">FREE</div>
+                  <div className="text-xs font-semibold text-destructive">⏰ Limited Time Only</div>
+                  <div className="text-xs text-muted-foreground line-through">€9/month</div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <div className="text-center mt-8">
-            <Button size="lg" onClick={() => navigate("/pricing")} className="gap-2">
+            <Button size="lg" onClick={() => navigate("/pricing")} className="gap-2 bg-green-600 hover:bg-green-700">
               <Crown className="h-5 w-5" />
-              Try Pro Free for 7 Days
+              Get Pro FREE Now
             </Button>
-            <p className="text-sm text-muted-foreground mt-2">
-              €9/month after trial — cancel anytime
+            <p className="text-sm font-semibold text-destructive mt-2">
+              ⏰ Limited time offer — claim before it's gone!
             </p>
           </div>
         </motion.div>
