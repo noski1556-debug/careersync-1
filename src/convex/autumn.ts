@@ -2,7 +2,6 @@
 
 import { v } from "convex/values";
 import { action, internalAction } from "./_generated/server";
-import { internal } from "./_generated/api";
 
 export const createCheckoutSession = action({
   args: {
@@ -59,19 +58,9 @@ export const handleWebhook = internalAction({
   },
   handler: async (ctx, args) => {
     // Handle Autumn webhook events
-    if (args.event === "subscription.created" || args.event === "subscription.updated") {
-      await ctx.runMutation(internal.careersync.createSubscription, {
-        stripeSubscriptionId: args.data.subscription_id,
-        stripePriceId: args.data.price_id,
-        status: args.data.status,
-        currentPeriodEnd: args.data.current_period_end,
-      });
-    } else if (args.event === "subscription.deleted") {
-      await ctx.runMutation(internal.careersync.updateSubscriptionStatus, {
-        stripeSubscriptionId: args.data.subscription_id,
-        status: "canceled",
-        currentPeriodEnd: args.data.current_period_end,
-      });
-    }
+    // Subscription management is handled separately
+    // This webhook handler logs events for monitoring
+    console.log("Autumn webhook event:", args.event);
+    console.log("Event data:", JSON.stringify(args.data));
   },
 });

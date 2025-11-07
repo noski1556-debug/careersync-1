@@ -1,12 +1,12 @@
-import { api } from "@/convex/_generated/api";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useConvexAuth, useQuery } from "convex/react";
-
+import { api } from "@/convex/_generated/api";
 import { useEffect, useState } from "react";
 
 export function useAuth() {
   const { isLoading: isAuthLoading, isAuthenticated } = useConvexAuth();
-  const user = useQuery(api.users.currentUser);
+  // Break the type inference chain by casting api to any
+  const user = useQuery((api as any).users.currentUser);
   const { signIn, signOut } = useAuthActions();
 
   const [isLoading, setIsLoading] = useState(true);

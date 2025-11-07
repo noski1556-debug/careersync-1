@@ -19,23 +19,25 @@ import { useAuth } from "@/hooks/use-auth";
 import { ArrowRight, Loader2, Mail, UserX } from "lucide-react";
 import { Suspense, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { useQuery } from "convex/react";
 
 interface AuthProps {
   redirectAfterAuth?: string;
 }
 
-type AuthStep = "name" | "referral" | "email" | { email: string };
+type AuthStep = "email" | "name" | "referral" | { email: string };
 
 function Auth({ redirectAfterAuth }: AuthProps = {}) {
   const { isLoading: authLoading, isAuthenticated, signIn } = useAuth();
   const navigate = useNavigate();
-  const [step, setStep] = useState<AuthStep>("name");
+  const [step, setStep] = useState<AuthStep>("email");
   const [name, setName] = useState("");
   const [referralCode, setReferralCode] = useState("");
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isExistingUser, setIsExistingUser] = useState(false);
 
   useEffect(() => {
     if (!authLoading && isAuthenticated) {
@@ -60,6 +62,44 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     return null;
   };
 
+  const handleEmailCheck = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      // Check if email exists in database
+      const response = await fetch(`${import.meta.env.VITE_CONVEX_URL}/api/query`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          path: "auth/checkEmail:checkEmailExists",
+          args: { email },
+        }),
+      });
+      
+      const result = await response.json();
+      
+      if (result.value?.exists && result.value?.hasName) {
+        // Existing user with name - skip to OTP
+        setIsExistingUser(true);
+        const formData = new FormData();
+        formData.append("email", email);
+        await signIn("email-otp", formData);
+        setStep({ email });
+      } else {
+        // New user or user without name - collect info
+        setIsExistingUser(false);
+        setStep("name");
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Email check error:", error);
+      setError("Failed to verify email. Please try again.");
+      setIsLoading(false);
+    }
+  };
+
   const handleNameSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
@@ -73,21 +113,11 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     setStep("referral");
   };
 
-  const handleReferralSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError(null);
-    setStep("email");
-  };
-
-  const handleSkipReferral = () => {
-    setReferralCode("");
-    setStep("email");
-  };
-
-  const handleEmailSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleReferralSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
     setError(null);
+    
     try {
       const formData = new FormData();
       formData.append("email", email);
@@ -95,6 +125,30 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
       if (referralCode.trim()) {
         formData.append("referralCode", referralCode.trim());
       }
+      
+      await signIn("email-otp", formData);
+      setStep({ email });
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Email sign-in error:", error);
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Failed to send verification code. Please try again.",
+      );
+      setIsLoading(false);
+    }
+  };
+
+  const handleSkipReferral = async () => {
+    setReferralCode("");
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("name", name.trim());
       
       await signIn("email-otp", formData);
       setStep({ email });
@@ -154,6 +208,83 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
       <div className="flex-1 flex items-center justify-center">
         <div className="flex items-center justify-center h-full flex-col">
           <Card className="min-w-[400px] w-full max-w-md pb-0 border shadow-md relative z-10">
+            {step === "email" && (
+              <>
+                <CardHeader className="text-center">
+                  <div className="flex justify-center pointer-events-auto">
+                    <img
+                      src="https://harmless-tapir-303.convex.cloud/api/storage/89ddb60d-5ce3-4819-b55c-5df04ca68217"
+                      alt="CareerSync"
+                      className="h-16 w-auto rounded-lg mb-4 mt-4 cursor-pointer pointer-events-auto"
+                      onClick={() => navigate("/")}
+                    />
+                  </div>
+                  <CardTitle className="text-xl">Welcome to CareerSync</CardTitle>
+                  <CardDescription>
+                    Enter your email to continue
+                  </CardDescription>
+                </CardHeader>
+                <form onSubmit={handleEmailCheck}>
+                  <CardContent>
+                    <div className="relative flex items-center gap-2">
+                      <div className="relative flex-1">
+                        <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          name="email"
+                          placeholder="name@example.com"
+                          type="email"
+                          className="pl-9"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          disabled={isLoading}
+                          required
+                        />
+                      </div>
+                      <Button
+                        type="submit"
+                        variant="outline"
+                        size="icon"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <ArrowRight className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                    {error && (
+                      <p className="mt-2 text-sm text-red-500">{error}</p>
+                    )}
+                    
+                    <div className="mt-4">
+                      <div className="relative">
+                        <div className="absolute inset-0 flex items-center">
+                          <span className="w-full border-t" />
+                        </div>
+                        <div className="relative flex justify-center text-xs uppercase">
+                          <span className="bg-background px-2 text-muted-foreground">
+                            Or
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full mt-4"
+                        onClick={handleGuestLogin}
+                        disabled={isLoading}
+                      >
+                        <UserX className="mr-2 h-4 w-4" />
+                        Continue as Guest
+                      </Button>
+                    </div>
+                  </CardContent>
+                </form>
+              </>
+            )}
+
             {step === "name" && (
               <>
                 <CardHeader className="text-center">
@@ -192,7 +323,7 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       <p className="mt-2 text-sm text-red-500">{error}</p>
                     )}
                   </CardContent>
-                  <CardFooter>
+                  <CardFooter className="flex-col gap-3 pb-6 pt-0">
                     <Button type="submit" className="w-full" disabled={isLoading}>
                       Continue
                       <ArrowRight className="ml-2 h-4 w-4" />
@@ -252,83 +383,6 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                       Skip
                     </Button>
                   </CardFooter>
-                </form>
-              </>
-            )}
-
-            {step === "email" && (
-              <>
-                <CardHeader className="text-center">
-                  <div className="flex justify-center">
-                    <img
-                      src="https://harmless-tapir-303.convex.cloud/api/storage/89ddb60d-5ce3-4819-b55c-5df04ca68217"
-                      alt="CareerSync"
-                      className="h-16 w-auto rounded-lg mb-4 mt-4 cursor-pointer"
-                      onClick={() => navigate("/")}
-                    />
-                  </div>
-                  <CardTitle className="text-xl">Enter Your Email</CardTitle>
-                  <CardDescription>
-                    We'll send you a verification code
-                  </CardDescription>
-                </CardHeader>
-                <form onSubmit={handleEmailSubmit}>
-                  <CardContent>
-                    <div className="relative flex items-center gap-2">
-                      <div className="relative flex-1">
-                        <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          name="email"
-                          placeholder="name@example.com"
-                          type="email"
-                          className="pl-9"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          disabled={isLoading}
-                          required
-                        />
-                      </div>
-                      <Button
-                        type="submit"
-                        variant="outline"
-                        size="icon"
-                        disabled={isLoading}
-                      >
-                        {isLoading ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <ArrowRight className="h-4 w-4" />
-                        )}
-                      </Button>
-                    </div>
-                    {error && (
-                      <p className="mt-2 text-sm text-red-500">{error}</p>
-                    )}
-                    
-                    <div className="mt-4">
-                      <div className="relative">
-                        <div className="absolute inset-0 flex items-center">
-                          <span className="w-full border-t" />
-                        </div>
-                        <div className="relative flex justify-center text-xs uppercase">
-                          <span className="bg-background px-2 text-muted-foreground">
-                            Or
-                          </span>
-                        </div>
-                      </div>
-                      
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="w-full mt-4"
-                        onClick={handleGuestLogin}
-                        disabled={isLoading}
-                      >
-                        <UserX className="mr-2 h-4 w-4" />
-                        Continue as Guest
-                      </Button>
-                    </div>
-                  </CardContent>
                 </form>
               </>
             )}
