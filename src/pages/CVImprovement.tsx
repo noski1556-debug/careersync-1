@@ -4,8 +4,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery } from "convex/react";
 import type { FunctionReference } from "convex/server";
-// Import api with type assertion to break circular type inference
-const api = require("@/convex/_generated/api").api as any;
+import { api as apiGenerated } from "@/convex/_generated/api";
+// @ts-ignore
+const api: any = apiGenerated;
 import { motion } from "framer-motion";
 import { ArrowLeft, CheckCircle, Loader2, Sparkles } from "lucide-react";
 import { useNavigate, useParams } from "react-router";

@@ -8,8 +8,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAction } from "convex/react";
 import type { FunctionReference } from "convex/server";
 
-// Import api with type assertion to break circular type inference
-const api = require("@/convex/_generated/api").api as any;
+import { api as apiGenerated } from "@/convex/_generated/api";
+// @ts-ignore
+const api: any = apiGenerated;
 
 import { toast } from "sonner";
 

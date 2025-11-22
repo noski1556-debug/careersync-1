@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/use-auth";
-// Import api with type assertion to break circular type inference
-const api = require("@/convex/_generated/api").api as any;
+import { api as apiGenerated } from "@/convex/_generated/api";
+// @ts-ignore
+const api: any = apiGenerated;
 import { useQuery } from "convex/react";
 import type { FunctionReference } from "convex/server";
 import { motion } from "framer-motion";

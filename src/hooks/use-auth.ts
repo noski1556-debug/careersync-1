@@ -3,8 +3,9 @@ import { useConvexAuth, useQuery } from "convex/react";
 import type { FunctionReference } from "convex/server";
 import { useEffect, useState } from "react";
 
-// Import api with type assertion to break circular type inference
-const api = require("@/convex/_generated/api").api as any;
+import { api as apiGenerated } from "@/convex/_generated/api";
+// @ts-ignore
+const api: any = apiGenerated;
 
 export function useAuth() {
   const { isLoading: isAuthLoading, isAuthenticated } = useConvexAuth();

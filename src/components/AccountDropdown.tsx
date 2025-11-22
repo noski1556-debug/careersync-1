@@ -22,8 +22,9 @@ import { useAuth } from "@/hooks/use-auth";
 import { useQuery, useMutation } from "convex/react";
 import type { FunctionReference } from "convex/server";
 
-// Import api with type assertion to break circular type inference
-const api = require("@/convex/_generated/api").api as any;
+import { api as apiGenerated } from "@/convex/_generated/api";
+// @ts-ignore
+const api: any = apiGenerated;
 
 import { User, Copy, Gift, Crown, LogOut, Home, Edit } from "lucide-react";
 import { useNavigate } from "react-router";

@@ -4,8 +4,9 @@ import { useAuth } from "@/hooks/use-auth";
 import { useAction, useMutation, useQuery } from "convex/react";
 import type { FunctionReference } from "convex/server";
 
-// Import api with type assertion to break circular type inference
-const api = require("@/convex/_generated/api").api as any;
+import { api as apiGenerated } from "@/convex/_generated/api";
+// @ts-ignore
+const api: any = apiGenerated;
 
 import { motion } from "framer-motion";
 import { ArrowRight, FileText, Loader2, Upload, Sparkles, Crown, Copy, Gift, TrendingUp } from "lucide-react";
