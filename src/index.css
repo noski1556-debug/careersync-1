@@ -1,6 +1,7 @@
 /* DO NOT CHANGE */
 @import "tailwindcss";
 @import "tw-animate-css";
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap');
 @custom-variant dark (&:is(.dark *));
 
 /* DO NOT CHANGE */
@@ -40,6 +41,7 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --font-serif: "Merriweather", serif;
 }
 
 /* CHANGE VALUES FOR THEME - CareerSync Rich & Detailed Theme */
@@ -118,6 +120,9 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
   }
   button:not([disabled]),
   [role="button"]:not([disabled]) {
