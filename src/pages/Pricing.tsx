@@ -55,7 +55,7 @@ export default function Pricing() {
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-            <img src="https://harmless-tapir-303.convex.cloud/api/storage/89ddb60d-5ce3-4819-b55c-5df04ca68217" alt="Evoluskill" className="h-16 w-auto" />
+            <img src="https://harmless-tapir-303.convex.cloud/api/storage/a13341f4-8185-4c3d-8e53-9217387b808c" alt="Evoluskill" className="h-16 w-auto" />
           </div>
           <div className="flex items-center gap-4">
             {isLoading ? (
