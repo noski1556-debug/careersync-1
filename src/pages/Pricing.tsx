@@ -12,6 +12,7 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useState } from "react";
 import { AccountDropdown } from "@/components/AccountDropdown";
+import { Logo } from "@/components/Logo";
 
 export default function Pricing() {
   const { isLoading, isAuthenticated } = useAuth();
@@ -54,8 +55,8 @@ export default function Pricing() {
       {/* Header */}
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-            <img src="https://harmless-tapir-303.convex.cloud/api/storage/a13341f4-8185-4c3d-8e53-9217387b808c" alt="Evoluskill" className="h-16 w-auto" />
+          <div className="cursor-pointer" onClick={() => navigate("/")}>
+            <Logo />
           </div>
           <div className="flex items-center gap-4">
             {isLoading ? (

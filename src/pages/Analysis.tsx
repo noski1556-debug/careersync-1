@@ -13,6 +13,7 @@ import { useNavigate, useParams } from "react-router";
 import { Id } from "@/convex/_generated/dataModel";
 import { useState } from "react";
 import { AccountDropdown } from "@/components/AccountDropdown";
+import { Logo } from "@/components/Logo";
 
 export default function Analysis() {
   const { id } = useParams<{ id: string }>();
@@ -129,7 +130,7 @@ export default function Analysis() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div className="flex items-center gap-2">
-              <img src="https://harmless-tapir-303.convex.cloud/api/storage/a13341f4-8185-4c3d-8e53-9217387b808c" alt="Evoluskill" className="h-16 w-auto" />
+              <Logo />
             </div>
           </div>
           <div className="flex items-center gap-2">

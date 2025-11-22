@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import { useRef } from "react";
 import { AccountDropdown } from "@/components/AccountDropdown";
 import { AIMentorChat } from "@/components/AIMentorChat";
+import { Logo } from "@/components/Logo";
 
 export default function Landing() {
   const { isLoading, isAuthenticated } = useAuth();
@@ -42,19 +43,12 @@ export default function Landing() {
       >
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <motion.div 
-            className="flex items-center gap-2 cursor-pointer" 
+            className="cursor-pointer" 
             onClick={() => navigate("/")}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <img src="https://harmless-tapir-303.convex.cloud/api/storage/a13341f4-8185-4c3d-8e53-9217387b808c" alt="Evoluskill" className="h-16 w-auto" />
-              <div className="flex items-center gap-2 mb-4">
-                <img src="https://harmless-tapir-303.convex.cloud/api/storage/a13341f4-8185-4c3d-8e53-9217387b808c" alt="Evoluskill" className="h-8 w-auto" />
-              </div>
-=======
-              <div className="flex items-center gap-2 mb-4">
-                <img src="https://harmless-tapir-303.convex.cloud/api/storage/a13341f4-8185-4c3d-8e53-9217387b808c" alt="Evoluskill" className="h-8 w-auto" />
-              </div>
+            <Logo />
           </motion.div>
           <div className="flex items-center gap-4">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -727,8 +721,8 @@ export default function Landing() {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 mb-8">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <img src="https://harmless-tapir-303.convex.cloud/api/storage/89ddb60d-5ce3-4819-b55c-5df04ca68217" alt="Evoluskill" className="h-8 w-auto" />
+              <div className="mb-4">
+                <Logo />
               </div>
               <p className="text-sm text-muted-foreground">
                 Your AI-powered career development assistant. Transform your career in 60 seconds.

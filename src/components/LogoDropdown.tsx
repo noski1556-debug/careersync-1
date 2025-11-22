@@ -1,5 +1,3 @@
-// simple logo dropdown component that can be used to go to the landing page or sign out for the user
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,6 +9,7 @@ import {
 import { useAuth } from "@/hooks/use-auth";
 import { Home, LogOut } from "lucide-react";
 import { useNavigate } from "react-router";
+import { Logo } from "@/components/Logo";
 
 export function LogoDropdown() {
   const { isAuthenticated, signOut } = useAuth();
@@ -33,13 +32,7 @@ export function LogoDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="h-10 w-10">
-          <img
-            src="https://harmless-tapir-303.convex.cloud/api/storage/a13341f4-8185-4c3d-8e53-9217387b808c"
-            alt="Evoluskill"
-            width={32}
-            height={32}
-            className="rounded-lg object-contain"
-          />
+          <Logo showText={false} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-48">
