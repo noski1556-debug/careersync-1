@@ -47,7 +47,7 @@ export default function Landing() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <img src="https://harmless-tapir-303.convex.cloud/api/storage/89ddb60d-5ce3-4819-b55c-5df04ca68217" alt="CareerSync" className="h-16 w-auto" />
+            <img src="https://harmless-tapir-303.convex.cloud/api/storage/89ddb60d-5ce3-4819-b55c-5df04ca68217" alt="Evoluskill" className="h-16 w-auto" />
           </motion.div>
           <div className="flex items-center gap-4">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -701,7 +701,7 @@ export default function Landing() {
                 Ready to Transform Your Career?
               </h2>
               <p className="text-xl text-muted-foreground mb-8">
-                Join thousands of professionals who've unlocked their potential with Career Compass
+                Join thousands of professionals who've unlocked their potential with Evoluskill
               </p>
               <Button size="lg" onClick={handleGetStarted} className="gap-2 text-lg px-8">
                 Get Started Free
@@ -721,7 +721,7 @@ export default function Landing() {
           <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <img src="https://harmless-tapir-303.convex.cloud/api/storage/89ddb60d-5ce3-4819-b55c-5df04ca68217" alt="CareerSync" className="h-8 w-auto" />
+                <img src="https://harmless-tapir-303.convex.cloud/api/storage/89ddb60d-5ce3-4819-b55c-5df04ca68217" alt="Evoluskill" className="h-8 w-auto" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Your AI-powered career development assistant. Transform your career in 60 seconds.
@@ -757,7 +757,7 @@ export default function Landing() {
             </div>
           </div>
           <div className="text-center text-sm text-muted-foreground border-t pt-8">
-            <p>© 2025 Career Compass. Built with ❤️ to help you grow.</p>
+            <p>© 2025 Evoluskill. Built with ❤️ to help you grow.</p>
           </div>
         </div>
       </footer>
