@@ -87,6 +87,18 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
     toast.success("Chat cleared");
   };
 
+  const renderMessage = (content: string) => {
+    return content.split(/\*\*(.*?)\*\*/g).map((part, index) => {
+      return index % 2 === 1 ? (
+        <strong key={index} className="font-bold">
+          {part}
+        </strong>
+      ) : (
+        part
+      );
+    });
+  };
+
   return (
     <>
       {/* Floating Chat Button */}
@@ -209,7 +221,9 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
                                 : "bg-muted text-foreground rounded-bl-none"
                             }`}
                           >
-                            <p className="text-sm whitespace-pre-wrap break-words leading-relaxed">{message.content}</p>
+                            <p className="text-sm whitespace-pre-wrap break-words leading-relaxed">
+                              {renderMessage(message.content)}
+                            </p>
                           </div>
                         </motion.div>
                       ))}
