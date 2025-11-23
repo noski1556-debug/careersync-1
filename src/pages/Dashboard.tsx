@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { AccountDropdown } from "@/components/AccountDropdown";
 import { Logo } from "@/components/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Dashboard() {
   const { isLoading, isAuthenticated, user } = useAuth();
@@ -178,6 +179,7 @@ export default function Dashboard() {
                 Upgrade to Pro
               </Button>
             )}
+            <ThemeToggle />
             <AccountDropdown />
           </div>
         </div>

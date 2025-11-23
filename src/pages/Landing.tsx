@@ -8,6 +8,7 @@ import { useRef } from "react";
 import { AccountDropdown } from "@/components/AccountDropdown";
 import { AIMentorChat } from "@/components/AIMentorChat";
 import { Logo } from "@/components/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Landing() {
   const { isLoading, isAuthenticated } = useAuth();
@@ -65,6 +66,7 @@ export default function Landing() {
                     Dashboard
                   </Button>
                 </motion.div>
+                <ThemeToggle />
                 <AccountDropdown />
               </>
             ) : (

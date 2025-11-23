@@ -14,6 +14,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { useState } from "react";
 import { AccountDropdown } from "@/components/AccountDropdown";
 import { Logo } from "@/components/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Analysis() {
   const { id } = useParams<{ id: string }>();
@@ -146,6 +147,7 @@ export default function Analysis() {
                 Upgrade to Pro
               </Button>
             )}
+            <ThemeToggle />
             <AccountDropdown />
           </div>
         </div>

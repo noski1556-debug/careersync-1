@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { AccountDropdown } from "@/components/AccountDropdown";
 import { Logo } from "@/components/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Pricing() {
   const { isLoading, isAuthenticated } = useAuth();
@@ -66,6 +67,7 @@ export default function Pricing() {
                 <Button variant="ghost" onClick={() => navigate("/dashboard")}>
                   Dashboard
                 </Button>
+                <ThemeToggle />
                 <AccountDropdown />
               </>
             ) : (
