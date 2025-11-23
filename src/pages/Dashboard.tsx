@@ -167,14 +167,14 @@ export default function Dashboard() {
       </div>
 
       {/* Header */}
-      <header className="border-b bg-background/70 backdrop-blur-md sticky top-0 z-50">
+      <header className="border-b border-white/10 bg-black/20 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="cursor-pointer" onClick={() => navigate("/")}>
             <Logo />
           </div>
           <div className="flex items-center gap-4">
             {!isPro && (
-              <Button variant="outline" onClick={() => navigate("/pricing")} className="gap-2 hidden sm:flex bg-white/50 hover:bg-white/80 dark:bg-black/20 dark:hover:bg-black/40 backdrop-blur-sm">
+              <Button variant="outline" onClick={() => navigate("/pricing")} className="gap-2 hidden sm:flex bg-white/5 hover:bg-white/10 border-white/10 text-zinc-200 backdrop-blur-sm">
                 <Crown className="h-4 w-4 text-yellow-500" />
                 Upgrade to Pro
               </Button>
@@ -196,10 +196,10 @@ export default function Dashboard() {
           {/* Welcome Section */}
           <motion.div variants={item} className="flex flex-col md:flex-row justify-between items-end gap-4">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-foreground">
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-zinc-100">
                 Welcome back, {user?.name?.split(' ')[0] || "Friend"}!
               </h1>
-              <p className="text-muted-foreground text-lg font-light">
+              <p className="text-zinc-400 text-lg font-light">
                 Your career evolution continues today.
               </p>
             </div>
@@ -207,7 +207,7 @@ export default function Dashboard() {
                <Button 
                   variant="outline"
                   onClick={() => navigate("/career-intelligence")}
-                  className="gap-2 bg-background/60 backdrop-blur-sm"
+                  className="gap-2 bg-white/5 border-white/10 hover:bg-white/10 backdrop-blur-sm text-zinc-200"
                 >
                   <TrendingUp className="h-4 w-4" />
                   Career Intelligence
@@ -220,14 +220,14 @@ export default function Dashboard() {
             
             {/* Col 1: Upload CV (Row Span 2) */}
             <motion.div variants={item} className="md:col-span-1 md:row-span-2 h-full">
-              <Card className="h-full border-2 border-dashed border-primary/30 bg-background/60 backdrop-blur-xl hover:border-primary transition-all duration-300 group relative overflow-hidden shadow-lg hover:shadow-primary/10">
+              <Card className="h-full border border-white/10 border-dashed bg-black/20 backdrop-blur-md hover:border-primary/50 transition-all duration-300 group relative overflow-hidden shadow-none hover:shadow-[0_0_20px_rgba(0,0,0,0.2)]">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-2xl">
+                  <CardTitle className="flex items-center gap-2 text-2xl text-zinc-100">
                     <Upload className="h-6 w-6 text-primary" />
                     New Analysis
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-zinc-400">
                     Upload your latest CV to track your progress.
                   </CardDescription>
                 </CardHeader>
@@ -241,7 +241,7 @@ export default function Dashboard() {
                     disabled={uploading}
                   />
                   <label htmlFor="cv-upload" className="w-full h-full flex items-center justify-center cursor-pointer">
-                    <div className="flex flex-col items-center gap-4 p-6 rounded-full bg-primary/5 group-hover:bg-primary/10 transition-all duration-300 group-hover:scale-110">
+                    <div className="flex flex-col items-center gap-4 p-6 rounded-full bg-white/5 border border-white/5 group-hover:bg-white/10 transition-all duration-300 group-hover:scale-110">
                       {uploading ? (
                         <Loader2 className="h-12 w-12 animate-spin text-primary" />
                       ) : (
@@ -252,7 +252,7 @@ export default function Dashboard() {
                       </span>
                     </div>
                   </label>
-                  <p className="text-xs text-muted-foreground mt-6 text-center">
+                  <p className="text-xs text-zinc-500 mt-6 text-center">
                     Supports PDF & DOCX • {isPro ? "Unlimited Pro Scans" : `${analyses?.length || 0}/1 Free Scan`}
                   </p>
                 </CardContent>
@@ -261,26 +261,26 @@ export default function Dashboard() {
 
             {/* Col 2 & 3: Stats Overview (Always visible) */}
             <motion.div variants={item} className="md:col-span-2">
-               <Card className="h-full bg-background/60 backdrop-blur-xl border-border/50 shadow-sm">
+               <Card className="h-full bg-black/20 backdrop-blur-md border border-white/10 shadow-none">
                   <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
+                      <CardTitle className="flex items-center gap-2 text-zinc-100">
                         <TrendingUp className="h-5 w-5 text-primary" />
                         Career Stats
                       </CardTitle>
-                      <CardDescription>Your progress at a glance</CardDescription>
+                      <CardDescription className="text-zinc-400">Your progress at a glance</CardDescription>
                   </CardHeader>
                   <CardContent className="grid grid-cols-3 gap-4 text-center">
-                      <div className="p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
+                      <div className="p-4 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
                           <div className="text-3xl font-bold text-primary">{analyses?.length || 0}</div>
-                          <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mt-1">Total Analyses</div>
+                          <div className="text-xs text-zinc-500 font-medium uppercase tracking-wider mt-1">Total Analyses</div>
                       </div>
-                      <div className="p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
+                      <div className="p-4 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
                           <div className="text-3xl font-bold text-primary">{isPro ? "PRO" : "FREE"}</div>
-                          <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mt-1">Current Plan</div>
+                          <div className="text-xs text-zinc-500 font-medium uppercase tracking-wider mt-1">Current Plan</div>
                       </div>
-                      <div className="p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
+                      <div className="p-4 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
                           <div className="text-3xl font-bold text-primary">0</div>
-                          <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mt-1">Interviews</div>
+                          <div className="text-xs text-zinc-500 font-medium uppercase tracking-wider mt-1">Interviews</div>
                       </div>
                   </CardContent>
                </Card>
@@ -289,16 +289,16 @@ export default function Dashboard() {
             {/* Col 2 & 3: Referral (if exists) */}
             {referralStats?.referralCode && (
                 <motion.div variants={item} className="md:col-span-2">
-                    <Card className="h-full border-none bg-gradient-to-br from-primary/10 via-background/80 to-accent/10 backdrop-blur-xl shadow-lg relative overflow-hidden">
+                    <Card className="h-full border border-white/10 bg-black/20 backdrop-blur-md shadow-none relative overflow-hidden">
                       <div className="absolute top-0 right-0 p-4 opacity-10">
                         <Gift className="h-32 w-32" />
                       </div>
                       <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
+                        <CardTitle className="flex items-center gap-2 text-zinc-100">
                           <Gift className="h-5 w-5 text-primary" />
                           Referral Rewards
                         </CardTitle>
-                        <CardDescription>
+                        <CardDescription className="text-zinc-400">
                           Share your journey and earn Pro access.
                         </CardDescription>
                       </CardHeader>
@@ -306,24 +306,24 @@ export default function Dashboard() {
                         <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
                           <div className="space-y-4 flex-1">
                             <div className="flex items-center gap-2">
-                              <code className="text-3xl font-bold bg-background/50 px-4 py-2 rounded-lg border border-primary/20 tracking-wider">
+                              <code className="text-3xl font-bold bg-black/30 px-4 py-2 rounded-lg border border-white/10 tracking-wider text-zinc-100">
                                 {referralStats.referralCode}
                               </code>
                               <Button
                                 variant="ghost"
                                 size="icon"
                                 onClick={handleCopyReferralCode}
-                                className="hover:bg-primary/10"
+                                className="hover:bg-white/10 text-zinc-400 hover:text-primary"
                               >
-                                <Copy className="h-5 w-5 text-primary" />
+                                <Copy className="h-5 w-5" />
                               </Button>
                             </div>
                             <div className="space-y-2">
-                              <div className="flex justify-between text-sm font-medium">
+                              <div className="flex justify-between text-sm font-medium text-zinc-400">
                                 <span>Progress to 3 Months Free Pro</span>
                                 <span>{referralStats.credits}/3 Friends</span>
                               </div>
-                              <div className="h-3 w-full bg-muted/50 rounded-full overflow-hidden backdrop-blur-sm">
+                              <div className="h-3 w-full bg-white/5 rounded-full overflow-hidden backdrop-blur-sm border border-white/5">
                                 <motion.div 
                                   className="h-full bg-gradient-to-r from-primary to-accent"
                                   initial={{ width: 0 }}
@@ -333,10 +333,10 @@ export default function Dashboard() {
                               </div>
                             </div>
                           </div>
-                          <div className="hidden md:block w-px h-24 bg-border/50" />
+                          <div className="hidden md:block w-px h-24 bg-white/10" />
                           <div className="text-center md:text-right">
-                            <div className="text-4xl font-bold text-foreground">{referralStats.totalValidReferrals}</div>
-                            <div className="text-sm text-muted-foreground">Total Referrals</div>
+                            <div className="text-4xl font-bold text-zinc-100">{referralStats.totalValidReferrals}</div>
+                            <div className="text-sm text-zinc-500">Total Referrals</div>
                           </div>
                         </div>
                       </CardContent>
@@ -347,21 +347,21 @@ export default function Dashboard() {
             {/* Recent Analyses */}
             <motion.div variants={item} className={referralStats?.referralCode ? "md:col-span-3" : "md:col-span-2"}>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold tracking-tight">Recent Analyses</h2>
+                <h2 className="text-2xl font-bold tracking-tight text-zinc-100">Recent Analyses</h2>
               </div>
               
               {!analyses || analyses.length === 0 ? (
-                <Card className="bg-background/60 backdrop-blur-xl border-dashed border-2">
+                <Card className="bg-black/20 backdrop-blur-md border border-dashed border-white/10 shadow-none">
                   <CardContent className="py-16 flex flex-col items-center justify-center text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
                     >
-                        <Mountain className="h-24 w-24 text-muted-foreground/20 mb-4" />
+                        <Mountain className="h-24 w-24 text-zinc-800 mb-4" />
                     </motion.div>
-                    <h3 className="text-lg font-semibold text-foreground">Your journey starts here</h3>
-                    <p className="text-muted-foreground max-w-sm mt-2">
+                    <h3 className="text-lg font-semibold text-zinc-200">Your journey starts here</h3>
+                    <p className="text-zinc-500 max-w-sm mt-2">
                       Upload your first CV to unlock AI-powered insights and a personalized roadmap.
                     </p>
                   </CardContent>
@@ -378,39 +378,39 @@ export default function Dashboard() {
                       className="h-full"
                     >
                       <Card 
-                        className="cursor-pointer h-full bg-background/70 backdrop-blur-xl border-border/50 hover:border-primary/50 hover:shadow-xl transition-all duration-300 group"
+                        className="cursor-pointer h-full bg-black/20 backdrop-blur-md border border-white/10 hover:border-primary/50 hover:shadow-[0_0_15px_rgba(0,0,0,0.2)] transition-all duration-300 group"
                         onClick={() => navigate(`/analysis/${analysis._id}`)}
                       >
                         <CardHeader className="pb-3">
                           <div className="flex justify-between items-start">
-                            <div className="p-2 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                            <div className="p-2 rounded-lg bg-white/5 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                                 <FileText className="h-5 w-5" />
                             </div>
                             {analysis.cvRating && (
                                 <div className={`text-xs font-bold px-2 py-1 rounded-full ${
-                                    analysis.cvRating >= 80 ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
-                                    analysis.cvRating >= 60 ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
-                                    'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                                    analysis.cvRating >= 80 ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
+                                    analysis.cvRating >= 60 ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
+                                    'bg-red-500/20 text-red-400 border border-red-500/30'
                                 }`}>
                                     Score: {analysis.cvRating}
                                 </div>
                             )}
                           </div>
-                          <CardTitle className="text-lg mt-3 truncate pr-2">
+                          <CardTitle className="text-lg mt-3 truncate pr-2 text-zinc-100">
                             {analysis.fileName}
                           </CardTitle>
-                          <CardDescription className="text-xs">
+                          <CardDescription className="text-xs text-zinc-500">
                             {new Date(analysis._creationTime).toLocaleDateString()}
                           </CardDescription>
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-3">
                             <div className="flex items-center justify-between text-sm">
-                                <span className="text-muted-foreground">Status</span>
+                                <span className="text-zinc-500">Status</span>
                                 <span className={
-                                    analysis.status === "completed" ? "text-green-600 font-medium" :
-                                    analysis.status === "failed" ? "text-red-600 font-medium" :
-                                    "text-yellow-600 font-medium"
+                                    analysis.status === "completed" ? "text-green-400 font-medium" :
+                                    analysis.status === "failed" ? "text-red-400 font-medium" :
+                                    "text-yellow-400 font-medium"
                                 }>
                                     {analysis.status === "completed" ? "Completed" : 
                                      analysis.status === "failed" ? "Failed" : "Processing..."}
@@ -419,12 +419,12 @@ export default function Dashboard() {
                             {analysis.skills && (
                                 <div className="flex flex-wrap gap-1.5 pt-2">
                                     {analysis.skills.slice(0, 3).map((skill: string, i: number) => (
-                                        <span key={i} className="text-[10px] px-2 py-0.5 rounded-full bg-secondary/50 text-secondary-foreground border border-secondary">
+                                        <span key={i} className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-zinc-300 border border-white/10">
                                             {skill}
                                         </span>
                                     ))}
                                     {analysis.skills.length > 3 && (
-                                        <span className="text-[10px] px-2 py-0.5 text-muted-foreground">
+                                        <span className="text-[10px] px-2 py-0.5 text-zinc-500">
                                             +{analysis.skills.length - 3}
                                         </span>
                                     )}
