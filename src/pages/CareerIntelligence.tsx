@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { ArrowLeft, TrendingUp, Briefcase, DollarSign, Target, Loader2, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router";
 import { AccountDropdown } from "@/components/AccountDropdown";
+import { Logo } from "@/components/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 // Mock data for visualizations
 const mockData = {
@@ -55,10 +57,13 @@ export default function CareerIntelligence() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div className="flex items-center gap-2">
-              <img src="https://harmless-tapir-303.convex.cloud/api/storage/89ddb60d-5ce3-4819-b55c-5df04ca68217" alt="CareerSync" className="h-16 w-auto" />
+              <Logo />
             </div>
           </div>
-          <AccountDropdown />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <AccountDropdown />
+          </div>
         </div>
       </header>
 
