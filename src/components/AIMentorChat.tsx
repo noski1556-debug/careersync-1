@@ -4,7 +4,6 @@ import { MessageCircle, X, Send, Loader2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAction } from "convex/react";
 import type { FunctionReference } from "convex/server";
 
@@ -29,7 +28,7 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatWithMentor = useAction(api.aiMentor.chatWithMentor as FunctionReference<"action">);
 
   const starterQuestions = [
@@ -40,10 +39,10 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
   ];
 
   useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages]);
+  }, [messages, isLoading]);
 
   const handleSendMessage = async (message: string) => {
     if (!message.trim() || isLoading) return;
@@ -137,9 +136,9 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
               exit={{ y: 100, opacity: 0, scale: 0.9 }}
               transition={{ type: "spring", damping: 25 }}
             >
-              <Card className="h-full flex flex-col shadow-2xl border-2 border-primary/20">
+              <Card className="h-full flex flex-col shadow-2xl border-2 border-primary/20 overflow-hidden">
                 {/* Header */}
-                <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-primary/10 to-accent/10">
+                <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-primary/10 to-accent/10 shrink-0">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
                       <Sparkles className="h-5 w-5 text-white" />
@@ -171,7 +170,7 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
                 </div>
 
                 {/* Messages Area */}
-                <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+                <div className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth">
                   {messages.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-center p-6">
                       <Sparkles className="h-12 w-12 text-primary mb-4" />
@@ -204,13 +203,13 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
                           className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
                         >
                           <div
-                            className={`max-w-[80%] rounded-lg p-3 ${
+                            className={`max-w-[85%] rounded-2xl p-4 shadow-sm ${
                               message.role === "user"
-                                ? "bg-primary text-primary-foreground"
-                                : "bg-muted"
+                                ? "bg-primary text-primary-foreground rounded-br-none"
+                                : "bg-muted text-foreground rounded-bl-none"
                             }`}
                           >
-                            <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                            <p className="text-sm whitespace-pre-wrap break-words leading-relaxed">{message.content}</p>
                           </div>
                         </motion.div>
                       ))}
@@ -220,17 +219,18 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
                           animate={{ opacity: 1 }}
                           className="flex justify-start"
                         >
-                          <div className="bg-muted rounded-lg p-3">
+                          <div className="bg-muted rounded-2xl rounded-bl-none p-4 shadow-sm">
                             <Loader2 className="h-4 w-4 animate-spin" />
                           </div>
                         </motion.div>
                       )}
+                      <div ref={messagesEndRef} />
                     </div>
                   )}
-                </ScrollArea>
+                </div>
 
                 {/* Input Area */}
-                <div className="p-4 border-t">
+                <div className="p-4 border-t bg-background shrink-0">
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();

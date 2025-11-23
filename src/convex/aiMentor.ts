@@ -2,6 +2,7 @@
 
 import { v } from "convex/values";
 import { action } from "./_generated/server";
+import { api } from "./_generated/api";
 
 export const chatWithMentor = action({
   args: {
@@ -14,28 +15,45 @@ export const chatWithMentor = action({
       throw new Error("OpenRouter API key not configured. Please add it in the Integrations tab.");
     }
 
-    const systemPrompt = `You are an experienced and friendly AI Career Mentor. Your role is to provide actionable, personalized career advice to professionals at all levels.
+    // Try to fetch user context if authenticated
+    let userContextString = "";
+    try {
+      // @ts-ignore - Suppress TS2589: Type instantiation is excessively deep
+      const careerStats = await ctx.runQuery(api.careersync.getCareerIntelligence, {});
+      
+      if (careerStats) {
+        userContextString = `
+CURRENT USER CONTEXT (Use this to personalize advice):
+- CV Rating/Profile Strength: ${careerStats.skillMatch}/100
+- Projected Salary: €${careerStats.salaryProjection.projected.toLocaleString()}
+- Top Missing Skills: ${careerStats.missingSkills.map((s: any) => s.name).join(", ")}
+- Career Trend: ${careerStats.trendData.length > 1 ? "Improving" : "Stable"}
+`;
+      }
+    } catch (err) {
+      // User might not be authenticated or other error, ignore and proceed with generic advice
+      console.log("Could not fetch user context for AI mentor:", err);
+    }
 
-Your expertise includes:
-- CV/Resume optimization and improvement strategies
-- Job search strategies and job matching based on skills
-- Skill development and learning roadmaps
-- Career transitions and pivots
-- Salary negotiation tactics
-- Interview preparation
-- Professional networking
-- Work-life balance and career growth
+    const systemPrompt = `You are an elite Career Strategy AI named "EvoluCoach". Your goal is to give high-impact, specific, and brutally honest career advice. You are NOT a generic support bot.
 
-Communication style:
-- Be warm, encouraging, and supportive
-- Provide specific, actionable advice (not generic platitudes)
-- Use relevant emojis occasionally to add personality
-- Keep responses concise but comprehensive (2-4 paragraphs max)
-- Ask clarifying questions when needed
-- Reference real-world examples when helpful
-- Be honest about challenges but always solution-oriented
+${userContextString}
 
-Remember: You're a mentor, not just an information source. Guide users toward their career goals with empathy and expertise.`;
+STYLE GUIDELINES:
+- Be concise and punchy. No fluff.
+- Use bullet points and bold text for readability.
+- If the user has a low CV rating (<60), be encouraging but urgent about improvements.
+- If the user has missing skills, recommend specific projects or learning paths.
+- Tone: Professional, energetic, and results-oriented. Like a top-tier career coach at a FAANG company.
+- Max response length: 3 short paragraphs.
+
+Your expertise:
+- CV optimization (ATS beating strategies)
+- Salary negotiation (getting top of band)
+- Skill acquisition (fastest ROI)
+- Interview prep (STAR method, behavioral questions)
+
+If you don't have user context, ask them 1-2 specific questions to understand their seniority and field (e.g., "Are you a junior dev or looking to move into management?").`;
 
     try {
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
