@@ -1,15 +1,11 @@
-/* DO NOT CHANGE */
 @import "tailwindcss";
 @import "tw-animate-css";
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap');
+
+@plugin "tailwindcss-animate";
+
 @custom-variant dark (&:is(.dark *));
 
-/* DO NOT CHANGE */
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -25,6 +21,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -33,85 +30,80 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --font-serif: "Merriweather", serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* CHANGE VALUES FOR THEME - CareerSync Rich & Detailed Theme */
 :root {
+  /* Premium Dark Mode (Zinc-based) */
+  --background: 240 10% 3.9%; /* Zinc 950 */
+  --foreground: 240 4.8% 95.9%; /* Zinc 50 */
+
+  --card: 240 10% 3.9%;
+  --card-foreground: 240 4.8% 95.9%;
+
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 240 4.8% 95.9%;
+
+  --primary: 240 5.9% 90%; /* Zinc 100-ish for high contrast primary or keep a brand color? Using a light zinc for primary text/elements */
+  --primary-foreground: 240 5.9% 10%;
+
+  --secondary: 240 3.7% 15.9%; /* Zinc 900 */
+  --secondary-foreground: 240 4.8% 95.9%;
+
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%; /* Zinc 400 */
+
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 240 4.8% 95.9%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 240 4.8% 95.9%;
+
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 240 4.9% 83.9%;
+
   --radius: 0.5rem;
-  --background: oklch(0.98 0.01 250);
-  --foreground: oklch(0.09 0.02 250);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.09 0.02 250);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.09 0.02 250);
-  --primary: oklch(0.45 0.26 265);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.28 0.12 265);
-  --secondary-foreground: oklch(0.99 0 0);
-  --muted: oklch(0.95 0.01 250);
-  --muted-foreground: oklch(0.45 0.02 250);
-  --accent: oklch(0.55 0.20 285);
-  --accent-foreground: oklch(0.99 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.85 0.03 250);
-  --input: oklch(0.90 0.02 250);
-  --ring: oklch(0.55 0.30 265);
-  --chart-1: oklch(0.58 0.28 265);
-  --chart-2: oklch(0.68 0.24 185);
-  --chart-3: oklch(0.63 0.26 315);
-  --chart-4: oklch(0.73 0.22 200);
-  --chart-5: oklch(0.53 0.28 280);
-  --sidebar: oklch(0.995 0.005 250);
-  --sidebar-foreground: oklch(0.12 0.03 250);
-  --sidebar-primary: oklch(0.55 0.30 265);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.93 0.03 250);
-  --sidebar-accent-foreground: oklch(0.12 0.03 250);
-  --sidebar-border: oklch(0.85 0.03 250);
-  --sidebar-ring: oklch(0.55 0.30 265);
+
+  --chart-1: 220 70% 50%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 30 80% 55%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 340 75% 55%;
 }
 
 .dark {
-  --background: oklch(0.10 0.03 250);
-  --foreground: oklch(0.97 0.015 250);
-  --card: oklch(0.14 0.03 250);
-  --card-foreground: oklch(0.97 0.015 250);
-  --popover: oklch(0.14 0.03 250);
-  --popover-foreground: oklch(0.97 0.015 250);
-  --primary: oklch(0.68 0.30 265);
-  --primary-foreground: oklch(0.10 0.03 250);
-  --secondary: oklch(0.78 0.18 185);
-  --secondary-foreground: oklch(0.10 0.03 250);
-  --muted: oklch(0.20 0.03 250);
-  --muted-foreground: oklch(0.63 0.03 250);
-  --accent: oklch(0.73 0.24 315);
-  --accent-foreground: oklch(0.10 0.03 250);
-  --destructive: oklch(0.65 0.25 27);
-  --border: oklch(0.26 0.03 250);
-  --input: oklch(0.24 0.03 250);
-  --ring: oklch(0.68 0.30 265);
-  --chart-1: oklch(0.68 0.30 265);
-  --chart-2: oklch(0.78 0.24 185);
-  --chart-3: oklch(0.73 0.26 315);
-  --chart-4: oklch(0.83 0.22 200);
-  --chart-5: oklch(0.63 0.28 280);
-  --sidebar: oklch(0.14 0.03 250);
-  --sidebar-foreground: oklch(0.97 0.015 250);
-  --sidebar-primary: oklch(0.68 0.30 265);
-  --sidebar-primary-foreground: oklch(0.10 0.03 250);
-  --sidebar-accent: oklch(0.20 0.03 250);
-  --sidebar-accent-foreground: oklch(0.97 0.015 250);
-  --sidebar-border: oklch(0.26 0.03 250);
-  --sidebar-ring: oklch(0.68 0.30 265);
+  /* Ensure dark mode matches the root (which is now dark) or refine it further */
+  --background: 240 10% 3.9%;
+  --foreground: 240 4.8% 95.9%;
+
+  --card: 240 10% 3.9%;
+  --card-foreground: 240 4.8% 95.9%;
+
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 240 4.8% 95.9%;
+
+  --primary: 240 5.9% 90%;
+  --primary-foreground: 240 5.9% 10%;
+
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 240 4.8% 95.9%;
+
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 240 4.8% 95.9%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 240 4.8% 95.9%;
+
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 240 4.9% 83.9%;
 }
 
 @layer base {
@@ -120,12 +112,29 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Subtle background texture: Radial gradient fading to black at edges + dot pattern */
+    background-image: 
+      radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 70%),
+      radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 100% 100%, 24px 24px;
+    background-position: center, 0 0;
   }
+  
+  /* Typography updates */
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-serif);
+    @apply text-zinc-100 font-serif tracking-tight;
   }
-  button:not([disabled]),
-  [role="button"]:not([disabled]) {
-    cursor: pointer;
+  
+  p, span, div {
+    @apply text-zinc-400;
+  }
+  
+  /* Override specific text colors for better contrast if needed */
+  .text-primary {
+    @apply text-zinc-100;
+  }
+  
+  .text-muted-foreground {
+    @apply text-zinc-500;
   }
 }
