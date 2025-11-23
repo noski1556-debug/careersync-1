@@ -209,6 +209,82 @@ export const getAnalysis = query({
   },
 });
 
+// Get aggregated career intelligence data
+export const getCareerIntelligence = query({
+  args: {},
+  handler: async (ctx) => {
+    const user = await getCurrentUser(ctx);
+    if (!user) return null;
+
+    const analyses = await ctx.db
+      .query("cvAnalyses")
+      .withIndex("by_userId", (q) => q.eq("userId", user._id))
+      .order("asc")
+      .collect();
+
+    const completedAnalyses = analyses.filter((a) => a.status === "completed");
+
+    if (completedAnalyses.length === 0) {
+      return null;
+    }
+
+    const latest = completedAnalyses[completedAnalyses.length - 1];
+
+    // 1. Skill Match (Use CV Rating as proxy)
+    const skillMatch = latest.cvRating || 0;
+
+    // 2. Trend (CV Rating over time)
+    // Take last 6 analyses or fewer
+    const trendData = completedAnalyses.slice(-6).map((a) => ({
+      date: a._creationTime,
+      value: a.cvRating || 0,
+      label: new Date(a._creationTime).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+    }));
+
+    // 3. Salary Projection
+    let projectedSalary = 0;
+    if (latest.jobMatches && latest.jobMatches.length > 0) {
+      const salaries = latest.jobMatches
+        .map((m) => {
+          // Extract numbers from string like "$120,000 - $150,000" or "€45k"
+          const matches = m.salary.match(/(\d{1,3}(,\d{3})*(\.\d+)?)|(\d+[kK])/g);
+          if (matches && matches.length > 0) {
+             const nums = matches.map(s => {
+                let val = parseFloat(s.replace(/,/g, '').replace(/k/i, '000'));
+                // Simple heuristic for 'k' notation
+                if (s.toLowerCase().includes('k') && val < 1000) val *= 1000; 
+                return val;
+             });
+             return nums.reduce((a, b) => a + b, 0) / nums.length;
+          }
+          return 0;
+        })
+        .filter((s) => s > 0);
+
+      if (salaries.length > 0) {
+        projectedSalary = Math.round(salaries.reduce((a, b) => a + b, 0) / salaries.length);
+      }
+    }
+
+    // 4. Missing Skills
+    const missingSkills = (latest.missingSkills || []).slice(0, 3).map((skill, idx) => ({
+      name: skill,
+      demand: 95 - idx * 8, // Heuristic: AI prioritizes most important skills
+    }));
+
+    return {
+      skillMatch,
+      trendData,
+      salaryProjection: {
+        projected: projectedSalary,
+      },
+      missingSkills,
+      topMissingSkill: missingSkills[0]?.name || null,
+      lastUpdated: latest._creationTime,
+    };
+  },
+});
+
 // Check if user has pro subscription
 export const checkProStatus = query({
   args: {},
