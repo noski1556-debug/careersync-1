@@ -218,7 +218,7 @@ export default function Dashboard() {
           {/* Bento Grid Layout */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            {/* Primary Action: Upload CV (Takes up 1 column, but visually distinct) */}
+            {/* Col 1: Upload CV (Row Span 2) */}
             <motion.div variants={item} className="md:col-span-1 md:row-span-2 h-full">
               <Card className="h-full border-2 border-dashed border-primary/30 bg-background/60 backdrop-blur-xl hover:border-primary transition-all duration-300 group relative overflow-hidden shadow-lg hover:shadow-primary/10">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -259,87 +259,93 @@ export default function Dashboard() {
               </Card>
             </motion.div>
 
-            {/* Referral / Stats Card (Spans 2 columns) */}
+            {/* Col 2 & 3: Stats Overview (Always visible) */}
             <motion.div variants={item} className="md:col-span-2">
-              {referralStats?.referralCode ? (
-                <Card className="h-full border-none bg-gradient-to-br from-primary/10 via-background/80 to-accent/10 backdrop-blur-xl shadow-lg relative overflow-hidden">
-                  <div className="absolute top-0 right-0 p-4 opacity-10">
-                    <Gift className="h-32 w-32" />
-                  </div>
+               <Card className="h-full bg-background/60 backdrop-blur-xl border-border/50 shadow-sm">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Gift className="h-5 w-5 text-primary" />
-                      Referral Rewards
-                    </CardTitle>
-                    <CardDescription>
-                      Share your journey and earn Pro access.
-                    </CardDescription>
+                      <CardTitle className="flex items-center gap-2">
+                        <TrendingUp className="h-5 w-5 text-primary" />
+                        Career Stats
+                      </CardTitle>
+                      <CardDescription>Your progress at a glance</CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
-                      <div className="space-y-4 flex-1">
-                        <div className="flex items-center gap-2">
-                          <code className="text-3xl font-bold bg-background/50 px-4 py-2 rounded-lg border border-primary/20 tracking-wider">
-                            {referralStats.referralCode}
-                          </code>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={handleCopyReferralCode}
-                            className="hover:bg-primary/10"
-                          >
-                            <Copy className="h-5 w-5 text-primary" />
-                          </Button>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-sm font-medium">
-                            <span>Progress to 3 Months Free Pro</span>
-                            <span>{referralStats.credits}/3 Friends</span>
-                          </div>
-                          <div className="h-3 w-full bg-muted/50 rounded-full overflow-hidden backdrop-blur-sm">
-                            <motion.div 
-                              className="h-full bg-gradient-to-r from-primary to-accent"
-                              initial={{ width: 0 }}
-                              animate={{ width: `${(referralStats.credits / 3) * 100}%` }}
-                              transition={{ duration: 1, ease: "easeOut" }}
-                            />
-                          </div>
-                        </div>
+                  <CardContent className="grid grid-cols-3 gap-4 text-center">
+                      <div className="p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
+                          <div className="text-3xl font-bold text-primary">{analyses?.length || 0}</div>
+                          <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mt-1">Total Analyses</div>
                       </div>
-                      <div className="hidden md:block w-px h-24 bg-border/50" />
-                      <div className="text-center md:text-right">
-                        <div className="text-4xl font-bold text-foreground">{referralStats.totalValidReferrals}</div>
-                        <div className="text-sm text-muted-foreground">Total Referrals</div>
+                      <div className="p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
+                          <div className="text-3xl font-bold text-primary">{isPro ? "PRO" : "FREE"}</div>
+                          <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mt-1">Current Plan</div>
                       </div>
-                    </div>
+                      <div className="p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
+                          <div className="text-3xl font-bold text-primary">0</div>
+                          <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mt-1">Interviews</div>
+                      </div>
                   </CardContent>
-                </Card>
-              ) : (
-                 <Card className="h-full bg-background/60 backdrop-blur-xl border-border/50 shadow-sm">
-                    <CardHeader>
-                        <CardTitle>Career Stats</CardTitle>
-                        <CardDescription>Your progress at a glance</CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid grid-cols-3 gap-4 text-center">
-                        <div className="p-4 rounded-lg bg-muted/30">
-                            <div className="text-2xl font-bold">{analyses?.length || 0}</div>
-                            <div className="text-xs text-muted-foreground">Analyses</div>
-                        </div>
-                        <div className="p-4 rounded-lg bg-muted/30">
-                            <div className="text-2xl font-bold">{isPro ? "PRO" : "FREE"}</div>
-                            <div className="text-xs text-muted-foreground">Plan</div>
-                        </div>
-                        <div className="p-4 rounded-lg bg-muted/30">
-                            <div className="text-2xl font-bold">0</div>
-                            <div className="text-xs text-muted-foreground">Interviews</div>
-                        </div>
-                    </CardContent>
-                 </Card>
-              )}
+               </Card>
             </motion.div>
 
-            {/* Recent Analyses (Spans 2 columns, below Referral) */}
-            <motion.div variants={item} className="md:col-span-2">
+            {/* Col 2 & 3: Referral (if exists) */}
+            {referralStats?.referralCode && (
+                <motion.div variants={item} className="md:col-span-2">
+                    <Card className="h-full border-none bg-gradient-to-br from-primary/10 via-background/80 to-accent/10 backdrop-blur-xl shadow-lg relative overflow-hidden">
+                      <div className="absolute top-0 right-0 p-4 opacity-10">
+                        <Gift className="h-32 w-32" />
+                      </div>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Gift className="h-5 w-5 text-primary" />
+                          Referral Rewards
+                        </CardTitle>
+                        <CardDescription>
+                          Share your journey and earn Pro access.
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
+                          <div className="space-y-4 flex-1">
+                            <div className="flex items-center gap-2">
+                              <code className="text-3xl font-bold bg-background/50 px-4 py-2 rounded-lg border border-primary/20 tracking-wider">
+                                {referralStats.referralCode}
+                              </code>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={handleCopyReferralCode}
+                                className="hover:bg-primary/10"
+                              >
+                                <Copy className="h-5 w-5 text-primary" />
+                              </Button>
+                            </div>
+                            <div className="space-y-2">
+                              <div className="flex justify-between text-sm font-medium">
+                                <span>Progress to 3 Months Free Pro</span>
+                                <span>{referralStats.credits}/3 Friends</span>
+                              </div>
+                              <div className="h-3 w-full bg-muted/50 rounded-full overflow-hidden backdrop-blur-sm">
+                                <motion.div 
+                                  className="h-full bg-gradient-to-r from-primary to-accent"
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${(referralStats.credits / 3) * 100}%` }}
+                                  transition={{ duration: 1, ease: "easeOut" }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="hidden md:block w-px h-24 bg-border/50" />
+                          <div className="text-center md:text-right">
+                            <div className="text-4xl font-bold text-foreground">{referralStats.totalValidReferrals}</div>
+                            <div className="text-sm text-muted-foreground">Total Referrals</div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                </motion.div>
+            )}
+
+            {/* Recent Analyses */}
+            <motion.div variants={item} className={referralStats?.referralCode ? "md:col-span-3" : "md:col-span-2"}>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-2xl font-bold tracking-tight">Recent Analyses</h2>
               </div>
