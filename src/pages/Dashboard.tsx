@@ -169,15 +169,22 @@ export default function Dashboard() {
       {/* Header */}
       <header className="border-b border-white/10 bg-black/20 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="cursor-pointer" onClick={() => navigate("/")}>
+          <motion.div 
+            className="cursor-pointer" 
+            onClick={() => navigate("/")}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <Logo />
-          </div>
+          </motion.div>
           <div className="flex items-center gap-4">
             {!isPro && (
-              <Button variant="outline" onClick={() => navigate("/pricing")} className="gap-2 hidden sm:flex bg-white/5 hover:bg-white/10 border-white/10 text-zinc-200 backdrop-blur-sm">
-                <Crown className="h-4 w-4 text-yellow-500" />
-                Upgrade to Pro
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button variant="outline" onClick={() => navigate("/pricing")} className="gap-2 hidden sm:flex bg-white/5 hover:bg-white/10 border-white/10 text-zinc-200 backdrop-blur-sm">
+                  <Crown className="h-4 w-4 text-yellow-500" />
+                  Upgrade to Pro
+                </Button>
+              </motion.div>
             )}
             <ThemeToggle />
             <AccountDropdown />
@@ -204,14 +211,16 @@ export default function Dashboard() {
               </p>
             </div>
             <div className="flex gap-2">
-               <Button 
-                  variant="outline"
-                  onClick={() => navigate("/career-intelligence")}
-                  className="gap-2 bg-white/5 border-white/10 hover:bg-white/10 backdrop-blur-sm text-zinc-200"
-                >
-                  <TrendingUp className="h-4 w-4" />
-                  Career Intelligence
-                </Button>
+               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                 <Button 
+                    variant="outline"
+                    onClick={() => navigate("/career-intelligence")}
+                    className="gap-2 bg-white/5 border-white/10 hover:bg-white/10 backdrop-blur-sm text-zinc-200"
+                  >
+                    <TrendingUp className="h-4 w-4" />
+                    Career Intelligence
+                  </Button>
+               </motion.div>
             </div>
           </motion.div>
 
@@ -219,8 +228,12 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
             {/* Col 1: Upload CV (Row Span 2) */}
-            <motion.div variants={item} className="md:col-span-1 md:row-span-2 h-full">
-              <Card className="h-full border border-white/10 border-dashed bg-black/20 backdrop-blur-md hover:border-primary/50 transition-all duration-300 group relative overflow-hidden shadow-none hover:shadow-[0_0_20px_rgba(0,0,0,0.2)]">
+            <motion.div 
+              variants={item} 
+              className="md:col-span-1 md:row-span-2 h-full"
+              whileHover={{ scale: 1.02 }}
+            >
+              <Card className="h-full border border-white/10 border-dashed bg-black/20 backdrop-blur-md hover:border-primary transition-all duration-300 group relative overflow-hidden shadow-none hover:shadow-[0_0_20px_rgba(0,0,0,0.2)]">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-2xl text-zinc-100">
@@ -309,14 +322,16 @@ export default function Dashboard() {
                               <code className="text-3xl font-bold bg-black/30 px-4 py-2 rounded-lg border border-white/10 tracking-wider text-zinc-100">
                                 {referralStats.referralCode}
                               </code>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={handleCopyReferralCode}
-                                className="hover:bg-white/10 text-zinc-400 hover:text-primary"
-                              >
-                                <Copy className="h-5 w-5" />
-                              </Button>
+                              <motion.div whileTap={{ scale: 0.9 }}>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={handleCopyReferralCode}
+                                  className="hover:bg-white/10 text-zinc-400 hover:text-primary"
+                                >
+                                  <Copy className="h-5 w-5" />
+                                </Button>
+                              </motion.div>
                             </div>
                             <div className="space-y-2">
                               <div className="flex justify-between text-sm font-medium text-zinc-400">
@@ -374,11 +389,11 @@ export default function Dashboard() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: idx * 0.1 }}
-                      whileHover={{ scale: 1.02, y: -5 }}
+                      whileHover={{ scale: 1.05 }}
                       className="h-full"
                     >
                       <Card 
-                        className="cursor-pointer h-full bg-black/20 backdrop-blur-md border border-white/10 hover:border-primary/50 hover:shadow-[0_0_15px_rgba(0,0,0,0.2)] transition-all duration-300 group"
+                        className="cursor-pointer h-full bg-black/20 backdrop-blur-md border border-white/10 hover:border-primary hover:shadow-[0_0_15px_rgba(0,0,0,0.2)] transition-all duration-300 group"
                         onClick={() => navigate(`/analysis/${analysis._id}`)}
                       >
                         <CardHeader className="pb-3">
