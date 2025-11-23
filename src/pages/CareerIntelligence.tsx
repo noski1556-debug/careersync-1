@@ -9,12 +9,21 @@ import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 export default function CareerIntelligence() {
   const { isLoading: authLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   
   const data = useQuery(api.careersync.getCareerIntelligence);
+
+  const chartConfig = {
+    value: {
+      label: "CV Rating",
+      color: "hsl(var(--primary))",
+    },
+  } satisfies ChartConfig;
 
   if (authLoading) {
     return (
@@ -190,24 +199,51 @@ export default function CareerIntelligence() {
                   <CardDescription>Your profile improvement over time</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-48 flex items-end justify-between gap-2 px-4">
+                  <div className="h-48 w-full">
                     {data.trendData.length > 0 ? (
-                      data.trendData.map((point, idx) => (
-                        <div key={idx} className="flex-1 flex flex-col items-center gap-2 group">
-                          <div className="relative w-full flex justify-center">
-                             <motion.div
-                                className="w-full max-w-[40px] bg-gradient-to-t from-accent to-accent/50 rounded-t hover:from-accent hover:to-accent/80 transition-colors"
-                                initial={{ height: 0 }}
-                                animate={{ height: `${point.value}%` }}
-                                transition={{ delay: 0.3 + idx * 0.1, duration: 0.5 }}
-                              />
-                              <div className="absolute -top-8 opacity-0 group-hover:opacity-100 transition-opacity bg-popover text-popover-foreground text-xs px-2 py-1 rounded shadow-sm">
-                                {point.value}
-                              </div>
-                          </div>
-                          <span className="text-xs text-muted-foreground truncate w-full text-center">{point.label}</span>
-                        </div>
-                      ))
+                      <ChartContainer config={chartConfig} className="h-full w-full">
+                        <AreaChart
+                          accessibilityLayer
+                          data={data.trendData}
+                          margin={{
+                            left: 0,
+                            right: 0,
+                            top: 10,
+                            bottom: 0,
+                          }}
+                        >
+                          <CartesianGrid vertical={false} strokeDasharray="3 3" strokeOpacity={0.5} />
+                          <XAxis
+                            dataKey="label"
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            tickFormatter={(value) => value}
+                            interval="preserveStartEnd"
+                          />
+                          <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent indicator="line" />}
+                          />
+                          <Area
+                            dataKey="value"
+                            type="natural"
+                            fill="var(--color-value)"
+                            fillOpacity={0.2}
+                            stroke="var(--color-value)"
+                            strokeWidth={2}
+                            dot={{
+                              fill: "var(--color-value)",
+                              r: 4,
+                              strokeWidth: 0,
+                            }}
+                            activeDot={{
+                              r: 6,
+                              strokeWidth: 0,
+                            }}
+                          />
+                        </AreaChart>
+                      </ChartContainer>
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-muted-foreground">
                         Not enough data yet
