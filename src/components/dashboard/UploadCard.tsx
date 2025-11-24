@@ -4,7 +4,7 @@ import { Loader2, Sparkles, Upload } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useAction, useMutation } from "convex/react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { api } from "@/convex/_generated/api";
 
 interface UploadCardProps {

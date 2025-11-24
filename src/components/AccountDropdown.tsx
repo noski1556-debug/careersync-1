@@ -27,7 +27,7 @@ import { api as apiGenerated } from "@/convex/_generated/api";
 const api: any = apiGenerated;
 
 import { User, Copy, Gift, Crown, LogOut, Home, Edit } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 

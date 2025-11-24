@@ -9,7 +9,7 @@ import { useQuery } from "convex/react";
 import type { FunctionReference } from "convex/server";
 import { motion } from "framer-motion";
 import { ArrowLeft, Briefcase, ChevronDown, ChevronUp, Crown, Download, ExternalLink, GraduationCap, Lightbulb, Loader2, Lock, TrendingUp } from "lucide-react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import { Id } from "@/convex/_generated/dataModel";
 import { useState } from "react";
 import { AccountDropdown } from "@/components/AccountDropdown";

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, CheckCircle, GraduationCap, Sparkles, TrendingUp } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 
 export function HeroSection() {

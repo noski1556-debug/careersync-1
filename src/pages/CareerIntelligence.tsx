@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
 import { ArrowLeft, TrendingUp, Briefcase, DollarSign, Target, Loader2, Sparkles, AlertCircle } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { AccountDropdown } from "@/components/AccountDropdown";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";

@@ -8,7 +8,7 @@ import { useAction } from "convex/react";
 import type { FunctionReference } from "convex/server";
 import { motion } from "framer-motion";
 import { Check, Crown, Loader2, Sparkles } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useState } from "react";
 import { AccountDropdown } from "@/components/AccountDropdown";

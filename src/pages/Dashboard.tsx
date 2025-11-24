@@ -9,7 +9,7 @@ const api: any = apiGenerated;
 
 import { motion } from "framer-motion";
 import { Crown, Loader2 } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { AccountDropdown } from "@/components/AccountDropdown";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";

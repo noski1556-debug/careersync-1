@@ -9,7 +9,7 @@ import { api as apiGenerated } from "@/convex/_generated/api";
 const api: any = apiGenerated;
 import { motion } from "framer-motion";
 import { ArrowLeft, CheckCircle, Loader2, Sparkles } from "lucide-react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 import { Id } from "@/convex/_generated/dataModel";
 import { useState } from "react";
 import { toast } from "sonner";
