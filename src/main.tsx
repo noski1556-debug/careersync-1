@@ -16,6 +16,7 @@ import CVBuilder from "./pages/CVBuilder.tsx";
 import CVImprovement from "./pages/CVImprovement";
 import CareerIntelligence from "./pages/CareerIntelligence";
 import "./types/global.d.ts";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
@@ -48,21 +49,23 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <InstrumentationProvider>
       <ConvexAuthProvider client={convex}>
-        <BrowserRouter>
-          <RouteSyncer />
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/auth" element={<AuthPage redirectAfterAuth="/dashboard" />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/analysis/:id" element={<Analysis />} />
-            <Route path="/cv-improvement/:id" element={<CVImprovement />} />
-            <Route path="/cv-builder" element={<CVBuilder />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/career-intelligence" element={<CareerIntelligence />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-        <Toaster />
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          <BrowserRouter>
+            <RouteSyncer />
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/auth" element={<AuthPage redirectAfterAuth="/dashboard" />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/analysis/:id" element={<Analysis />} />
+              <Route path="/cv-improvement/:id" element={<CVImprovement />} />
+              <Route path="/cv-builder" element={<CVBuilder />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/career-intelligence" element={<CareerIntelligence />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+          <Toaster />
+        </ThemeProvider>
       </ConvexAuthProvider>
     </InstrumentationProvider>
   </StrictMode>,
