@@ -19,7 +19,21 @@ import "./types/global.d.ts";
 import { ThemeProvider } from "@/components/theme-provider";
 
 const convexUrl = import.meta.env.VITE_CONVEX_URL;
-const convex = convexUrl ? new ConvexReactClient(convexUrl) : null;
+let convex: ConvexReactClient | null = null;
+let configError = "";
+
+if (!convexUrl) {
+  configError = "The Convex URL is missing.";
+} else if (!convexUrl.startsWith("https://")) {
+  configError = "The VITE_CONVEX_URL must start with 'https://'. It looks like you might have used a deployment key instead of the Deployment URL.";
+} else {
+  try {
+    convex = new ConvexReactClient(convexUrl);
+  } catch (e) {
+    configError = "Failed to initialize Convex client. Please check your URL.";
+    console.error(e);
+  }
+}
 
 console.log("App mounting...");
 
@@ -46,16 +60,24 @@ function RouteSyncer() {
   return null;
 }
 
-if (!convex) {
+if (!convex || configError) {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
       <div className="min-h-screen flex items-center justify-center bg-zinc-950 text-zinc-100 p-4">
         <div className="max-w-md text-center space-y-4">
           <h1 className="text-2xl font-bold text-red-500">Configuration Error</h1>
-          <p>The Convex URL is missing.</p>
-          <p className="text-sm text-zinc-400">
-            Please go to the <strong>API Keys</strong> tab and ensure <code>VITE_CONVEX_URL</code> is set to your Convex deployment URL (e.g., <code>https://example-app-123.convex.cloud</code>).
-          </p>
+          <p className="text-lg">{configError}</p>
+          <div className="text-sm text-zinc-400 bg-zinc-900 p-4 rounded-md text-left">
+            <p className="font-bold mb-2">How to get your VITE_CONVEX_URL:</p>
+            <ol className="list-decimal list-inside space-y-1">
+              <li>Click the <strong>Database</strong> tab in the left sidebar (opens Convex dashboard).</li>
+              <li>In the dashboard, look for the <strong>Deployment URL</strong> (top right or in Settings).</li>
+              <li>It should look like: <code>https://happy-otter-123.convex.cloud</code></li>
+              <li>Copy that URL.</li>
+              <li>Go to the <strong>API Keys</strong> tab here.</li>
+              <li>Set <code>VITE_CONVEX_URL</code> to that URL.</li>
+            </ol>
+          </div>
         </div>
       </div>
     </StrictMode>
