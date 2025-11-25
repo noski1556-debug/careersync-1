@@ -18,7 +18,27 @@ import CareerIntelligence from "./pages/CareerIntelligence";
 import "./types/global.d.ts";
 import { ThemeProvider } from "@/components/theme-provider";
 
-const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
+const convexUrl = import.meta.env.VITE_CONVEX_URL;
+
+if (!convexUrl) {
+  const root = document.getElementById("root");
+  if (root) {
+    createRoot(root).render(
+      <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-950 p-4 text-center text-zinc-50 font-sans">
+        <h1 className="mb-2 text-2xl font-bold text-red-500">Configuration Error</h1>
+        <p className="mb-4 max-w-md text-zinc-400">
+          The <code>VITE_CONVEX_URL</code> environment variable is missing.
+        </p>
+        <p className="text-sm text-zinc-500">
+          Please add your Convex URL (e.g., <code>https://example-app.convex.cloud</code>) to the API Keys tab.
+        </p>
+      </div>
+    );
+  }
+  throw new Error("VITE_CONVEX_URL is not defined");
+}
+
+const convex = new ConvexReactClient(convexUrl as string);
 
 console.log("App mounting...");
 
