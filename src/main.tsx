@@ -3,7 +3,7 @@ import { InstrumentationProvider } from "@/instrumentation.tsx";
 import AuthPage from "@/pages/Auth.tsx";
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import { ConvexReactClient } from "convex/react";
-import { StrictMode, useEffect } from "react";
+import { Component, ErrorInfo, ReactNode, StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import "./index.css";
@@ -36,6 +36,44 @@ if (!convexUrl) {
 }
 
 console.log("App mounting...");
+
+class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean; error: Error | null }> {
+  constructor(props: { children: ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error("Uncaught error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-zinc-950 text-red-500 p-4">
+          <div className="max-w-md space-y-4">
+            <h1 className="text-2xl font-bold">Something went wrong</h1>
+            <pre className="bg-zinc-900 p-4 rounded overflow-auto text-sm text-zinc-300 whitespace-pre-wrap">
+              {this.state.error?.message}
+            </pre>
+            <button 
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-zinc-800 text-white rounded hover:bg-zinc-700 cursor-pointer"
+            >
+              Reload Page
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 function RouteSyncer() {
   const location = useLocation();
@@ -85,27 +123,29 @@ if (!convex || configError) {
 } else {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
-      <InstrumentationProvider>
-        <ConvexAuthProvider client={convex}>
-          <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-            <BrowserRouter>
-              <RouteSyncer />
-              <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="/auth" element={<AuthPage redirectAfterAuth="/dashboard" />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/analysis/:id" element={<Analysis />} />
-                <Route path="/cv-improvement/:id" element={<CVImprovement />} />
-                <Route path="/cv-builder" element={<CVBuilder />} />
-                <Route path="/pricing" element={<Pricing />} />
-                <Route path="/career-intelligence" element={<CareerIntelligence />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-            <Toaster />
-          </ThemeProvider>
-        </ConvexAuthProvider>
-      </InstrumentationProvider>
+      <ErrorBoundary>
+        <InstrumentationProvider>
+          <ConvexAuthProvider client={convex}>
+            <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+              <BrowserRouter>
+                <RouteSyncer />
+                <Routes>
+                  <Route path="/" element={<Landing />} />
+                  <Route path="/auth" element={<AuthPage redirectAfterAuth="/dashboard" />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/analysis/:id" element={<Analysis />} />
+                  <Route path="/cv-improvement/:id" element={<CVImprovement />} />
+                  <Route path="/cv-builder" element={<CVBuilder />} />
+                  <Route path="/pricing" element={<Pricing />} />
+                  <Route path="/career-intelligence" element={<CareerIntelligence />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+              <Toaster />
+            </ThemeProvider>
+          </ConvexAuthProvider>
+        </InstrumentationProvider>
+      </ErrorBoundary>
     </StrictMode>,
   );
 }
