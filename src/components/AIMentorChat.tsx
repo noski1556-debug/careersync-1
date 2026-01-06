@@ -133,7 +133,7 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
           >
             {/* Backdrop */}
             <motion.div
-              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              className="absolute inset-0 backdrop-blur-sm"
               onClick={() => setIsOpen(false)}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
