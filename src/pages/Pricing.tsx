@@ -148,18 +148,11 @@ export default function Pricing() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover="hover"
             >
               <Card className="h-full border-2 border-primary relative">
-                <motion.div
-                  className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-sm font-semibold shadow-lg"
-                  variants={{
-                    hover: { scale: 1.1, y: -2 }
-                  }}
-                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                >
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-sm font-semibold shadow-lg">
                   Most Popular
-                </motion.div>
+                </div>
                 <CardHeader>
                   <div className="flex items-center gap-2 mb-2">
                     <Crown className="h-5 w-5 text-primary" />

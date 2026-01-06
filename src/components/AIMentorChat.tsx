@@ -105,7 +105,7 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
       <AnimatePresence>
         {!isOpen && (
           <motion.div
-            className="fixed bottom-6 right-6 z-[9999]"
+            className="fixed bottom-6 right-6 z-50"
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
@@ -131,14 +131,14 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 z-[9999] flex items-end justify-end p-4 md:p-6"
+            className="fixed inset-0 z-50 flex items-end justify-end p-4 md:p-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             {/* Backdrop */}
             <motion.div
-              className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+              className="absolute inset-0 backdrop-blur-sm"
               onClick={() => setIsOpen(false)}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

@@ -1,3 +1,4 @@
+import { AIMentorChat } from "@/components/AIMentorChat";
 import { CTASection } from "@/components/landing/CTASection";
 import { FeaturesSection } from "@/components/landing/FeaturesSection";
 import { Footer } from "@/components/landing/Footer";
@@ -18,6 +19,7 @@ export default function Landing() {
       <TestimonialsSection />
       <CTASection />
       <Footer />
+      <AIMentorChat />
     </div>
   );
 }
