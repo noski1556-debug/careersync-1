@@ -21,11 +21,59 @@ export const analyzeCV = action({
 
     // Call OpenRouter API for AI analysis
     const apiKey = process.env.OPENROUTER_API_KEY;
-    
+
     if (!apiKey) {
       console.error("OpenRouter API key not configured");
       throw new Error("OpenRouter API key not configured. Please add it in the Integrations tab.");
     }
+
+    // First, validate if the uploaded file is actually a CV
+    const validationPrompt = `You are a CV validator. Analyze the following text and determine if it's a CV/Resume or not.
+
+Text to validate:
+${args.extractedText}
+
+Respond with ONLY "YES" if this is clearly a CV/Resume (contains work experience, education, skills, or professional background).
+Respond with ONLY "NO" if this is NOT a CV/Resume (random document, image description, article, etc.).
+
+Response:`;
+
+    try {
+      const validationResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "openai/gpt-4o-mini",
+          messages: [
+            {
+              role: "user",
+              content: validationPrompt,
+            },
+          ],
+        }),
+      });
+
+      if (!validationResponse.ok) {
+        throw new Error(`OpenRouter API error: ${validationResponse.statusText}`);
+      }
+
+      const validationData = await validationResponse.json();
+      const validationResult = validationData.choices[0].message.content.trim().toUpperCase();
+
+      if (validationResult !== "YES") {
+        throw new Error("The uploaded file does not appear to be a CV or Resume. Please upload a valid CV containing your work experience, education, and skills.");
+      }
+    } catch (error) {
+      if (error instanceof Error && error.message.includes("does not appear to be a CV")) {
+        throw error;
+      }
+      console.error("CV validation error:", error);
+      // If validation fails due to API issues, continue with analysis
+    }
+
 
     const locationContext = args.userLocation 
       ? `\n\nUser Location: ${args.userLocation}\nIMPORTANT: Prioritize job recommendations in or near ${args.userLocation}. Include remote opportunities as well. Tailor salary ranges to the local market in ${args.userLocation}.`
