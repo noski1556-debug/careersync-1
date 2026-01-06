@@ -153,7 +153,7 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
               exit={{ y: 100, opacity: 0, scale: 0.9 }}
               transition={{ type: "spring", damping: 25 }}
             >
-              <Card className="h-full flex flex-col shadow-2xl border-2 border-primary/20 overflow-hidden">
+              <Card className="h-full flex flex-col shadow-2xl border-2 border-primary/20 overflow-hidden bg-background">
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-primary/10 to-accent/10 shrink-0">
                   <div className="flex items-center gap-3">
