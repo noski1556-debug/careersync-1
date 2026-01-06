@@ -102,25 +102,30 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
   return (
     <>
       {/* Floating Chat Button */}
-      <motion.div
-        className="fixed bottom-6 right-6 z-50"
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 1, type: "spring", stiffness: 200 }}
-      >
-        <motion.div
-          animate={{ scale: [1, 1.05, 1] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <Button
-            size="lg"
-            onClick={() => setIsOpen(true)}
-            className="h-14 w-14 rounded-full shadow-2xl bg-gradient-to-br from-primary via-accent to-secondary hover:shadow-primary/50"
+      <AnimatePresence>
+        {!isOpen && (
+          <motion.div
+            className="fixed bottom-6 right-6 z-50"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            transition={{ delay: isOpen ? 0 : 1, type: "spring", stiffness: 200 }}
           >
-            <MessageCircle className="h-6 w-6" />
-          </Button>
-        </motion.div>
-      </motion.div>
+            <motion.div
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <Button
+                size="lg"
+                onClick={() => setIsOpen(true)}
+                className="h-14 w-14 rounded-full shadow-2xl bg-gradient-to-br from-primary via-accent to-secondary hover:shadow-primary/50"
+              >
+                <MessageCircle className="h-6 w-6" />
+              </Button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Chat Dialog */}
       <AnimatePresence>
