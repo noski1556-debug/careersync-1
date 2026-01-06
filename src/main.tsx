@@ -17,6 +17,7 @@ import CVImprovement from "./pages/CVImprovement";
 import CareerIntelligence from "./pages/CareerIntelligence";
 import "./types/global.d.ts";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AIMentorChat } from "@/components/AIMentorChat";
 
 const convexUrl = import.meta.env.VITE_CONVEX_URL;
 let convex: ConvexReactClient | null = null;
@@ -140,6 +141,7 @@ if (!convex || configError) {
                   <Route path="/career-intelligence" element={<CareerIntelligence />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
+                <AIMentorChat />
               </BrowserRouter>
               <Toaster />
             </ThemeProvider>
