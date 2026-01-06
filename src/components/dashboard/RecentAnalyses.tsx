@@ -33,7 +33,7 @@ export function RecentAnalyses({ analyses, hasReferralCode }: RecentAnalysesProp
                 <Mountain className="h-24 w-24 text-zinc-800 mb-4" />
             </motion.div>
             <h3 className="text-lg font-semibold text-zinc-200">Your journey starts here</h3>
-            <p className="text-zinc-500 max-w-sm mt-2">
+            <p className="text-foreground/70 dark:text-zinc-500 max-w-sm mt-2">
               Upload your first CV to unlock AI-powered insights and a personalized roadmap.
             </p>
           </CardContent>
@@ -71,14 +71,14 @@ export function RecentAnalyses({ analyses, hasReferralCode }: RecentAnalysesProp
                   <CardTitle className="text-lg mt-3 truncate pr-2 text-zinc-100">
                     {analysis.fileName}
                   </CardTitle>
-                  <CardDescription className="text-xs text-zinc-500">
+                  <CardDescription className="text-xs text-foreground/70 dark:text-zinc-500">
                     {new Date(analysis._creationTime).toLocaleDateString()}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between text-sm">
-                        <span className="text-zinc-500">Status</span>
+                        <span className="text-foreground/70 dark:text-zinc-500">Status</span>
                         <span className={
                             analysis.status === "completed" ? "text-green-400 font-medium" :
                             analysis.status === "failed" ? "text-red-400 font-medium" :
@@ -96,7 +96,7 @@ export function RecentAnalyses({ analyses, hasReferralCode }: RecentAnalysesProp
                                 </span>
                             ))}
                             {analysis.skills.length > 3 && (
-                                <span className="text-[10px] px-2 py-0.5 text-zinc-500">
+                                <span className="text-[10px] px-2 py-0.5 text-foreground/70 dark:text-zinc-500">
                                     +{analysis.skills.length - 3}
                                 </span>
                             )}

@@ -27,10 +27,10 @@ export function WelcomeSection({ userName }: WelcomeSectionProps) {
       </div>
       <div className="flex gap-2">
          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-           <Button 
+           <Button
               variant="outline"
               onClick={() => navigate("/career-intelligence")}
-              className="gap-2 bg-white/5 border-white/10 hover:bg-white/10 backdrop-blur-sm text-zinc-200"
+              className="gap-2 bg-white/5 border-white/10 hover:bg-white/10 backdrop-blur-sm text-foreground dark:text-zinc-200"
             >
               <TrendingUp className="h-4 w-4" />
               Career Intelligence

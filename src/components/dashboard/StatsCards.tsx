@@ -26,15 +26,15 @@ export function StatsCards({ analysesCount, isPro }: StatsCardsProps) {
           <CardContent className="grid grid-cols-3 gap-4 text-center">
               <div className="p-4 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
                   <div className="text-3xl font-bold text-primary">{analysesCount}</div>
-                  <div className="text-xs text-zinc-500 font-medium uppercase tracking-wider mt-1">Total Analyses</div>
+                  <div className="text-xs text-foreground/70 dark:text-zinc-500 font-medium uppercase tracking-wider mt-1">Total Analyses</div>
               </div>
               <div className="p-4 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
                   <div className="text-3xl font-bold text-primary">{isPro ? "PRO" : "FREE"}</div>
-                  <div className="text-xs text-zinc-500 font-medium uppercase tracking-wider mt-1">Current Plan</div>
+                  <div className="text-xs text-foreground/70 dark:text-zinc-500 font-medium uppercase tracking-wider mt-1">Current Plan</div>
               </div>
               <div className="p-4 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
                   <div className="text-3xl font-bold text-primary">0</div>
-                  <div className="text-xs text-zinc-500 font-medium uppercase tracking-wider mt-1">Interviews</div>
+                  <div className="text-xs text-foreground/70 dark:text-zinc-500 font-medium uppercase tracking-wider mt-1">Interviews</div>
               </div>
           </CardContent>
        </Card>
