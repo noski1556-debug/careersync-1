@@ -161,8 +161,8 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
                       <Sparkles className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-lg">AI Career Mentor</h3>
-                      <p className="text-xs text-muted-foreground">Ask me anything about your career</p>
+                      <h3 className="font-bold text-lg text-foreground">AI Career Mentor</h3>
+                      <p className="text-xs text-foreground/70">Ask me anything about your career</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -191,12 +191,12 @@ export function AIMentorChat({ analysisId }: AIMentorChatProps) {
                   {messages.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-center p-6">
                       <Sparkles className="h-12 w-12 text-primary mb-4" />
-                      <h4 className="font-semibold text-lg mb-2">Welcome! 👋</h4>
-                      <p className="text-sm text-muted-foreground mb-6">
+                      <h4 className="font-semibold text-lg mb-2 text-foreground">Welcome! 👋</h4>
+                      <p className="text-sm text-foreground/80 mb-6">
                         I'm your AI career mentor. Ask me anything about your career journey!
                       </p>
                       <div className="space-y-2 w-full">
-                        <p className="text-xs text-muted-foreground mb-2">Try asking:</p>
+                        <p className="text-xs text-foreground/70 mb-2">Try asking:</p>
                         {starterQuestions.map((question, idx) => (
                           <Button
                             key={idx}
