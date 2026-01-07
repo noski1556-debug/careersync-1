@@ -2,10 +2,10 @@
 
 import { convexAuth } from "@convex-dev/auth/server";
 import { Anonymous } from "@convex-dev/auth/providers/Anonymous";
-import { emailOtp } from "./auth/emailOtp";
+import { password } from "./auth/Password";
 
 export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
-  providers: [emailOtp, Anonymous],
+  providers: [password, Anonymous],
   callbacks: {
     async afterUserCreatedOrUpdated(ctx, args) {
       // Store the name from the authentication form if provided
