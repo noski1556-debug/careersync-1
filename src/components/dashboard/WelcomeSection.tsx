@@ -18,10 +18,10 @@ export function WelcomeSection({ userName }: WelcomeSectionProps) {
   return (
     <motion.div variants={item} className="flex flex-col md:flex-row justify-between items-end gap-4">
       <div>
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-zinc-100">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-foreground">
           Welcome back, {userName?.split(' ')[0] || "Friend"}!
         </h1>
-        <p className="text-zinc-400 text-lg font-light">
+        <p className="text-foreground/60 text-lg font-light">
           Your career evolution continues today.
         </p>
       </div>
@@ -30,7 +30,7 @@ export function WelcomeSection({ userName }: WelcomeSectionProps) {
            <Button
               variant="outline"
               onClick={() => navigate("/career-intelligence")}
-              className="gap-2 bg-white/5 border-white/10 hover:bg-white/10 backdrop-blur-sm text-foreground dark:text-zinc-200"
+              className="gap-2 bg-white/5 border-white/10 hover:bg-white/10 backdrop-blur-sm text-foreground"
             >
               <TrendingUp className="h-4 w-4" />
               Career Intelligence
