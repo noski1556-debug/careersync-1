@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { useAuth } from "@/hooks/use-auth";
-import { ArrowRight, Loader2, Mail, UserX, Lock, Eye, EyeOff } from "lucide-react";
+import { ArrowRight, Loader2, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Suspense, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -122,20 +122,6 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
     }
   };
 
-  const handleGuestLogin = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      await signIn("anonymous");
-      const redirect = redirectAfterAuth || "/";
-      navigate(redirect);
-    } catch (error) {
-      console.error("Guest login error:", error);
-      setError(`Failed to sign in as guest: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      setIsLoading(false);
-    }
-  };
-
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-1 flex items-center justify-center">
@@ -223,28 +209,6 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </>
                       )}
-                    </Button>
-
-                    <div className="relative w-full">
-                      <div className="absolute inset-0 flex items-center">
-                        <span className="w-full border-t" />
-                      </div>
-                      <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-background px-2 text-muted-foreground">
-                          Or
-                        </span>
-                      </div>
-                    </div>
-
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="w-full"
-                      onClick={handleGuestLogin}
-                      disabled={isLoading}
-                    >
-                      <UserX className="mr-2 h-4 w-4" />
-                      Continue as Guest
                     </Button>
 
                     <p className="text-sm text-center text-muted-foreground">
@@ -383,18 +347,6 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                 </form>
               </>
             )}
-
-            <div className="py-4 px-6 text-xs text-center text-muted-foreground bg-muted border-t rounded-b-lg">
-              Secured by{" "}
-              <a
-                href="https://vly.ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-primary transition-colors"
-              >
-                vly.ai
-              </a>
-            </div>
           </Card>
         </div>
       </div>
