@@ -123,10 +123,15 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex-1 flex items-center justify-center">
+    <div className="min-h-screen flex flex-col relative overflow-hidden">
+      {/* Background blur effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 backdrop-blur-3xl"></div>
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl opacity-50"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl opacity-50"></div>
+
+      <div className="flex-1 flex items-center justify-center relative z-10">
         <div className="flex items-center justify-center h-full flex-col">
-          <Card className="min-w-[400px] w-full max-w-md pb-0 border shadow-md relative z-10 bg-background/80 backdrop-blur-xl">
+          <Card className="min-w-[400px] w-full max-w-md pb-0 border shadow-2xl relative z-10 bg-background/95 backdrop-blur-xl">
             {mode === "signin" ? (
               <>
                 <CardHeader className="text-center">
