@@ -138,6 +138,22 @@ const schema = defineSchema(
     })
       .index("by_userId", ["userId"])
       .index("by_stripeSubscriptionId", ["stripeSubscriptionId"]),
+
+    // Interview Tracker
+    interviews: defineTable({
+      userId: v.id("users"),
+      companyName: v.string(),
+      position: v.string(),
+      interviewDate: v.number(),
+      rating: v.number(), // 1-10 rating on how it went
+      notes: v.optional(v.string()), // General notes about the interview
+      hasSecondInterview: v.boolean(), // Whether they got a second interview
+      secondInterviewDate: v.optional(v.number()),
+      status: v.string(), // "pending" | "got_second_interview" | "rejected" | "offered"
+      tips: v.optional(v.string()), // AI-generated tips for improvement
+    })
+      .index("by_userId", ["userId"])
+      .index("by_userId_and_date", ["userId", "interviewDate"]),
   },
   {
     schemaValidation: false,

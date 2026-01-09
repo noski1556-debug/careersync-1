@@ -18,6 +18,7 @@ import { UploadCard } from "@/components/dashboard/UploadCard";
 import { StatsCards } from "@/components/dashboard/StatsCards";
 import { ReferralCard } from "@/components/dashboard/ReferralCard";
 import { RecentAnalyses } from "@/components/dashboard/RecentAnalyses";
+import { InterviewTracker } from "@/components/dashboard/InterviewTracker";
 
 export default function Dashboard() {
   const { isLoading, isAuthenticated, user } = useAuth();
@@ -110,10 +111,12 @@ export default function Dashboard() {
 
             <ReferralCard referralStats={referralStats} />
 
-            <RecentAnalyses 
-              analyses={analyses || []} 
-              hasReferralCode={!!referralStats?.referralCode} 
+            <RecentAnalyses
+              analyses={analyses || []}
+              hasReferralCode={!!referralStats?.referralCode}
             />
+
+            <InterviewTracker />
 
           </div>
         </motion.div>
